@@ -1,11 +1,18 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Modal from "./Modal";
 import mockData from "../mockdata/mockData.json";
 
 const Detail = (props) => {
   const { id } = useParams();
   const [detailData, setDetailData] = useState({});
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   useEffect(() => {
     const movies = mockData.movies;
@@ -29,9 +36,10 @@ const Detail = (props) => {
         <img src={detailData.titleImg} alt="" />
       </ImageTitle>
       <ContenMeta>
+        <Modal $isOpen={isModalOpen} toggleModal={toggleModal}></Modal>
         <Controls>
-          <Player>
-            <img src="/images/ticket-solid.svg" />
+          <Player onClick={toggleModal}>
+            <img src="/images/ticket-solid.svg" alt="" />
             <span>Get ticket</span>
           </Player>
           <Trailer>
@@ -122,9 +130,8 @@ const Player = styled.button`
   background: rgb(249, 249, 249);
   border: none;
   color: rgb(0, 0, 0);
-  ]
 
-    img {
+  img {
     width: 32px;
   }
 

@@ -281,7 +281,7 @@ const Register = styled.div`
   margin: 20px;
   label {
     position: absolute;
-    right: 140px;
+    right: 165px;
   }
 
   a {
