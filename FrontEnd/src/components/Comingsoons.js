@@ -8,14 +8,14 @@ const Comingsoon = (props) => {
 
   return (
     <Container>
-      <h4>Coming soons</h4>
+      <h4>Phim sắp chiếu</h4>
       <Content>
         {movies &&
           movies.map((movie, key) => (
             <Wrap key={key}>
               {movie.id}
               <Link to={`/detail/` + movie.id}>
-                <img src={movie.cardImg} alt={movie.title}></img>
+                <img src={movie.poster_url} alt={movie.title}></img>
               </Link>
             </Wrap>
           ))}

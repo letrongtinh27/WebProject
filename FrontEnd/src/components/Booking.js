@@ -3,30 +3,16 @@ import React from "react";
 import clsx from "clsx";
 import { useState } from "react";
 
-const movies = [
-  {
-    name: "Avenger",
-    price: 10,
-    occupied: [20, 21, 30, 1, 2, 8],
+const movies = {
+  occupied: {
+    A: [1, 2, 3, 4, 5, 6, 7, 8],
+    B: [1, 2, 3, 4, 5, 6, 7, 8],
   },
-  {
-    name: "Joker",
-    price: 12,
-    occupied: [9, 41, 35, 11, 65, 26],
-  },
-  {
-    name: "Toy story",
-    price: 8,
-    occupied: [37, 25, 44, 13, 2, 3],
-  },
-  {
-    name: "the lion king",
-    price: 9,
-    occupied: [10, 12, 50, 33, 28, 47],
-  },
-];
+};
+const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
+const seatsPerRow = 8; // Số ghế mỗi hàng
 
-const seats = Array.from({ length: 8 * 8 }, (_, i) => i);
+// const seats = Array.from({ length: 8 * 8 }, (_, i) => i);
 
 const Booking = (props) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -74,25 +60,34 @@ const Booking = (props) => {
           <Cinema>
             <Screen />
             <SeatsContainer>
-              {seats.map((seat) => {
-                const isSelected = selectedSeats.includes(seat);
-                const isOccupied = movies[0].occupied.includes(seat);
-                return (
-                  <Seat
-                    cinema
-                    tabIndex="0"
-                    key={seat}
-                    className={clsx(
-                      "seat",
-                      isSelected && "selected",
-                      isOccupied && "occupied"
-                    )}
-                    onClick={
-                      isOccupied ? null : () => handleSelectedState(seat)
-                    }
-                  ></Seat>
-                );
-              })}
+              {rows.map((row) =>
+                Array.from({ length: seatsPerRow }, (_, i) => i + 1).map(
+                  (seatNumber) => {
+                    const seat = `${row}${seatNumber}`;
+                    const isSelected = selectedSeats.includes(seat);
+                    const isOccupied =
+                      movies.occupied[row] &&
+                      movies.occupied[row].includes(seatNumber);
+                    return (
+                      <Seat
+                        cinema
+                        tabIndex="0"
+                        key={seat}
+                        className={clsx(
+                          "seat",
+                          isSelected && "selected",
+                          isOccupied && "occupied"
+                        )}
+                        onClick={
+                          isOccupied ? null : () => handleSelectedState(seat)
+                        }
+                      >
+                        {row + seatNumber}
+                      </Seat>
+                    );
+                  }
+                )
+              )}
             </SeatsContainer>
           </Cinema>
         </Right>
@@ -181,8 +176,8 @@ const SeatBaner = styled.span`
 const Seat = styled.span`
   display: inline-block;
   background: #626262;
-  width: 16px;
-  height: 12px;
+  width: 28px;
+  height: 20px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   transition: transform 0.3s ease-in-out;
@@ -244,7 +239,7 @@ const Screen = styled.div`
   height: 70px;
   background: white;
   width: 55%;
-  max-width: 250px;
+  max-width: 500px;
   transform: rotateX(-20deg) scale(1.1);
   box-shadow: 0 3px 10px 2px;
 `;

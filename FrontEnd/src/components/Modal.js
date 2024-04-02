@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
+import data from "../mockdata/mockData.json";
 import styled from "styled-components";
 
 const Modal = ({ $isOpen, toggleModal }) => {
@@ -6,6 +8,11 @@ const Modal = ({ $isOpen, toggleModal }) => {
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedTimeButton, setSelectedTimeButton] = useState(null);
   const [selectedDayButton, setSelectedDayButton] = useState(null);
+
+  const locationOptions = data.location.map(({ id, name }) => ({
+    value: id,
+    label: name,
+  }));
 
   useEffect(() => {
     console.log("Selected day:", selectedDay);
@@ -28,6 +35,18 @@ const Modal = ({ $isOpen, toggleModal }) => {
     <ModalWrapper $isOpen={$isOpen}>
       <ModalContent>
         <ModalCloseButton onClick={toggleModal}>&times;</ModalCloseButton>
+        <Location>
+          <h2>Select location</h2>
+          <Select
+            classNamePrefix="select"
+            defaultValue={locationOptions[0]} // Assuming you want to pre-select the first location
+            isLoading={false}
+            isRtl={false}
+            isSearchable={true}
+            name="color"
+            options={locationOptions}
+          />
+        </Location>
         <h2>Select Date and Time</h2>
         <div>
           <h3>Choose Date:</h3>
@@ -107,7 +126,7 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: #1f2025;
+  background-color: rgba(0, 0, 0, 0.7);
   margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;
@@ -225,6 +244,16 @@ const SubmitButton = styled.a`
     color: #000;
     border-color: transparent;
   }
+`;
+
+const Location = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 550px;
+  min-width: 250px;
+  be
 `;
 
 export default Modal;
