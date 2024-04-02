@@ -1,46 +1,57 @@
 import styled from "styled-components";
 import ImgSlider from "./ImgSlider";
 import Viewers from "./Viewers";
-import Recomments from "./Recommends";
+import Newreleases from "./Newreleases.js";
 import NewMovies from "./NewMovies";
 import Comingsoon from "./Comingsoons";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setMovies } from "../features/movie/movieSlice";
 import { selectUserName } from "../features/user/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import movieData from "../mockdata/mockData.json";
+import { getAllMovie } from "../data/data.js";
 
 const Home = (props) => {
   const dispatch = useDispatch();
-  const userName = useSelector(selectUserName);
-  let recommends = [];
-  let newMovies = [];
-  let commingsoons = [];
+  // const userName = useSelector(selectUserName);
+  // let recommends = [];
+  // let newMovies = [];
+  // let commingsoons = [];
 
   useEffect(() => {
-    const movies = movieData.movies;
+    const fetchData = async () => {
+      try {
+        const moviesFromApi = await getAllMovie();
 
-    recommends = movies.filter((movie) => movie.type === "recommend");
-    newMovies = movies.filter((movie) => movie.type === "new");
-    commingsoons = movies.filter((movie) => movie.type === "commingsoon");
+        const newreleases = moviesFromApi.filter(
+          (movie) => movie.type === "newreleases"
+        );
+        const newMovies = moviesFromApi.filter((movie) => movie.type === "new");
+        const commingsoons = moviesFromApi.filter(
+          (movie) => movie.type === "commingsoon"
+        );
 
-    console.log(recommends);
+        dispatch(
+          setMovies({
+            newreleases: newreleases,
+            new: newMovies,
+            commingsoon: commingsoons,
+          })
+        );
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
+    };
 
-    dispatch(
-      setMovies({
-        recommend: recommends,
-        new: newMovies,
-        commingsoon: commingsoons,
-      })
-    );
-  }, []);
+    fetchData();
+  }, [dispatch]);
 
   return (
     <Container>
       <ImgSlider />
       <Viewers />
-      <Recomments />
+      <Newreleases />
       <NewMovies />
       <Comingsoon />
     </Container>

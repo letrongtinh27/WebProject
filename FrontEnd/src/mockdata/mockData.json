@@ -186,5 +186,20 @@
       "titleImg": "https://www.bhdstar.vn/wp-content/uploads/2024/02/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-2.jpg",
       "type": "new"
     }
+  ],
+
+  "location": [
+    {
+      "id": 1,
+      "name": "Ho Chi Minh"
+    },
+    {
+      "id": 2,
+      "name": "Ha Noi"
+    },
+    {
+      "id": 3,
+      "name": "Da Nang"
+    }
   ]
 }

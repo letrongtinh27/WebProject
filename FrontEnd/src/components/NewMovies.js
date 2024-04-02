@@ -7,14 +7,14 @@ const NewMovies = (props) => {
   const movies = useSelector(selectNew);
   return (
     <Container>
-      <h4>New movies</h4>
+      <h4>Xem trước</h4>
       <Content>
         {movies &&
           movies.map((movie, key) => (
             <Wrap key={key}>
               {movie.id}
               <Link to={`/detail/` + movie.id}>
-                <img src={movie.cardImg} alt={movie.title}></img>
+                <img src={movie.poster_url} alt={movie.title}></img>
               </Link>
             </Wrap>
           ))}

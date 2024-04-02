@@ -57,23 +57,23 @@ const Header = (props) => {
       <NavMenu>
         <a href="/home">
           <img src="/images/home-icon.svg" alt="Home" />
-          <span>HOME</span>
+          <span>TRANG CHỦ</span>
         </a>
         <a href="/movie">
           <img src="/images/movie-icon.svg" alt="Movie" />
-          <span>MOVIE</span>
+          <span>PHIM</span>
         </a>
         <a href="/search">
           <img src="/images/search-icon.svg" alt="Search" />
-          <span>SEARCH</span>
+          <span>TÌM KIẾM</span>
         </a>
       </NavMenu>
       {!userName ? (
-        <Login href="/login">Login</Login>
+        <Login href="/login">ĐĂNG NHẬP</Login>
       ) : (
         <>
           <SignOut>
-            <h8>Hi: {userName}</h8>
+            <h8>XIN CHÀO: {userName}</h8>
             <DropDown>
               <span onClick={account}>Account</span>
               <span onClick={signOut}>Sign out</span>

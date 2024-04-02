@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Modal from "./Modal";
-import mockData from "../mockdata/mockData.json";
+import { getMovieById } from "../data/data";
 
 const Detail = (props) => {
   const { id } = useParams();
-  const [detailData, setDetailData] = useState({});
+  // const [detailData, setDetailData] = useState({});
+  const [movie, setMovie] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -14,26 +15,44 @@ const Detail = (props) => {
     setIsModalOpen(!isModalOpen);
   };
 
-  useEffect(() => {
-    const movies = mockData.movies;
-    const data = movies.find((movie) => id == movie.id);
-    if (data) {
-      setDetailData(data);
-    }
-  }, [id]);
+  const toggleTrailer = () => {
+    window.open(movie.trailer_video_url, "_blank");
+  };
 
+  const getMovie = () => {
+    getMovieById({ id: id })
+      .then((data) => {
+        setMovie(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    getMovie();
+  }, [id]);
   return (
     <Container>
       <Background>
-        <img
-          //   src="https://i.ytimg.com/vi/syusOjpEl0w/maxresdefault.jpg"
-          src={detailData.backgroundImg}
-          alt=""
-        ></img>
+        {movie.background_img_url !== "" ? (
+          <img src={movie.background_img_url} alt=""></img>
+        ) : (
+          <img
+            src={movie.poster_url}
+            alt=""
+            style={{
+              width: "auto",
+              height: "auto",
+              "background-size": "cover",
+              objectFit: "cover",
+            }}
+          ></img>
+        )}
       </Background>
 
       <ImageTitle>
-        <img src={detailData.titleImg} alt="" />
+        <img src={movie.title_img_url} alt="" />
       </ImageTitle>
       <ContenMeta>
         <Modal $isOpen={isModalOpen} toggleModal={toggleModal}></Modal>
@@ -42,7 +61,7 @@ const Detail = (props) => {
             <img src="/images/ticket-solid.svg" alt="" />
             <span>Get ticket</span>
           </Player>
-          <Trailer>
+          <Trailer onClick={toggleTrailer}>
             <img src="/images/play-icon-black.png" alt="" />
             <span>Trailer</span>
           </Trailer>
@@ -51,8 +70,8 @@ const Detail = (props) => {
             <span></span>
           </AddList>
         </Controls>
-        <SubTitle>{detailData.subTitle}</SubTitle>
-        <Description>{detailData.description}</Description>
+        <SubTitle>{movie.sub_title}</SubTitle>
+        <Description>{movie.description}</Description>
       </ContenMeta>
     </Container>
   );
