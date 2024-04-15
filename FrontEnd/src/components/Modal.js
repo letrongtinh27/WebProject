@@ -1,23 +1,43 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Select from "react-select";
-import data from "../mockdata/mockData.json";
 import styled from "styled-components";
+import { getAllTheatre } from "../data/data";
 
 const Modal = ({ $isOpen, toggleModal }) => {
+  const { id } = useParams();
+
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedTimeButton, setSelectedTimeButton] = useState(null);
   const [selectedDayButton, setSelectedDayButton] = useState(null);
+  const [theatres, setTheatres] = useState([]);
 
-  const locationOptions = data.location.map(({ id, name }) => ({
-    value: id,
-    label: name,
-  }));
+  const getAllTheatres = () => {
+    getAllTheatre()
+      .then((data) => {
+        setTheatres(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   useEffect(() => {
     console.log("Selected day:", selectedDay);
     console.log("Selected time:", selectedTime);
+    console.log("Id: " + id);
   }, [selectedTime, selectedDay]);
+
+  useEffect(() => {
+    getAllTheatres();
+    console.log(theatres);
+  }, []);
+
+  const theatreOptions = theatres.map(({ id, name }) => ({
+    value: id,
+    label: name,
+  }));
 
   const handleDayChange = (event) => {
     const selectedDayValue = event.target.value;
@@ -31,6 +51,30 @@ const Modal = ({ $isOpen, toggleModal }) => {
     setSelectedTimeButton(selectedTimeValue);
   };
 
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      width: 200, // Độ rộng của Select được đặt trực tiếp ở đây
+    }),
+  };
+
+  let currentDate = new Date();
+
+  let datesArray = [];
+
+  for (let i = 0; i < 7; i++) {
+    let nextDate = new Date(currentDate);
+
+    nextDate.setDate(currentDate.getDate() + i);
+
+    let day = nextDate.getDate();
+    let month = nextDate.getMonth() + 1;
+
+    let formattedDate = `${day}/${month}`;
+
+    datesArray.push(formattedDate);
+  }
+
   return (
     <ModalWrapper $isOpen={$isOpen}>
       <ModalContent>
@@ -38,54 +82,41 @@ const Modal = ({ $isOpen, toggleModal }) => {
         <Location>
           <h2>Select location</h2>
           <Select
+            styles={customStyles}
             classNamePrefix="select"
-            defaultValue={locationOptions[0]} // Assuming you want to pre-select the first location
             isLoading={false}
             isRtl={false}
             isSearchable={true}
-            name="color"
-            options={locationOptions}
+            name="theatre"
+            options={theatreOptions}
           />
         </Location>
         <h2>Select Date and Time</h2>
         <div>
           <h3>Choose Date:</h3>
           <ContainerDay>
-            {["25/3", "26/3", "27/3", "28/3", "29/3", "30/3", "31/3"].map(
-              (day) => (
-                <DayButton
-                  key={day}
-                  $isSelected={selectedDayButton === day}
-                  htmlFor={day}
-                >
-                  <input
-                    type="radio"
-                    name="day"
-                    id={day}
-                    value={day}
-                    onChange={handleDayChange}
-                  />
-                  {day}
-                </DayButton>
-              )
-            )}
+            {datesArray.map((day) => (
+              <DayButton
+                key={day}
+                $isSelected={selectedDayButton === day}
+                htmlFor={day}
+              >
+                <input
+                  type="radio"
+                  name="day"
+                  id={day}
+                  value={day}
+                  onChange={handleDayChange}
+                />
+                {day}
+              </DayButton>
+            ))}
           </ContainerDay>
         </div>
         <div>
           <h3>Choose Time:</h3>
           <ContainerTime>
-            {[
-              "10:00 AM",
-              "11:00 AM",
-              "12:00 AM",
-              "13:00 AM",
-              "1:00 PM",
-              "2:00 PM",
-              "3:00 PM",
-              "4:00 PM",
-
-              ,
-            ].map((time) => (
+            {[,].map((time) => (
               <TimeButton
                 key={time}
                 htmlFor={time}
