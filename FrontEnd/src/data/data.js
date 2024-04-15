@@ -12,3 +12,9 @@ export const getMovieById = async ({ id }) => {
   const { data } = await API.get(`movies/${id}`);
   return data;
 };
+
+// theatre
+export const getAllTheatre = async () => {
+  const { data } = await API.get(`theatres/all`);
+  return data;
+};
