@@ -4,6 +4,8 @@ import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,16 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile(Authentication authentication) {
+        System.out.println("authentication " + authentication);
+
+
+        String username = authentication.getPrincipal().toString();
+        User user = userService.getUserProfileByUsername(username);
+        return ResponseEntity.ok(user);
+    }
 
     @GetMapping("/all")
     public ResponseEntity<?> getListUser() {

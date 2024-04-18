@@ -6,7 +6,6 @@ import { getMovieById } from "../data/data";
 
 const Detail = (props) => {
   const { id } = useParams();
-  // const [detailData, setDetailData] = useState({});
   const [movie, setMovie] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);

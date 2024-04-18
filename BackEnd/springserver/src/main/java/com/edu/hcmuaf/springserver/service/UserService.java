@@ -2,21 +2,20 @@ package com.edu.hcmuaf.springserver.service;
 
 import com.edu.hcmuaf.springserver.auth.AuthenticationRequest;
 import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
+import com.edu.hcmuaf.springserver.auth.RegisterRequest;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.repositories.UserRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.beans.Transient;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -33,23 +32,55 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User saveUser(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public User getUserProfileByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow();
     }
 
     public AuthenticationResponse authentication(AuthenticationRequest authenticationRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow();
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+            User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        var jwtToken = jwtService.generateToken(user, authorities);
-        var jwtRefreshToken = jwtService.generateRefreshToken(user, authorities);
+            var jwtToken = jwtService.generateToken(user, authorities);
+            var jwtRefreshToken = jwtService.generateRefreshToken(user, authorities);
 
-        return AuthenticationResponse.builder().token(jwtToken).refreshToken(jwtRefreshToken).build();
+            return AuthenticationResponse.builder().code(200).message("Succeed").token(jwtToken).refreshToken(jwtRefreshToken).build();
+        } catch (AuthenticationException e) {
+            return AuthenticationResponse.builder().code(401).message("User not found").build();
+        }
+    }
+
+    public AuthenticationResponse register(RegisterRequest registerRequest) {
+        if(userRepository.existsUserByUsername(registerRequest.getUsername()) || userRepository.existsUserByEmail(registerRequest.getEmail())) {
+            return AuthenticationResponse.builder().code(400).message("Username already exits").build();
+        }
+
+        User newUser = new User();
+        newUser.setUsername(registerRequest.getUsername());
+        newUser.setPassword(encoder.encode(registerRequest.getPassword()));
+        newUser.setEmail(registerRequest.getEmail());
+        newUser.setPhone_number("");
+        newUser.setFull_name(registerRequest.getUsername());
+        newUser.setRole("user");
+        newUser.setGender("Nam");
+
+        userRepository.save(newUser);
+
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword()));
+            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            var jwtToken = jwtService.generateToken(newUser, authorities);
+            var jwtRefreshToken = jwtService.generateRefreshToken(newUser, authorities);
+            return AuthenticationResponse.builder().code(200).message("Registration successful").token(jwtToken).refreshToken(jwtRefreshToken).build();
+        } catch (AuthenticationException e) {
+            return AuthenticationResponse.builder().code(500).message("Internal server error").build();
+        }
 
     }
+
+
 
 
 

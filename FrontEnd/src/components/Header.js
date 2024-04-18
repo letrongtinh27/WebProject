@@ -1,47 +1,62 @@
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  selectUserName,
-  selectUserPhoto,
-  setUserLoginDetails,
   setSignOutState,
+  selectUserName,
+  selectFullName,
+  setUserLoginDetails,
 } from "../features/user/userSlice";
-
-import userData from "../mockdata/mockData.json";
+import { loadDataProfile } from "../data/data";
 
 const Header = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userName = useSelector(selectUserName);
-  const userPhoto = useSelector(selectUserPhoto);
-
-  useEffect(() => {
-    const usersData = userData.users;
-
-    const loggedInUser = usersData.find((user) => user.username === userName);
-
-    if (loggedInUser) {
-      setUser(loggedInUser);
-      navigate("/home");
-    }
-  }, [userName]);
+  const token = localStorage.getItem("token");
+  const [userDetail, setUserDetail] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const setUser = (user) => {
     dispatch(
       setUserLoginDetails({
-        name: user.username,
+        username: user.username,
         email: user.email,
-        photo: null,
+        phone: user.phone,
+        fullname: user.full_name,
+        gender: user.gender,
+        birthday: user.birthday,
       })
     );
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setIsLoggedIn(true);
+      loadDataProfile(token)
+        .then((data) => {
+          setUserDetail(data);
+          setUser(userDetail);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [isLoggedIn]);
+
   const signOut = () => {
-    if (userName) {
+    if (userDetail.username) {
       dispatch(setSignOutState());
-      console.log(userName);
       navigate("/");
+      setIsLoggedIn(false);
     }
   };
 
@@ -68,12 +83,12 @@ const Header = (props) => {
           <span>TÌM KIẾM</span>
         </a>
       </NavMenu>
-      {!userName ? (
+      {!isLoggedIn ? (
         <Login href="/login">ĐĂNG NHẬP</Login>
       ) : (
         <>
           <SignOut>
-            <h8>XIN CHÀO: {userName}</h8>
+            <h8>XIN CHÀO: {userDetail.full_name}</h8>
             <DropDown>
               <span onClick={account}>Account</span>
               <span onClick={signOut}>Sign out</span>
@@ -195,7 +210,7 @@ const Login = styled.a`
 const DropDown = styled.div`
   position: absolute;
   top: 48px;
-  right: 0px;
+  right: 100px;
   background: rgb(19, 19, 19);
   border: 1px solid rgba(151, 151, 151, 0.34);
   border-radius: 4px;
@@ -215,7 +230,7 @@ const DropDown = styled.div`
 const SignOut = styled.div`
   position: relative;
   height: 48px;
-  width: 48px;
+  width: 400px;
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -223,7 +238,7 @@ const SignOut = styled.div`
 
   h8 {
     color: #f9f9f9;
-    letter-spacing: 10px;
+    letter-spacing: 3px;
     font-weight: bold;
   }
 

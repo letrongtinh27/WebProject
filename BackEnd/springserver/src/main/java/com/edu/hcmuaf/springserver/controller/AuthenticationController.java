@@ -2,6 +2,7 @@ package com.edu.hcmuaf.springserver.controller;
 
 import com.edu.hcmuaf.springserver.auth.AuthenticationRequest;
 import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
+import com.edu.hcmuaf.springserver.auth.RegisterRequest;
 import com.edu.hcmuaf.springserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,14 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(userService.authentication(authenticationRequest));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registe(@RequestBody RegisterRequest registerRequest) {
+        AuthenticationResponse authenticationResponse = userService.register(registerRequest);
+        if(authenticationResponse != null) {
+            return ResponseEntity.ok(authenticationResponse);
+        }
+        return ResponseEntity.badRequest().build();
     }
 }
