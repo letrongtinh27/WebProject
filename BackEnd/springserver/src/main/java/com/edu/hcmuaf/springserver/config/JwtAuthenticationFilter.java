@@ -44,11 +44,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = decodedJWT.getSubject();
                 String role = decodedJWT.getClaim("role").asString();
 
-                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(role));
 
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+                if (role != null && !role.isEmpty()) {
+                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                    authorities.add(new SimpleGrantedAuthority(role));
+
+                    // Tạo UsernamePasswordAuthenticationToken với authorities và đặt vào SecurityContextHolder
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                } else {
+                    // Xử lý khi role không hợp lệ
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.setContentType(APPLICATION_JSON_VALUE);
+                    Map<String, String> error = new HashMap<>();
+                    error.put("error_message", "Invalid role in token");
+                    new ObjectMapper().writeValue(response.getOutputStream(), error);
+                    return;
+                }
 
                 filterChain.doFilter(request, response);
             } catch (Exception e) {

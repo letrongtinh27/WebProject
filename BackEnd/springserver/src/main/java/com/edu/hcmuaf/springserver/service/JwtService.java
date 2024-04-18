@@ -19,10 +19,11 @@ public class JwtService {
 
     public String generateToken(User user, Collection<SimpleGrantedAuthority> authorities) {
         Algorithm algorithm = Algorithm.HMAC256(Secret_key.getBytes());
+        System.out.println(user);
         return JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 50*60*1000))
-                .withClaim("role", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .withClaim("role", user.getRole())
                 .sign(algorithm);
     }
 
@@ -31,6 +32,7 @@ public class JwtService {
         return JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 50*60*1000))
+                .withClaim("role", user.getRole())
                 .sign(algorithm);
     }
 }

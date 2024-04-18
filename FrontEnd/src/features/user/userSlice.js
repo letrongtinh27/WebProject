@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: "",
+  username: "",
   email: "",
-  photo: "",
+  phone: "",
+  fullname: "",
+  gender: "",
+  birthday: "",
 };
 
 const userSlice = createSlice({
@@ -11,17 +14,25 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserLoginDetails: (state, action) => {
-      state.name = action.payload.name;
+      state.username = action.payload.name;
       state.email = action.payload.email;
-      state.photo = action.payload.photo;
+      state.phone = action.payload.phone;
+      state.fullname = action.payload.full_name;
+      state.gender = action.payload.gender;
+      state.birthday = action.payload.birthday;
 
-      console.log("User: " + state.name);
+      console.log("UserSlice User: " + state.name);
     },
 
     setSignOutState: (state) => {
-      state.name = null;
+      state.username = null;
       state.email = null;
-      state.photo = null;
+      state.phone = null;
+      state.fullname = null;
+      state.gender = null;
+      state.birthday = null;
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
     },
   },
 });
@@ -30,6 +41,11 @@ export const { setUserLoginDetails, setSignOutState } = userSlice.actions;
 
 export const selectUserName = (state) => (state.user ? state.user.name : "");
 export const selectEmail = (state) => (state.user ? state.user.email : "");
-export const selectUserPhoto = (state) => (state.user ? state.user.photo : "");
+export const selectPhone = (state) => (state.user ? state.user.phone : "");
+export const selectFullName = (state) =>
+  state.user ? state.user.fullname : "";
+export const selectGender = (state) => (state.user ? state.user.gender : "");
+export const selectBirthday = (state) =>
+  state.user ? state.user.birthday : "";
 
 export default userSlice.reducer;

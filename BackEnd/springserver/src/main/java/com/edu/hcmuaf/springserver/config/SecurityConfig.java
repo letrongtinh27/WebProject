@@ -29,9 +29,15 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("/api/auth/login/**", "/api/auth/register/**")
+                        req -> req
+                                .requestMatchers("/api/movies/**")
                                 .permitAll()
-                                .requestMatchers("/demo").hasAnyAuthority("admin")
+                                .requestMatchers("/api/theatres/**")
+                                .permitAll()
+                                .requestMatchers("/api/auth/login/**", "/api/auth/register/**")
+                                .permitAll()
+                                .requestMatchers("/api/users/profile").hasAnyAuthority("user")
+                                .requestMatchers("/api/**").hasAnyAuthority("admin")
                                 .anyRequest()
                                 .authenticated()
                 ).sessionManagement(session -> session
