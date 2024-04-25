@@ -44,3 +44,11 @@ export const loadDataProfile = async (token) => {
     throw error;
   }
 };
+
+// shows
+export const getShowsByMovieIdAndTheatreId = async (movieId, theatreId) => {
+  const { data } = await API.get(
+    `shows/get?movieId=${movieId}&theatreId=${theatreId}`
+  );
+  return data;
+};
