@@ -58,11 +58,11 @@ const Detail = (props) => {
         <Controls>
           <Player onClick={toggleModal}>
             <img src="/images/ticket-solid.svg" alt="" />
-            <span>Get ticket</span>
+            <span>Mua vé</span>
           </Player>
           <Trailer onClick={toggleTrailer}>
             <img src="/images/play-icon-black.png" alt="" />
-            <span>Trailer</span>
+            <span>Xem Trailer</span>
           </Trailer>
           <AddList>
             <span></span>

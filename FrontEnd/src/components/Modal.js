@@ -2,16 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
 import styled from "styled-components";
-import { getAllTheatre } from "../data/data";
+import { getAllTheatre, getShowsByMovieIdAndTheatreId } from "../data/data";
 
 const Modal = ({ $isOpen, toggleModal }) => {
   const { id } = useParams();
 
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [selectedTheatre, setselectedTheatre] = useState("");
+
   const [selectedTimeButton, setSelectedTimeButton] = useState(null);
   const [selectedDayButton, setSelectedDayButton] = useState(null);
   const [theatres, setTheatres] = useState([]);
+  const [shows, setShows] = useState([]);
+
+  const handleTheatreChange = (selectOption) => {
+    setselectedTheatre(selectOption.value);
+  };
 
   const getAllTheatres = () => {
     getAllTheatre()
@@ -23,26 +30,21 @@ const Modal = ({ $isOpen, toggleModal }) => {
       });
   };
 
-  let suatChieu = [
-    "10:00 AM",
-    "11:00 AM",
-    "12:00 AM",
-    "13:00 AM",
-    "1:00 PM",
-    "2:00 PM",
-    "3:00 PM",
-    "4:00 PM",
-  ];
-
   useEffect(() => {
-    console.log("Selected day:", selectedDay);
-    console.log("Selected time:", selectedTime);
-    console.log("Id: " + id);
-  }, [selectedTime, selectedDay]);
+    getShowsByMovieIdAndTheatreId(id, selectedTheatre)
+      .then((data) => {
+        // Lọc ra những show có ngày trùng khớp với ngày người dùng chọn
+        const filteredShows = data.filter((show) => show.date === selectedDay);
+        // Cập nhật state shows với danh sách show đã lọc
+        setShows(filteredShows);
+      })
+      .catch((error) => {
+        setShows([]);
+      });
+  }, [selectedDay, selectedTime, selectedTheatre]);
 
   useEffect(() => {
     getAllTheatres();
-    console.log(theatres);
   }, []);
 
   const theatreOptions = theatres.map(({ id, name }) => ({
@@ -100,11 +102,12 @@ const Modal = ({ $isOpen, toggleModal }) => {
             isSearchable={true}
             name="theatre"
             options={theatreOptions}
+            onChange={handleTheatreChange}
           />
         </Location>
         <h2>Select Date and Time</h2>
         <div>
-          <h3>Choose Date:</h3>
+          <h3 style={{ color: "white", margin: "5px" }}>Choose Date:</h3>
           <ContainerDay>
             {datesArray.map((day) => (
               <DayButton
@@ -125,20 +128,20 @@ const Modal = ({ $isOpen, toggleModal }) => {
           </ContainerDay>
         </div>
         <div>
-          <h3>Choose Time:</h3>
+          <h3 style={{ color: "white", margin: "5px" }}>Choose Time:</h3>
           <ContainerTime>
-            {[,].map((time) => (
+            {shows.map((show) => (
               <TimeButton
-                key={time}
-                htmlFor={time}
-                $isSelected={selectedTimeButton === time}
+                key={show.id}
+                htmlFor={show.start_time}
+                $isSelected={selectedTimeButton === show.start_time}
               >
-                {time}
+                {show.start_time}
                 <input
                   type="radio"
                   name="time"
-                  id={time}
-                  value={time}
+                  id={show.start_time}
+                  value={show.start_time}
                   onChange={handleTimeChange}
                 />
               </TimeButton>

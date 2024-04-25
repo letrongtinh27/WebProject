@@ -34,6 +34,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/theatres/**")
                                 .permitAll()
+                                .requestMatchers("/api/shows/**")
+                                .permitAll()
                                 .requestMatchers("/api/auth/login/**", "/api/auth/register/**")
                                 .permitAll()
                                 .requestMatchers("/api/users/profile").hasAnyAuthority("user")

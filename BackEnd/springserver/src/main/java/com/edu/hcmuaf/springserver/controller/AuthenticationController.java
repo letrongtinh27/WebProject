@@ -23,7 +23,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registe(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         AuthenticationResponse authenticationResponse = userService.register(registerRequest);
         if(authenticationResponse != null) {
             return ResponseEntity.ok(authenticationResponse);
