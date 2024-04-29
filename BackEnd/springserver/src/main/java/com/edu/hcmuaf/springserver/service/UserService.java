@@ -52,6 +52,26 @@ public class UserService {
         }
     }
 
+    public AuthenticationResponse AdminAuthentication(AuthenticationRequest authenticationRequest) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+            User admin = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            if (admin.getRole().equals("admin")) {
+                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+                var jwtToken = jwtService.generateToken(admin, authorities);
+                var jwtRefreshToken = jwtService.generateRefreshToken(admin, authorities);
+
+                return AuthenticationResponse.builder().code(200).message("Succeed").token(jwtToken).refreshToken(jwtRefreshToken).build();
+            } else return AuthenticationResponse.builder().code(401).message("Not an admin").build();
+
+        } catch (AuthenticationException e) {
+            return AuthenticationResponse.builder().code(401).message("User not found").build();
+        }
+    }
+
+
     public AuthenticationResponse register(RegisterRequest registerRequest) {
         if(userRepository.existsUserByUsername(registerRequest.getUsername()) || userRepository.existsUserByEmail(registerRequest.getEmail())) {
             return AuthenticationResponse.builder().code(400).message("Username already exits").build();

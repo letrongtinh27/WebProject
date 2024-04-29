@@ -49,9 +49,11 @@ export const ShowTimeList = () => {
             ) : (
                 <Datagrid rowClick="edit">
                     <TextField source="id" label="ID"/>
-                    <TextField source="movie_id" label="location_id"/>
-                    <TextField source="theatre_id" label="location_id"/>
-                    <TextField source="room" label="location_id"/>
+                    <TextField source="movie_st.title" label="Title"/>
+                    {/*<TextField source="movie_id" label="location_id"/>*/}
+                    <TextField source="theatre_name.name" label="Theatre"/>
+                    <TextField source="room" label="Room"/>
+
                     <EditButton/>
                 </Datagrid>
             )}

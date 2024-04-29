@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,4 +28,12 @@ public class Movie {
     private String sub_title;
     private String age_type;
     private String type;
+
+    @OneToMany (fetch = FetchType.LAZY)
+    @JoinTable(name = "movie_category",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories;
+
+
 }
