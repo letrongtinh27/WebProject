@@ -6,8 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
 @Repository
 public interface ShowTimeRepository extends JpaRepository<ShowTime, Long> {
     Optional<List<ShowTime>> findShowTimeByMovieIdAndTheatreId(int movieId, int theatreId);
+
+
 }

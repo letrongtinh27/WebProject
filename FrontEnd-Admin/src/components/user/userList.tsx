@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import {
     CreateButton,
     ExportButton,
@@ -37,7 +36,7 @@ const VisitorListActions = () => (
 );
 
 
-export const TheatreList = () => {
+export const UserList = () => {
     const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
     return (
         <List>
@@ -49,12 +48,12 @@ export const TheatreList = () => {
             ) : (
                 <Datagrid rowClick="edit">
                     <TextField source="id" label="ID"/>
-                    <TextField source="name" label="Name"/>
-                    <TextField source="address" label="Address"/>
+                    <TextField source="username" label="UserName"/>
+                    <TextField source="email" label="Email"/>
                     <EditButton/>
                 </Datagrid>
             )}
         </List>
     );
 };
-export default TheatreList;
+export default UserList;

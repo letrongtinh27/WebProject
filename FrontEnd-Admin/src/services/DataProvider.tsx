@@ -17,14 +17,6 @@ export const dataProvider: DataProvider = {
             console.log("Json: ", json)
             console.log("Content: ", json.content)
 
-            // const data = json.map((item: any) => ({
-            //     id: item.id,
-            //     background_img_url: item.background_img_url,
-            //     title_img_url: item.title_img_url,
-            //     title: item.title,
-            // }));
-
-
             return {
                 data: json,
                 total: json.length,

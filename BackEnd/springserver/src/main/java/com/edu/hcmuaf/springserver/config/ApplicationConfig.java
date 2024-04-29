@@ -54,8 +54,10 @@ public class ApplicationConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:3000"); // Cho phép yêu cầu từ domain này
         config.addAllowedOrigin("http://localhost:5173"); // Cho phép yêu cầu từ domain này
+
         config.addAllowedMethod("*"); // Cho phép tất cả các phương thức HTTP
         config.addAllowedHeader("*"); // Cho phép tất cả các header
+        config.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
