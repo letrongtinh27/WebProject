@@ -6,29 +6,21 @@ import {
   ShowGuesser,
 } from "react-admin";
 import MovieList from "./components/movie/MovieList";
-import {dataProvider} from "./services/DataProvider";
+import { dataProvider } from "./services/DataProvider";
 import TheatreList from "./components/theatre/TheatreList";
 import ShowTimeList from "./components/showtime/ShowTimeList";
+
 import Login from "./Layout/Login";
 import {authProvider} from "./authProvider";
 import UserList from "./components/user/userList";
 import TicketList from "./components/ticket/ticketList";
+
 // import MovieShow from "./components/movie/MovieShow";
 
 const App = () => {
   return (
-      <Admin
-          loginPage={Login}
-          title="Admin"
-          dataProvider={dataProvider}
-          authProvider={authProvider}
-          disableTelemetry
-      >
-          <Resource name={'movies'}
-                    list={MovieList}
-                    // edit={MovieShow}
-                    options={{label: 'Movies'}}
-                    recordRepresentation={(movies) => movies.id }
+    <Admin title="Admin" dataProvider={dataProvider}>
+      {/* <Resource name={'movies'}
           />
           {/*<Resource name="users" list={MovieList} show={ShowGuesser} recordRepresentation="name" />*/}
           <Resource name="theatres" list={TheatreList} options={{label: 'Theatres'}} />
