@@ -31,7 +31,7 @@ public class ShowTimeController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<?> getShowsByMovieIdAndTheatreId(@RequestParam int movieId, @RequestParam int theatreId) {
+    public ResponseEntity<?> getShowsByMovieIdAndTheatreId(@RequestParam int movieId, @RequestParam int theatreId, @RequestParam String date) {
         List<ShowsResponse> responses = new ArrayList<>();
 
         List<ShowTime> showTimeList = showTimeService.getShowTimesByMovieIdAndTheatreId(movieId, theatreId);
@@ -39,15 +39,22 @@ public class ShowTimeController {
         if(!showTimeList.isEmpty()){
             for (ShowTime shows : showTimeList) {
                 ShowsResponse s = new ShowsResponse();
-                s.setId(shows.getId());
-                s.setMovieId(shows.getMovieId());
-                s.setTheatreId(shows.getTheatreId());
+
                 LocalDate dt = shows.getStart_time().toLocalDate();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M");
                 s.setDate(dt.format(formatter));
-                s.setStart_time(shows.getStart_time().toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm")));
-                s.setStatus(shows.getStatus());
-                responses.add(s);
+
+                if(s.getDate().equals(date)) {
+                    s.setId(shows.getId());
+                    s.setMovieId(shows.getMovieId());
+                    s.setRoom(shows.getRoom());
+                    s.setTheatreId(shows.getTheatreId());
+                    s.setStart_time(shows.getStart_time().toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm")));
+                    s.setStatus(shows.getStatus());
+                    responses.add(s);
+                }
+
+
             }
             return ResponseEntity.ok(responses);
         }

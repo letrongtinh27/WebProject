@@ -1,30 +1,60 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { useState } from "react";
-
-const movies = {
-  occupied: {
-    A: [1, 2, 3, 4, 5, 6, 7, 8],
-    B: [1, 2, 3, 4, 5, 6, 7, 8],
-  },
-};
-const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
-const seatsPerRow = 8; // Số ghế mỗi hàng
-
-// const seats = Array.from({ length: 8 * 8 }, (_, i) => i);
+import { useLocation, useNavigate } from "react-router-dom";
+import { getSeatsByShowTime } from "../data/data";
 
 const Booking = (props) => {
+  const [seatsData, setSeatsData] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
 
-  function handleSelectedState(seat) {
-    const isSelected = selectedSeats.includes(seat);
+  const [timeRemaining, setTimeRemaining] = useState(3);
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  // Lấy giá trị từ các tham số truy vấn
+  const movieId = sessionStorage.getItem("movieId");
+  const showTimeId = sessionStorage.getItem("showTimeId");
+  const theatreId = sessionStorage.getItem("theatreId");
+  const room = sessionStorage.getItem("room");
+
+  // useEffect(() => {
+  //   // Khởi chạy một hàm setInterval cập nhật biến timeRemaining mỗi giây
+  //   const intervalId = setInterval(() => {
+  //     setTimeRemaining((time) => {
+  //       if (time <= 1) {
+  //         alert("Đã hết thời gian đặt");
+  //         clearInterval(intervalId); // Xóa interval khi đếm đến 0
+  //         navigate("/"); // Chuyển hướng sau khi thời gian hết
+  //       }
+  //       return time - 1;
+  //     });
+  //   }, 1000);
+
+  //   // Dọn dẹp interval khi component bị unmount
+  //   return () => clearInterval(intervalId);
+  // }, [navigate]);
+
+  useEffect(() => {
+    getSeatsByShowTime(showTimeId, theatreId, room)
+      .then((data) => {
+        setSeatsData(data);
+      })
+
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+
+  function handleSelectedState(seatId) {
+    const isSelected = selectedSeats.includes(seatId);
     if (isSelected) {
-      setSelectedSeats((selectedSeats) =>
-        selectedSeats.filter((selectedSeat) => selectedSeat !== seat)
-      );
+      setSelectedSeats(selectedSeats.filter((id) => id !== seatId));
     } else {
-      setSelectedSeats([...selectedSeats, seat]);
+      setSelectedSeats([...selectedSeats, seatId]);
     }
   }
 
@@ -38,57 +68,47 @@ const Booking = (props) => {
             <p>Denis Vileneuve</p>
             <h3>Thời lượng</h3>
             <p>167 phút</p>
-            <h3>Công chiếu</h3>
-            <p>6 tháng 2 năm 2024</p>
+            <h3>Time</h3>
+            <p>{timeRemaining} giây</p>
           </Infor>
         </Left>
         <Right>
           <ShowCase>
             <SeatListItem>
-              <SeatBaner className="seat" /> <SmallText>N/A</SmallText>
+              <SeatBaner className="seat" /> <SmallText>Còn trống</SmallText>
             </SeatListItem>
             <SeatListItem>
               <SeatBaner className="seat selected" />{" "}
-              <SmallText>Selected</SmallText>
+              <SmallText>Đang chọn</SmallText>
             </SeatListItem>
             <SeatListItem>
               <SeatBaner className="seat occupied" />{" "}
-              <SmallText>Occupied</SmallText>
+              <SmallText>Đã đặt</SmallText>
             </SeatListItem>
           </ShowCase>
 
           <Cinema>
             <Screen />
             <SeatsContainer>
-              {rows.map((row) =>
-                Array.from({ length: seatsPerRow }, (_, i) => i + 1).map(
-                  (seatNumber) => {
-                    const seat = `${row}${seatNumber}`;
-                    const isSelected = selectedSeats.includes(seat);
-                    const isOccupied =
-                      movies.occupied[row] &&
-                      movies.occupied[row].includes(seatNumber);
-                    return (
-                      <Seat
-                        cinema
-                        tabIndex="0"
-                        key={seat}
-                        className={clsx(
-                          "seat",
-                          isSelected && "selected",
-                          isOccupied && "occupied"
-                        )}
-                        onClick={
-                          isOccupied ? null : () => handleSelectedState(seat)
-                        }
-                      >
-                        {row + seatNumber}
-                      </Seat>
-                    );
-                  }
-                )
-              )}
+              {seatsData.map(({ id, seatNumber, booked }) => {
+                const isSelected = selectedSeats.includes(id);
+                return (
+                  <Seat
+                    key={id}
+                    tabIndex="0"
+                    className={clsx(
+                      "seat",
+                      isSelected && "selected",
+                      booked && "occupied"
+                    )}
+                    onClick={!booked ? () => handleSelectedState(id) : null}
+                  >
+                    {seatNumber}
+                  </Seat>
+                );
+              })}
             </SeatsContainer>
+            <SubmitButton>Xác nhận</SubmitButton>
           </Cinema>
         </Right>
       </Book>
@@ -249,6 +269,24 @@ const SeatsContainer = styled.div`
   grid-gap: 6px;
   grid-template-columns: repeat(8, min-content);
   align-items: center;
+`;
+
+const SubmitButton = styled.button`
+  background-color: #f9f9f9;
+  margin-top: 15px;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  transition: all 0.2s ease 0s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(200, 200, 200, 0.7);
+    color: #f9f9f9;
+    border-color: transparent;
+  }
 `;
 
 export default Booking;
