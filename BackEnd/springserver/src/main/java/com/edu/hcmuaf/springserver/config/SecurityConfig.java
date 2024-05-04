@@ -34,6 +34,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/theatres/**")
                                 .permitAll()
+                                .requestMatchers("/api/seats/**")
+                                .permitAll()
 
                                 .requestMatchers("/api/auth/login_admin/**")
                                 .permitAll()

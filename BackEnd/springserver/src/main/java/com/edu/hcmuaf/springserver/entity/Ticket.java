@@ -14,10 +14,10 @@ import lombok.*;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long show_time_id;
-    private Long seat_id;
-    private Long reservation_id;
+    private int id;
+    private int show_time_id;
+    private int seat_id;
+    private int reservation_id;
     private int price;
 
     @OneToOne (fetch = FetchType.LAZY)
