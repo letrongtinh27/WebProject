@@ -2,6 +2,7 @@ package com.edu.hcmuaf.springserver.controller;
 
 import com.edu.hcmuaf.springserver.dto.ShowsResponse;
 import com.edu.hcmuaf.springserver.entity.ShowTime;
+import com.edu.hcmuaf.springserver.entity.Theatre;
 import com.edu.hcmuaf.springserver.service.ShowTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,15 @@ import java.util.List;
 public class ShowTimeController {
     @Autowired
     private ShowTimeService showTimeService;
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getListShowTime() {
+        List<ShowTime> showTimeList = showTimeService.getAllShowTime();
+        if (showTimeList != null ) {
+            return ResponseEntity.ok(showTimeList);
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
 
     @GetMapping("/get")
     public ResponseEntity<?> getShowsByMovieIdAndTheatreId(@RequestParam int movieId, @RequestParam int theatreId) {

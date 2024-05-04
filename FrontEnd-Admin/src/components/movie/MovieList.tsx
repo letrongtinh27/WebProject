@@ -49,8 +49,7 @@ export const MovieList = () => {
             <Datagrid rowClick="edit">
                 <TextField source="id" label="ID"/>
                 <TextField source="title" label="Title"/>
-                {/*<NumberField source="releaseYear" label="Release Year"/>*/}
-                {/*<TextField source="director" label="Director"/>*/}
+                <TextField source="type" label="Type"/>
                 <EditButton/>
             </Datagrid>
         )}

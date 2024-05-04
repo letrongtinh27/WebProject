@@ -37,7 +37,7 @@ const VisitorListActions = () => (
 );
 
 
-export const TheatreList = () => {
+export const TicketList = () => {
     const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
     return (
         <List>
@@ -49,12 +49,14 @@ export const TheatreList = () => {
             ) : (
                 <Datagrid rowClick="edit">
                     <TextField source="id" label="ID"/>
-                    <TextField source="name" label="Name"/>
-                    <TextField source="address" label="Address"/>
+                    <TextField source="showTime.movie_st.title" label="Movie"/>
+                    <TextField source="showTime.theatre_name.name" label="Theatre"/>
+                    <TextField source="seat.row_char" label="Row"/>
+                    <TextField source="seat.seat_number" label="Number"/>
                     <EditButton/>
                 </Datagrid>
             )}
         </List>
     );
 };
-export default TheatreList;
+export default TicketList;
