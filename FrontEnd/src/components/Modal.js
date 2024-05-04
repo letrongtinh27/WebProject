@@ -9,7 +9,8 @@ const Modal = ({ $isOpen, toggleModal }) => {
 
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedTheatre, setselectedTheatre] = useState("");
+  const [selectedTheatre, setSelectedTheatre] = useState("");
+  const [selectedShow, setSelectedShow] = useState();
 
   const [selectedTimeButton, setSelectedTimeButton] = useState(null);
   const [selectedDayButton, setSelectedDayButton] = useState(null);
@@ -17,7 +18,7 @@ const Modal = ({ $isOpen, toggleModal }) => {
   const [shows, setShows] = useState([]);
 
   const handleTheatreChange = (selectOption) => {
-    setselectedTheatre(selectOption.value);
+    setSelectedTheatre(selectOption.value);
   };
 
   const getAllTheatres = () => {
@@ -62,6 +63,7 @@ const Modal = ({ $isOpen, toggleModal }) => {
     const selectedTimeValue = event.target.value;
     setSelectedTime(selectedTimeValue);
     setSelectedTimeButton(selectedTimeValue);
+    setSelectedShow(event.target.dataset.datashow);
   };
 
   const customStyles = {
@@ -140,6 +142,7 @@ const Modal = ({ $isOpen, toggleModal }) => {
                 <input
                   type="radio"
                   name="time"
+                  data-datashow={show.id}
                   id={show.start_time}
                   value={show.start_time}
                   onChange={handleTimeChange}
@@ -149,7 +152,7 @@ const Modal = ({ $isOpen, toggleModal }) => {
           </ContainerTime>
         </div>
         <SubmitContainer>
-          <SubmitButton href={"booking/" + selectedDay + "/" + selectedTime}>
+          <SubmitButton href={"/booking/?showId=" + selectedShow}>
             Xác nhận
           </SubmitButton>
         </SubmitContainer>
