@@ -18,4 +18,8 @@ public class TicketService {
     public Ticket getTicketById(int id) {
         return ticketRepository.findOneById(id);
     }
+
+    public boolean checkExistTicket(int showTimeId, int seatId) {
+        return ticketRepository.existsByShowTimeIdAndSeatId(showTimeId, seatId);
+    }
 }

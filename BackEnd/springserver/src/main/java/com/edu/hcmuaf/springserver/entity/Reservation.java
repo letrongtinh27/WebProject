@@ -20,6 +20,8 @@ public class Reservation {
     private int user_id;
     private int show_time_id;
     private int seat_id;
+    @Column(name = "code_order")
+    private String order;
     private String phone_number;
     private String email;
     private int original_price;

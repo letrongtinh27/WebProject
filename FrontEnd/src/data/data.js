@@ -58,9 +58,44 @@ export const getShowsByMovieIdAndTheatreId = async (
 };
 
 // seats
-export const getSeatsByShowTime = async (showTimeId, theatreId, room) => {
-  const { data } = await API.get(
-    `seats/get/${showTimeId}/${theatreId}/${room}`
-  );
-  return data;
+export const getSeatsByShowTime = async (
+  showTimeId,
+  theatreId,
+  room,
+  token
+) => {
+  // const { data } = await API.get(
+  //   `seats/get/${showTimeId}/${theatreId}/${room}`
+  // );
+  // return data;
+
+  try {
+    const response = await API.get(
+      `seats/get/${showTimeId}/${theatreId}/${room}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching profile data:", error);
+    throw error;
+  }
+};
+
+// payment
+export const payment = async (booking, token) => {
+  try {
+    const response = await API.post(`payment/pay`, booking, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching profile data:", error);
+    throw error;
+  }
 };
