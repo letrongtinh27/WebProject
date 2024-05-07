@@ -2,11 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import styled from "styled-components";
+import Cookies from "js-cookie";
 import { getAllTheatre, getShowsByMovieIdAndTheatreId } from "../data/data";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Modal = ({ $isOpen, toggleModal }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const token = Cookies.get("token");
 
   const [selectedDay, setSelectedDay] = useState(undefined);
   const [selectedTime, setSelectedTime] = useState(undefined);
@@ -69,16 +74,29 @@ const Modal = ({ $isOpen, toggleModal }) => {
   };
 
   function validateBooking() {
+    if (token === undefined || token === null || token === "") {
+      toast.warning("Vui lòng đăng nhập !", {
+        position: "bottom-right",
+      });
+      return false;
+    }
+
     if (selectedTheatre === undefined) {
-      alert("Chọn rạp");
+      toast.warning("Vui lòng chọn rạp !", {
+        position: "bottom-right",
+      });
       return false;
     }
     if (selectedDay === undefined) {
-      alert("Chọn ngày");
+      toast.warning("Vui lòng chọn ngày !", {
+        position: "bottom-right",
+      });
       return false;
     }
     if (selectedTime === undefined) {
-      alert("Chọn thời gian");
+      toast.warning("Vui lòng chọn suất chiếu !", {
+        position: "bottom-right",
+      });
       return false;
     }
     return true;
@@ -123,8 +141,11 @@ const Modal = ({ $isOpen, toggleModal }) => {
 
   return (
     <ModalWrapper $isOpen={$isOpen}>
+      <ToastContainer />
+
       <ModalContent>
         <ModalCloseButton onClick={toggleModal}>&times;</ModalCloseButton>
+
         <Location>
           <h2>Select location</h2>
           <Select

@@ -18,6 +18,8 @@ public class Seat {
     private char row_char;
     private int seat_number;
     private String room;
-    private Long is_occupied;
+    private int price;
+    private int status;
+
 
 }

@@ -34,7 +34,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/theatres/**")
                                 .permitAll()
-                                .requestMatchers("/api/seats/**")
+
+                                .requestMatchers("/api/payment/**")
                                 .permitAll()
 
                                 .requestMatchers("/api/auth/login_admin/**")
@@ -49,8 +50,13 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/auth/login/**", "/api/auth/register/**")
                                 .permitAll()
-                                .requestMatchers("/api/users/profile").hasAnyAuthority("user")
+                                .requestMatchers("/api/users/**").hasAnyAuthority("user")
+                                .requestMatchers("/api/auth/**").hasAnyAuthority("user")
+                                .requestMatchers("/api/seats/**").hasAnyAuthority("user")
+//                                .requestMatchers("/api/payment/**").hasAnyAuthority("user")
                                 .requestMatchers("/api/**").hasAnyAuthority("admin")
+                                .requestMatchers("/api/**").hasAnyAuthority("user")
+
                                 .anyRequest()
                                 .authenticated()
                 ).sessionManagement(session -> session

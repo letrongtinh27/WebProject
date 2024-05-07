@@ -8,12 +8,13 @@ import {
   selectFullName,
   setUserLoginDetails,
 } from "../features/user/userSlice";
+import Cookies from "js-cookie";
 import { loadDataProfile } from "../data/data";
 
 const Header = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = Cookies.get("token");
   const [userDetail, setUserDetail] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -30,7 +31,6 @@ const Header = (props) => {
     );
   };
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
     } else {
@@ -54,6 +54,7 @@ const Header = (props) => {
 
   const signOut = () => {
     if (userDetail.username) {
+      Cookies.remove("token");
       dispatch(setSignOutState());
       navigate("/");
       setIsLoggedIn(false);
