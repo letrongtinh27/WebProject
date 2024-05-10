@@ -12,17 +12,16 @@ const httpClient = axios.create({
 //     baseURL: process.env.REACT_APP_API_URL,
 // });
 
-// httpClient.interceptors.response.use(
-//     response => response,
-//     async error => {
-//         if (error.response && error.response.status === 401) {
-//             return Promise.reject({message: error.response.data.message});
-//         }
-//     }
-// );
+httpClient.interceptors.response.use(
+    response => response,
+    async error => {
+        if (error.response && error.response.status === 401) {
+            return Promise.reject({message: error.response.data.message});
+        }
+    }
+);
 
 export const authProvider: AuthProvider = {
-
     login: async ({username, password}) => {
         await httpClient.post(`${apiUrl}/auth/login_admin`, {username, password}, {
             headers: {
