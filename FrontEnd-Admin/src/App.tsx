@@ -14,17 +14,22 @@ import Login from "./Layout/Login";
 import {authProvider} from "./authProvider";
 import UserList from "./components/user/userList";
 import TicketList from "./components/ticket/ticketList";
+import MovieShow from "./components/movie/MovieShow";
 
 // import MovieShow from "./components/movie/MovieShow";
 
 const App = () => {
   return (
-    <Admin title="Admin" dataProvider={dataProvider}>
-      {/* <Resource name={'movies'}
-          />
-          {/*<Resource name="users" list={MovieList} show={ShowGuesser} recordRepresentation="name" />*/}
+    <Admin title="Admin"
+           dataProvider={dataProvider}
+           authProvider={authProvider}>
+        <Resource name={'movies'}
+                  list={MovieList}
+                  edit={MovieShow}
+                  // recordRepresentation={(movies) => movies.id}
+                  options={{label: 'Movies'}}/>
           <Resource name="theatres" list={TheatreList} options={{label: 'Theatres'}} />
-          <Resource name="show_time" list={ShowTimeList} options={{label: 'Show Time'}} />
+          <Resource name="shows" list={ShowTimeList} options={{label: 'Show Time'}} />
           <Resource name="users" list={UserList} options={{label: 'User'}} />
           <Resource name="tickets" list={TicketList} options={{label: 'Ticket'}} />
       </Admin>
@@ -34,4 +39,3 @@ const App = () => {
 
 export default App;
 
-// export const App = () => <Admin></Admin>;

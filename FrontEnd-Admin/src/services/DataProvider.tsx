@@ -73,4 +73,19 @@ export const dataProvider: DataProvider = {
         })
         return Promise.resolve({data: json});
     },
+    delete: async (resource: any, params: any) => {
+        console.log(params)
+        const {json} = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+            body: JSON.stringify(params.data),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }),
+            // credentials: 'include'
+        })
+        return Promise.resolve({data: json});
+    },
+
+
 }
