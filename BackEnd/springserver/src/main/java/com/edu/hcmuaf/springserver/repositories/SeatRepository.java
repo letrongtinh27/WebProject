@@ -12,14 +12,13 @@ import java.util.List;
 @Repository
 
 public interface SeatRepository extends JpaRepository<Seat, Long> {
-    @Query("SELECT DISTINCT new com.edu.hcmuaf.springserver.dto.SeatResponse(s.id, CONCAT(s.row_char, s.seat_number), s.price, "
+    @Query("SELECT DISTINCT new com.edu.hcmuaf.springserver.dto.SeatResponse(s.id, (CASE WHEN r.id IS NOT NULL THEN r.id ELSE 0 END), CONCAT(s.row_char, s.seat_number), s.price, r.expired_time, "
             + "CASE WHEN r.id IS NOT NULL AND (r.payment = 'thanh toán thành công' OR r.payment = 'đang thanh toán') THEN r.payment ELSE null END, "
             + "(CASE WHEN r.id IS NOT NULL AND (r.payment = 'thanh toán thành công' OR r.payment = 'đang thanh toán') THEN true ELSE false END))"
             + "FROM Seat s "
             + "LEFT JOIN Reservation r ON s.id = r.seat_id AND r.show_time_id = :showTimeId "
             + "WHERE s.theatre_id = :theatreId AND s.room = :room")
     List<SeatResponse> findSeatsByShowTimeAndTheatre(@Param("showTimeId") int showTimeId, @Param("theatreId") int theatreId, @Param("room") int room);
-
 
 
 

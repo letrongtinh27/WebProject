@@ -51,10 +51,21 @@ export const getShowsByMovieIdAndTheatreId = async (
   theatreId,
   date
 ) => {
-  const { data } = await API.get(
-    `shows/get?movieId=${movieId}&theatreId=${theatreId}&date=${date}`
-  );
-  return data;
+  try {
+    if (!movieId || !theatreId || !date) {
+      // Nếu có bất kỳ tham số nào là undefined, không gọi API và return ngay lập tức
+      return [];
+    }
+
+    const response = await API.get(
+      `shows/get?movieId=${movieId}&theatreId=${theatreId}&date=${date}`
+    );
+    return response.data;
+  } catch (error) {
+    // Bắt lỗi và không throw error ra ngoài
+    console.error("Error fetching shows:", error);
+    return [];
+  }
 };
 
 // seats
@@ -64,11 +75,6 @@ export const getSeatsByShowTime = async (
   room,
   token
 ) => {
-  // const { data } = await API.get(
-  //   `seats/get/${showTimeId}/${theatreId}/${room}`
-  // );
-  // return data;
-
   try {
     const response = await API.get(
       `seats/get/${showTimeId}/${theatreId}/${room}`,
@@ -97,5 +103,46 @@ export const payment = async (booking, token) => {
   } catch (error) {
     console.error("Error fetching profile data:", error);
     throw error;
+  }
+};
+
+export const paymentCallback = async (vnp_TxnRef, vnp_ResponseCode, token) => {
+  try {
+    const response = await API.get(
+      `payment/payment-callback?vnp_TxnRef=` +
+        vnp_TxnRef +
+        `&vnp_ResponseCode=` +
+        vnp_ResponseCode,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching profile data:", error);
+    throw error;
+  }
+};
+
+// Ticket
+export const getTicketByUserID = async (userId, token) => {
+  try {
+    if (!userId) {
+      // Nếu có bất kỳ tham số nào là undefined, không gọi API và return ngay lập tức
+      return [];
+    }
+
+    const response = await API.get(`tickets/get/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    // Bắt lỗi và không throw error ra ngoài
+    console.error("Error fetching shows:", error);
+    return [];
   }
 };

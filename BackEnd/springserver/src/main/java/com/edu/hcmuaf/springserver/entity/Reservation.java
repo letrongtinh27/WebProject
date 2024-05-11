@@ -27,5 +27,6 @@ public class Reservation {
     private int original_price;
     private int total_price;
     private Date reservation_time;
+    private Date expired_time;
     private String payment;
 }

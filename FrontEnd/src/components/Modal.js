@@ -35,7 +35,7 @@ const Modal = ({ $isOpen, toggleModal }) => {
         setTheatres(data);
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -46,7 +46,7 @@ const Modal = ({ $isOpen, toggleModal }) => {
       })
       .catch((error) => {
         setShows([]);
-        console.error(error);
+        // console.error(error);
       });
   }, [selectedDay, selectedTime, selectedTheatre]);
 

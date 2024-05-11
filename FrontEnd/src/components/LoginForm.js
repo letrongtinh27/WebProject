@@ -50,11 +50,10 @@ const LoginForm = (props) => {
 
     if (!userName) {
       if (validateLogin()) {
-        const id = toast.loading("Please wait...");
+        const id = toast.loading("Đang đăng nhập...");
         login(formdata)
           .then((data) => {
             if (data.code === 200) {
-              // setUser(data);
               Cookies.set("token", data.token, {
                 expires: Date.now() + data.tokenExpirationTime,
                 path: "/",
