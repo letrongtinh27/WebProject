@@ -14,6 +14,8 @@ import Booking from "./components/Booking";
 import "./App.css";
 import { selectUserName } from "./features/user/userSlice";
 import { useSelector } from "react-redux";
+import Payment from "./components/Payment";
+import Account from "./components/Account";
 
 function App() {
   const checkToken = localStorage.getItem("token");
@@ -31,6 +33,8 @@ function App() {
           />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/payment-callback" element={<Payment />} />
+          <Route path="/account" element={<Account />} />
         </Routes>
       </Router>
     </div>

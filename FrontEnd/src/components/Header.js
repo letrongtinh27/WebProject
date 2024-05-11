@@ -15,25 +15,29 @@ const Header = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = Cookies.get("token");
-  const [userDetail, setUserDetail] = useState([]);
+  const [userDetail, setUserDetail] = useState({
+    username: "",
+    email: "",
+    phone: "",
+    fullName: "",
+    gender: "",
+    birthday: "",
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const setUser = (user) => {
     dispatch(
       setUserLoginDetails({
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-        fullname: user.full_name,
-        gender: user.gender,
-        birthday: user.birthday,
+        user,
       })
     );
   };
+
   useEffect(() => {
     if (token) {
       setIsLoggedIn(true);
     } else {
+      // Cookies.remove("token");
       setIsLoggedIn(false);
     }
   }, [token]);
@@ -44,9 +48,12 @@ const Header = (props) => {
       loadDataProfile(token)
         .then((data) => {
           setUserDetail(data);
-          setUser(userDetail);
+          setUser(data);
         })
         .catch((error) => {
+          Cookies.remove("token");
+          // setIsLoggedIn(false);
+          // dispatch(setSignOutState());
           console.log(error);
         });
     }
@@ -89,7 +96,7 @@ const Header = (props) => {
       ) : (
         <>
           <SignOut>
-            <h8>XIN CHÀO: {userDetail.full_name}</h8>
+            <p>XIN CHÀO: {userDetail.fullName}</p>
             <DropDown>
               <span onClick={account}>Account</span>
               <span onClick={signOut}>Sign out</span>
@@ -219,12 +226,16 @@ const DropDown = styled.div`
   padding: 10px;
   font-size: 14px;
   letter-spacing: 3px;
-  width: 100px;
+  width: 120px;
   opacity: 0;
   display: grid;
 
   span {
     color: #f9f9f9;
+
+    &:hover {
+      font-weight: 700;
+    }
   }
 `;
 
@@ -237,7 +248,7 @@ const SignOut = styled.div`
   align-items: center;
   justify-content: center;
 
-  h8 {
+  p {
     color: #f9f9f9;
     letter-spacing: 3px;
     font-weight: bold;

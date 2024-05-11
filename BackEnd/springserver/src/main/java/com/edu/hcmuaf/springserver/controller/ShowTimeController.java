@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.DateFormatter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -44,6 +47,8 @@ public class ShowTimeController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M");
                 s.setDate(dt.format(formatter));
 
+                LocalDateTime now = LocalDateTime.now();
+
                 if(s.getDate().equals(date)) {
                     s.setId(shows.getId());
                     s.setMovieId(shows.getMovieId());
@@ -51,10 +56,11 @@ public class ShowTimeController {
                     s.setTheatreId(shows.getTheatreId());
                     s.setStart_time(shows.getStart_time().toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm")));
                     s.setStatus(shows.getStatus());
-                    responses.add(s);
+
+                    if(now.isBefore(shows.getStart_time())) {
+                        responses.add(s);
+                    }
                 }
-
-
             }
             return ResponseEntity.ok(responses);
         }

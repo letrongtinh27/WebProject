@@ -19,4 +19,8 @@ public class ShowTimeService {
         return showTimeRepository.findAll();
     }
 
+    public ShowTime getShowTimeById(int id) {
+        return showTimeRepository.findById(Long.valueOf(id)).orElse(null);
+    }
+
 }

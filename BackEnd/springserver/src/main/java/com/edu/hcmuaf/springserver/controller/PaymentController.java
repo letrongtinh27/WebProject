@@ -5,14 +5,15 @@ import com.edu.hcmuaf.springserver.config.VNPayConfig;
 import com.edu.hcmuaf.springserver.dto.PaymentRequest;
 import com.edu.hcmuaf.springserver.dto.PaymentResponse;
 import com.edu.hcmuaf.springserver.entity.Reservation;
+import com.edu.hcmuaf.springserver.entity.Seat;
+import com.edu.hcmuaf.springserver.entity.Ticket;
 import com.edu.hcmuaf.springserver.entity.User;
-import com.edu.hcmuaf.springserver.service.ReservationService;
-import com.edu.hcmuaf.springserver.service.TicketService;
-import com.edu.hcmuaf.springserver.service.UserService;
+import com.edu.hcmuaf.springserver.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,11 @@ public class PaymentController {
     private ReservationService reservationService;
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private SeatService seatService;
+    @Autowired
+    private ShowTimeService showTimeService;
+
     @PostMapping("/pay")
     public ResponseEntity<?> createPay(@RequestBody PaymentRequest paymentRequest, HttpServletRequest req, Authentication authentication) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
@@ -55,6 +61,7 @@ public class PaymentController {
         if(checkExitsNnp_TxnRef) {
             vnp_TxnRef = VNPayConfig.getRandomNumber(8);
         } else {
+            Calendar calendar = Calendar.getInstance();
             for (int i = 0; i < paymentRequest.getAmount(); i++) {
                 if (ticketService.checkExistTicket(paymentRequest.getShowTimeId(), paymentRequest.getListSeatId().get(i))) {
                     return ResponseEntity.badRequest().body(new PaymentResponse(HttpServletResponse.SC_BAD_REQUEST, "Chỗ ngồi đã được đặt",null));
@@ -68,7 +75,13 @@ public class PaymentController {
                     reservation.setEmail(user.getEmail());
                     reservation.setOriginal_price(paymentRequest.getPrice());
                     reservation.setTotal_price(paymentRequest.getPrice());
-                    reservation.setReservation_time(new Date());
+                    Date date = new Date();
+                    reservation.setReservation_time(date);
+                    calendar.setTime(date);
+                    calendar.add(Calendar.MINUTE, 15);
+                    Date expired = calendar.getTime();
+                    reservation.setExpired_time(expired);
+
                     reservation.setPayment("Đang thanh toán");
 
                     reservationService.createReservation(reservation);
@@ -146,6 +159,45 @@ public class PaymentController {
         paymentResponse.setUrlPayment(paymentUrl);
 
         return ResponseEntity.ok().body(paymentResponse);
+    }
 
+    @GetMapping("/payment-callback")
+    public ResponseEntity<?> transaction(@Param("vnp_TxnRef") String vnp_TxnRef,
+                                         @Param("vnp_TransactionStatus") String vnp_ResponseCode) {
+        if(vnp_ResponseCode.equals("00")) {
+            List<Reservation> reservationList = reservationService.findReservationsByOrder(vnp_TxnRef);
+            for (Reservation reservation : reservationList) {
+                if(!reservation.getPayment().equals("Thanh toán thành công")) {
+                    reservation.setPayment("Thanh toán thành công");
+
+                    Ticket ticket = new Ticket();
+                    ticket.setShowTime(showTimeService.getShowTimeById(reservation.getShow_time_id()));
+                    Seat seat = seatService.getSeatById(reservation.getSeat_id());
+                    ticket.setSeat(seat);
+                    ticket.setReservation(reservation);
+                    ticket.setPrice(seat!=null?seat.getPrice():0);
+                    String ticketCode = VNPayConfig.getRandomNumber(8);
+
+                    if(ticketService.findTicketByTicketCode(ticketCode) != null) {
+                        ticketCode = VNPayConfig.getRandomNumber(8);
+                    }
+
+                    ticket.setTicketCode(ticketCode);
+
+                    ticketService.saveTicket(ticket);
+                    reservationService.editReservation(reservation);
+                }
+            }
+            return ResponseEntity.ok("Thanh toán thành công đơn hàng " + vnp_TxnRef);
+        }
+        if(vnp_ResponseCode.equals("24")){
+            List<Reservation> reservationList = reservationService.findReservationsByOrder(vnp_TxnRef);
+            for (Reservation reservation : reservationList) {
+                reservation.setPayment("Thanh toán thất bại");
+                reservationService.editReservation(reservation);
+            }
+            return ResponseEntity.ok("Thanh toán đơn hàng " + vnp_TxnRef + " thất bại");
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

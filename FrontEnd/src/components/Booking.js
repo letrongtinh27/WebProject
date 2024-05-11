@@ -108,11 +108,9 @@ const Booking = (props) => {
   }
 
   function paymentHandle() {
-    console.log(booking);
     if (validatePayment()) {
       payment(booking, token)
         .then((data) => {
-          console.log(data);
           // navigate(data.urlPayment);
           window.location = data.urlPayment;
         })
@@ -192,7 +190,7 @@ const Booking = (props) => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.main`
   position: relative;
   top: 15px;
   width: 100vw;
@@ -201,7 +199,16 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1f2025;
+
+  &:after {
+    background: url("/images/home-background.png") center center/ cover
+      no-repeat fixed;
+    content: "";
+    position: absolute;
+    inset: 0px;
+    opacity: 1;
+    z-index: -1;
+  }
 `;
 
 const Book = styled.div`
@@ -213,8 +220,8 @@ const Book = styled.div`
 `;
 
 const Left = styled.div`
-  width: 20%;
   position: relative;
+  width: 20%;
   height: 100%;
   border: 1px solid #fff;
 

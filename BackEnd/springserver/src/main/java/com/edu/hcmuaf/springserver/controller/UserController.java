@@ -1,5 +1,6 @@
 package com.edu.hcmuaf.springserver.controller;
 
+import com.edu.hcmuaf.springserver.dto.UserResponse;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,12 +21,19 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
-        System.out.println("authentication " + authentication);
-
 
         String username = authentication.getPrincipal().toString();
         User user = userService.getUserProfileByUsername(username);
-        return ResponseEntity.ok(user);
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setUsername(user.getUsername());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setPhone(user.getPhone_number());
+        userResponse.setFullName(user.getFull_name());
+        userResponse.setGender(user.getGender());
+        userResponse.setBirthday(user.getBirthday());
+
+        return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping("/all")
