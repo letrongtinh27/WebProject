@@ -16,7 +16,7 @@ public class UserResponse {
     private String phone;
     private String fullName;
     private String gender;
-    private Date birthday;
+    private String birthday;
 
 
 }

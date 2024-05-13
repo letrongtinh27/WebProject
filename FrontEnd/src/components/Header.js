@@ -11,10 +11,11 @@ import {
 import Cookies from "js-cookie";
 import { loadDataProfile } from "../data/data";
 
-const Header = (props) => {
+const Header = ({ updateHeader }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = Cookies.get("token");
+  const fullName = useSelector(selectFullName);
   const [userDetail, setUserDetail] = useState({
     username: "",
     email: "",
@@ -57,7 +58,7 @@ const Header = (props) => {
           console.log(error);
         });
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, updateHeader]);
 
   const signOut = () => {
     if (userDetail.username) {
@@ -71,6 +72,10 @@ const Header = (props) => {
   const account = () => {
     navigate("/account");
   };
+
+  useEffect(() => {
+    // Render lại khi fullName thay đổi
+  }, [updateHeader]);
 
   return (
     <Nav>
@@ -98,8 +103,8 @@ const Header = (props) => {
           <SignOut>
             <p>XIN CHÀO: {userDetail.fullName}</p>
             <DropDown>
-              <span onClick={account}>Account</span>
-              <span onClick={signOut}>Sign out</span>
+              <span onClick={account}>Tài khoản</span>
+              <span onClick={signOut}>Đăng xuất</span>
             </DropDown>
           </SignOut>
         </>

@@ -1,5 +1,6 @@
 package com.edu.hcmuaf.springserver.controller;
 
+import com.edu.hcmuaf.springserver.dto.UserRequest;
 import com.edu.hcmuaf.springserver.dto.UserResponse;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.UserService;
@@ -9,6 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +36,9 @@ public class UserController {
         userResponse.setPhone(user.getPhone_number());
         userResponse.setFullName(user.getFull_name());
         userResponse.setGender(user.getGender());
-        userResponse.setBirthday(user.getBirthday());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        userResponse.setBirthday(sdf.format(user.getBirthday()));
+
 
         return ResponseEntity.ok(userResponse);
     }
@@ -57,5 +64,16 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTheatre() {
         return null;
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<?> updateUser(@RequestBody UserRequest.EditUser userRequest, Authentication authentication) throws ParseException {
+        boolean update = userService.updateUser(userRequest);
+        System.out.println(userRequest);
+//        boolean update = true
+        if(update) {
+            return getProfile(authentication);
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

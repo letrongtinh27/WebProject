@@ -45,7 +45,7 @@ const TicketTable = (props) => {
       .catch((error) => {
         setTickets([]);
       });
-  }, [userId]);
+  }, []);
 
   return (
     <DataTable
