@@ -45,6 +45,20 @@ export const loadDataProfile = async (token) => {
   }
 };
 
+export const editUserProfile = async (profile, token) => {
+  try {
+    const response = await API.post(`users/edit`, profile, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching profile data:", error);
+    throw error;
+  }
+};
+
 // shows
 export const getShowsByMovieIdAndTheatreId = async (
   movieId,
@@ -56,7 +70,6 @@ export const getShowsByMovieIdAndTheatreId = async (
       // Nếu có bất kỳ tham số nào là undefined, không gọi API và return ngay lập tức
       return [];
     }
-
     const response = await API.get(
       `shows/get?movieId=${movieId}&theatreId=${theatreId}&date=${date}`
     );
@@ -133,7 +146,6 @@ export const getTicketByUserID = async (userId, token) => {
       // Nếu có bất kỳ tham số nào là undefined, không gọi API và return ngay lập tức
       return [];
     }
-
     const response = await API.get(`tickets/get/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,

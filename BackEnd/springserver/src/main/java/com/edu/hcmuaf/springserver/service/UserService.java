@@ -3,10 +3,12 @@ package com.edu.hcmuaf.springserver.service;
 import com.edu.hcmuaf.springserver.auth.AuthenticationRequest;
 import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
 import com.edu.hcmuaf.springserver.auth.RegisterRequest;
+import com.edu.hcmuaf.springserver.dto.UserRequest;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -16,6 +18,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -80,4 +86,30 @@ public class UserService {
             return AuthenticationResponse.builder().code(401).message("User not found").build();
         }
     }
+
+    public boolean updateUser(UserRequest.EditUser userRequest) throws ParseException {
+
+        User user = userRepository.findByUsername(userRequest.getUsername()).orElse(null);
+
+        if(user!=null) {
+            if(userRequest.isChangePassword()) {
+                user.setPassword(encoder.encode(userRequest.getPassword()));
+            }
+            user.setEmail(userRequest.getEmail());
+            user.setPhone_number(userRequest.getPhone());
+            user.setFull_name(userRequest.getFullName());
+            user.setGender(userRequest.getGender());
+
+            SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date parsedDate = inputFormat.parse(userRequest.getBirthday().toString());
+            java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+            user.setBirthday(sqlDate);
+
+            userRepository.save(user);
+
+            return true;
+        }
+        return false;
+    }
+
 }
