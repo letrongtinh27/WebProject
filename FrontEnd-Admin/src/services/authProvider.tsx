@@ -3,14 +3,14 @@ import {AuthProvider, fetchUtils} from 'react-admin';
 
 const apiUrl = 'http://localhost:8080/api'
 
-const httpClient = axios.create({
-    baseURL: apiUrl,
-});
-
-
 // const httpClient = axios.create({
-//     baseURL: process.env.REACT_APP_API_URL,
+//     baseURL: apiUrl,
 // });
+
+
+const httpClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+});
 
 httpClient.interceptors.response.use(
     response => response,
@@ -30,7 +30,7 @@ export const authProvider: AuthProvider = {
             },
             withCredentials: true
         }).then((response) => {
-            if (response.status === 200) {
+            if (response.data.code === 200) {
                 console.log(response)
                 localStorage.setItem('admin', JSON.stringify(response.data));
                 window.location.href = '/';
