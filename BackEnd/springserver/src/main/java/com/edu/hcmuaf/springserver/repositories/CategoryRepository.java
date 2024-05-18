@@ -1,10 +1,12 @@
 package com.edu.hcmuaf.springserver.repositories;
 
-import com.edu.hcmuaf.springserver.entity.Movie;
+import com.edu.hcmuaf.springserver.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long> {
-    Movie findOneById(int id);
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+
 }

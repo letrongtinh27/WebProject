@@ -44,8 +44,9 @@ import java.util.List;
         }
 
         @DeleteMapping("/{id}")
-        public ResponseEntity<?> deleteTicket() {
-            return null;
+        public ResponseEntity<Void> deleteTicket(@PathVariable long id) {
+            ticketService.deleteTicketById(id);
+            return ResponseEntity.noContent().build();
         }
     }
 

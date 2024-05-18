@@ -98,8 +98,7 @@ public class UserService {
 
     }
 
-
-
+    public User createAdmin(User user){ return userRepository.save(user);}
 
 
 }

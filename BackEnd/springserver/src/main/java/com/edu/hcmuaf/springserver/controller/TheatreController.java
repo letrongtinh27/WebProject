@@ -5,6 +5,7 @@ import com.edu.hcmuaf.springserver.service.TheatreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -14,6 +15,9 @@ import java.util.List;
 public class TheatreController {
     @Autowired
     private TheatreService theatreService;
+
+    @Autowired
+    HttpServletRequest request;
 
     @GetMapping("/all")
     public ResponseEntity<?> getListTheatre() {
@@ -36,17 +40,19 @@ public class TheatreController {
 
 
     @PostMapping("/")
-    public ResponseEntity<?> createTheatre() {
-        return null;
+    public ResponseEntity<?> createTheatre(@RequestBody Theatre theatre) {
+        System.out.println(theatre);
+        return ResponseEntity.ok(theatreService.createTheatre(theatre));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTheatre() {
-        return null;
+    public ResponseEntity<?> updateTheatre(Theatre theatre, int id) {
+        return ResponseEntity.ok(theatreService.updateTheatre(theatre, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTheatre() {
-        return null;
+    public ResponseEntity<Void> deleteTheatre(@PathVariable long id) {
+        theatreService.deleteTheatreById(id);
+        return ResponseEntity.noContent().build();
     }
 }

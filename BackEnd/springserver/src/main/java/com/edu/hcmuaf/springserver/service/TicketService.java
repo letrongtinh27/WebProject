@@ -18,4 +18,5 @@ public class TicketService {
     public Ticket getTicketById(int id) {
         return ticketRepository.findOneById(id);
     }
+    public void deleteTicketById(long id) {ticketRepository.deleteById(id);}
 }
