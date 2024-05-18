@@ -16,13 +16,17 @@ import java.util.Date;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long user_id;
-    private Long show_time_id;
+    private int id;
+    private int user_id;
+    private int show_time_id;
+    private int seat_id;
+    @Column(name = "code_order")
+    private String order;
     private String phone_number;
     private String email;
     private int original_price;
     private int total_price;
     private Date reservation_time;
+    private Date expired_time;
     private String payment;
 }

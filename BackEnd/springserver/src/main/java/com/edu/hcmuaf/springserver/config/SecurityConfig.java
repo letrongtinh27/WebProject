@@ -1,5 +1,36 @@
 package com.edu.hcmuaf.springserver.config;
 
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+   
+package com.edu.hcmuaf.springserver.config;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,34 +63,27 @@ public class SecurityConfig {
                         req -> req
                                 .requestMatchers("/api/movies/**")
                                 .permitAll()
-                                .requestMatchers(HttpMethod.DELETE,"/api/movies/**")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/theatres/**")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.DELETE,"/api/shows/**")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.DELETE,"/api/theatres/**")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.DELETE,"/api/tickets/**")
-                                .permitAll()
                                 .requestMatchers("/api/theatres/**")
                                 .permitAll()
-                                .requestMatchers("/api/locations/**")
-                                .permitAll()
+
                                 .requestMatchers("/api/auth/login_admin/**")
                                 .permitAll()
-                                .requestMatchers("/api/tickets/**")
+                                .requestMatchers("/api/shows/get**")
                                 .permitAll()
-                                .requestMatchers("/api/users/**")
-                                .permitAll()
-                                .requestMatchers("/api/shows/**")
-                                .permitAll()
-                                .requestMatchers("/api/category/**")
+
+                                .requestMatchers("/api/shows/all")
                                 .permitAll()
                                 .requestMatchers("/api/auth/login/**", "/api/auth/register/**")
                                 .permitAll()
-                                .requestMatchers("/api/users/profile").hasAnyAuthority("user")
+                                .requestMatchers("/api/users/**").hasAnyAuthority("user")
+                                .requestMatchers("/api/shows/**").hasAnyAuthority("user")
+                                .requestMatchers("/api/auth/**").hasAnyAuthority("user")
+                                .requestMatchers("/api/seats/**").hasAnyAuthority("user")
+                                .requestMatchers("/api/payment/**").hasAnyAuthority("user")
+                                .requestMatchers("/api/tickets/**").hasAnyAuthority("user")
                                 .requestMatchers("/api/**").hasAnyAuthority("admin")
+//                                .requestMatchers("/api/**").hasAnyAuthority("user")
+
                                 .anyRequest()
                                 .authenticated()
                 ).sessionManagement(session -> session

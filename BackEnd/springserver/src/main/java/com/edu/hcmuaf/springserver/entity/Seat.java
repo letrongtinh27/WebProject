@@ -13,10 +13,13 @@ import lombok.*;
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private Long theatre_id;
-    private Long row_char;
+    private char row_char;
     private int seat_number;
     private String room;
-    private Long is_occupied;
+    private int price;
+    private int status;
+
+
 }

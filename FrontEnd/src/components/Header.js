@@ -8,32 +8,37 @@ import {
   selectFullName,
   setUserLoginDetails,
 } from "../features/user/userSlice";
+import Cookies from "js-cookie";
 import { loadDataProfile } from "../data/data";
 
-const Header = (props) => {
+const Header = ({ updateHeader }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const [userDetail, setUserDetail] = useState([]);
+  const token = Cookies.get("token");
+  const fullName = useSelector(selectFullName);
+  const [userDetail, setUserDetail] = useState({
+    username: "",
+    email: "",
+    phone: "",
+    fullName: "",
+    gender: "",
+    birthday: "",
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const setUser = (user) => {
     dispatch(
       setUserLoginDetails({
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-        fullname: user.full_name,
-        gender: user.gender,
-        birthday: user.birthday,
+        user,
       })
     );
   };
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
     } else {
+      // Cookies.remove("token");
       setIsLoggedIn(false);
     }
   }, [token]);
@@ -44,16 +49,20 @@ const Header = (props) => {
       loadDataProfile(token)
         .then((data) => {
           setUserDetail(data);
-          setUser(userDetail);
+          setUser(data);
         })
         .catch((error) => {
+          Cookies.remove("token");
+          // setIsLoggedIn(false);
+          // dispatch(setSignOutState());
           console.log(error);
         });
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, updateHeader]);
 
   const signOut = () => {
     if (userDetail.username) {
+      Cookies.remove("token");
       dispatch(setSignOutState());
       navigate("/");
       setIsLoggedIn(false);
@@ -63,6 +72,10 @@ const Header = (props) => {
   const account = () => {
     navigate("/account");
   };
+
+  useEffect(() => {
+    // Render lại khi fullName thay đổi
+  }, [updateHeader]);
 
   return (
     <Nav>
@@ -88,10 +101,10 @@ const Header = (props) => {
       ) : (
         <>
           <SignOut>
-            <h8>XIN CHÀO: {userDetail.full_name}</h8>
+            <p>XIN CHÀO: {userDetail.fullName}</p>
             <DropDown>
-              <span onClick={account}>Account</span>
-              <span onClick={signOut}>Sign out</span>
+              <span onClick={account}>Tài khoản</span>
+              <span onClick={signOut}>Đăng xuất</span>
             </DropDown>
           </SignOut>
         </>
@@ -218,12 +231,16 @@ const DropDown = styled.div`
   padding: 10px;
   font-size: 14px;
   letter-spacing: 3px;
-  width: 100px;
+  width: 120px;
   opacity: 0;
   display: grid;
 
   span {
     color: #f9f9f9;
+
+    &:hover {
+      font-weight: 700;
+    }
   }
 `;
 
@@ -236,7 +253,7 @@ const SignOut = styled.div`
   align-items: center;
   justify-content: center;
 
-  h8 {
+  p {
     color: #f9f9f9;
     letter-spacing: 3px;
     font-weight: bold;

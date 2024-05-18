@@ -18,5 +18,18 @@ public class TicketService {
     public Ticket getTicketById(int id) {
         return ticketRepository.findOneById(id);
     }
-    public void deleteTicketById(long id) {ticketRepository.deleteById(id);}
+
+    public boolean checkExistTicket(int showTimeId, int seatId) {
+        return ticketRepository.existsByShowTimeIdAndSeatId((long) showTimeId, seatId);
+    }
+    public void saveTicket(Ticket ticket) {
+        ticketRepository.save(ticket);
+    }
+    public Ticket findTicketByTicketCode(String ticketCode) {
+        return ticketRepository.findTicketByTicketCode(ticketCode).orElse(null);
+    }
+
+    public List<Ticket> findTicketsByUserId(int userId) {
+        return ticketRepository.findTicketsByUserId((long) userId);
+    }
 }

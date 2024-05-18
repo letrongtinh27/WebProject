@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import styled from "styled-components";
+import Cookies from "js-cookie";
 import { getAllTheatre, getShowsByMovieIdAndTheatreId } from "../data/data";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Modal = ({ $isOpen, toggleModal }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
-  const [selectedDay, setSelectedDay] = useState("");
-  const [selectedTime, setSelectedTime] = useState("");
-  const [selectedTheatre, setselectedTheatre] = useState("");
+  const token = Cookies.get("token");
+
+  const [selectedDay, setSelectedDay] = useState(undefined);
+  const [selectedTime, setSelectedTime] = useState(undefined);
+  const [selectedTheatre, setSelectedTheatre] = useState(undefined);
+  const [selectedShow, setSelectedShow] = useState();
+  const [selectedTheatreRoom, setSelectedTheatreRoom] = useState();
 
   const [selectedTimeButton, setSelectedTimeButton] = useState(null);
   const [selectedDayButton, setSelectedDayButton] = useState(null);
@@ -17,7 +25,8 @@ const Modal = ({ $isOpen, toggleModal }) => {
   const [shows, setShows] = useState([]);
 
   const handleTheatreChange = (selectOption) => {
-    setselectedTheatre(selectOption.value);
+    setSelectedTheatre(selectOption.value);
+    setSelectedTime(undefined);
   };
 
   const getAllTheatres = () => {
@@ -26,20 +35,18 @@ const Modal = ({ $isOpen, toggleModal }) => {
         setTheatres(data);
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
   useEffect(() => {
-    getShowsByMovieIdAndTheatreId(id, selectedTheatre)
+    getShowsByMovieIdAndTheatreId(id, selectedTheatre, selectedDay)
       .then((data) => {
-        // Lọc ra những show có ngày trùng khớp với ngày người dùng chọn
-        const filteredShows = data.filter((show) => show.date === selectedDay);
-        // Cập nhật state shows với danh sách show đã lọc
-        setShows(filteredShows);
+        setShows(data);
       })
       .catch((error) => {
         setShows([]);
+        // console.error(error);
       });
   }, [selectedDay, selectedTime, selectedTheatre]);
 
@@ -62,6 +69,50 @@ const Modal = ({ $isOpen, toggleModal }) => {
     const selectedTimeValue = event.target.value;
     setSelectedTime(selectedTimeValue);
     setSelectedTimeButton(selectedTimeValue);
+    setSelectedShow(event.target.dataset.datashowid);
+    setSelectedTheatreRoom(event.target.dataset.datatheatreroom);
+  };
+
+  function validateBooking() {
+    if (token === undefined || token === null || token === "") {
+      toast.warning("Vui lòng đăng nhập !", {
+        position: "bottom-right",
+      });
+      return false;
+    }
+
+    if (selectedTheatre === undefined) {
+      toast.warning("Vui lòng chọn rạp !", {
+        position: "bottom-right",
+      });
+      return false;
+    }
+    if (selectedDay === undefined) {
+      toast.warning("Vui lòng chọn ngày !", {
+        position: "bottom-right",
+      });
+      return false;
+    }
+    if (selectedTime === undefined) {
+      toast.warning("Vui lòng chọn suất chiếu !", {
+        position: "bottom-right",
+      });
+      return false;
+    }
+    return true;
+  }
+
+  const handleSubmit = () => {
+    if (validateBooking()) {
+      // Lưu các param vào sessionStorage
+      sessionStorage.setItem("movieId", id);
+      sessionStorage.setItem("showTimeId", selectedShow);
+      sessionStorage.setItem("theatreId", selectedTheatre);
+      sessionStorage.setItem("room", selectedTheatreRoom);
+
+      // Sau đó chuyển hướng đến /booking
+      navigate("/booking");
+    }
   };
 
   const customStyles = {
@@ -90,8 +141,11 @@ const Modal = ({ $isOpen, toggleModal }) => {
 
   return (
     <ModalWrapper $isOpen={$isOpen}>
+      <ToastContainer />
+
       <ModalContent>
         <ModalCloseButton onClick={toggleModal}>&times;</ModalCloseButton>
+
         <Location>
           <h2>Select location</h2>
           <Select
@@ -140,6 +194,8 @@ const Modal = ({ $isOpen, toggleModal }) => {
                 <input
                   type="radio"
                   name="time"
+                  data-datashowid={show.id}
+                  data-datatheatreroom={show.room}
                   id={show.start_time}
                   value={show.start_time}
                   onChange={handleTimeChange}
@@ -149,9 +205,7 @@ const Modal = ({ $isOpen, toggleModal }) => {
           </ContainerTime>
         </div>
         <SubmitContainer>
-          <SubmitButton href={"booking/" + selectedDay + "/" + selectedTime}>
-            Xác nhận
-          </SubmitButton>
+          <SubmitButton onClick={handleSubmit}>Xác nhận</SubmitButton>
         </SubmitContainer>
       </ModalContent>
     </ModalWrapper>
@@ -273,20 +327,20 @@ const SubmitContainer = styled.div`
   align-items: center;
 `;
 
-const SubmitButton = styled.a`
-  background-color: rgba(0, 0, 0, 0.6);
+const SubmitButton = styled.button`
+  background-color: #f9f9f9;
   margin-top: 15px;
   padding: 8px 16px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  border: 1px solid #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.6);
   border-radius: 4px;
   transition: all 0.2s ease 0s;
   cursor: pointer;
 
   &:hover {
-    background-color: #f9f9f9;
-    color: #000;
+    background-color: rgba(200, 200, 200, 0.7);
+    color: #f9f9f9;
     border-color: transparent;
   }
 `;

@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.DateFormatter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +36,7 @@ public class ShowTimeController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<?> getShowsByMovieIdAndTheatreId(@RequestParam int movieId, @RequestParam int theatreId) {
+    public ResponseEntity<?> getShowsByMovieIdAndTheatreId(@RequestParam int movieId, @RequestParam int theatreId, @RequestParam String date) {
         List<ShowsResponse> responses = new ArrayList<>();
 
         List<ShowTime> showTimeList = showTimeService.getShowTimesByMovieIdAndTheatreId(movieId, theatreId);
@@ -41,15 +44,25 @@ public class ShowTimeController {
         if(!showTimeList.isEmpty()){
             for (ShowTime shows : showTimeList) {
                 ShowsResponse s = new ShowsResponse();
-                s.setId(shows.getId());
-                s.setMovieId(shows.getMovieId());
-                s.setTheatreId(shows.getTheatreId());
+
                 LocalDate dt = shows.getStart_time().toLocalDate();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M");
                 s.setDate(dt.format(formatter));
-                s.setStart_time(shows.getStart_time().toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm")));
-                s.setStatus(shows.getStatus());
-                responses.add(s);
+
+                LocalDateTime now = LocalDateTime.now();
+
+                if(s.getDate().equals(date)) {
+                    s.setId(shows.getId());
+                    s.setMovieId(shows.getMovieId());
+                    s.setRoom(shows.getRoom());
+                    s.setTheatreId(shows.getTheatreId());
+                    s.setStart_time(shows.getStart_time().toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm")));
+                    s.setStatus(shows.getStatus());
+
+                    if(now.isBefore(shows.getStart_time())) {
+                        responses.add(s);
+                    }
+                }
             }
             return ResponseEntity.ok(responses);
         }

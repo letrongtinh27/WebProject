@@ -13,5 +13,6 @@ public class AuthenticationResponse {
     private int code;
     private String message;
     private String token;
-    private String refreshToken;
+//    private String refreshToken;
+    private int tokenExpirationTime;
 }

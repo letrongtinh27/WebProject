@@ -1,8 +1,10 @@
 package com.edu.hcmuaf.springserver.entity;
 
+import com.edu.hcmuaf.springserver.entity.Reservation;
+import com.edu.hcmuaf.springserver.entity.Seat;
+import com.edu.hcmuaf.springserver.entity.ShowTime;
 import jakarta.persistence.*;
 import lombok.*;
-
 
 @Getter
 @Setter
@@ -14,27 +16,22 @@ import lombok.*;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long show_time_id;
-    private Long seat_id;
-    private Long reservation_id;
-    private int price;
+    private int id;
 
-    @OneToOne (fetch = FetchType.LAZY)
-    @JoinTable(name = "show_time",
-            joinColumns = @JoinColumn(name = "show_time_id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "show_time_id")
     private ShowTime showTime;
-//
-    @OneToOne (fetch = FetchType.LAZY)
-    @JoinTable(name = "seats",
-            joinColumns = @JoinColumn(name = "seat_id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seat_id")
     private Seat seat;
 
-    @OneToOne (fetch = FetchType.LAZY)
-    @JoinTable(name = "reservation",
-            joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "reservation_id")
     private Reservation reservation;
+
+    @Column(name = "ticket_code")
+    private String ticketCode;
+
+    private int price;
 }

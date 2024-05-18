@@ -1,94 +1,188 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
+import Cookies from "js-cookie";
 import { useState } from "react";
-
-const movies = {
-  occupied: {
-    A: [1, 2, 3, 4, 5, 6, 7, 8],
-    B: [1, 2, 3, 4, 5, 6, 7, 8],
-  },
-};
-const rows = ["A", "B", "C", "D", "E", "F", "G", "H"];
-const seatsPerRow = 8; // Số ghế mỗi hàng
-
-// const seats = Array.from({ length: 8 * 8 }, (_, i) => i);
+import { useNavigate } from "react-router-dom";
+import { getSeatsByShowTime, payment } from "../data/data";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Booking = (props) => {
+  const [seatsData, setSeatsData] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
 
-  function handleSelectedState(seat) {
-    const isSelected = selectedSeats.includes(seat);
+  const token = Cookies.get("token");
+
+  const [amount, setAmount] = useState(0);
+  const [price, setPrice] = useState(0);
+
+  const [timeRemaining, setTimeRemaining] = useState(300);
+  const navigate = useNavigate();
+  // Lấy giá trị từ các tham số truy vấn
+  const movieId = sessionStorage.getItem("movieId");
+  const showTimeId = sessionStorage.getItem("showTimeId");
+  const theatreId = sessionStorage.getItem("theatreId");
+  const room = sessionStorage.getItem("room");
+
+  const [booking, setBooking] = useState({
+    showTimeId: showTimeId,
+    amount: 0,
+    price: 0,
+    listSeatId: {},
+  });
+
+  useEffect(() => {
+    let isToastShown = false; // Biến để kiểm tra xem toast đã được hiển thị hay chưa
+
+    const intervalId = setInterval(() => {
+      setTimeRemaining((time) => {
+        if (time <= 7 && !isToastShown) {
+          // Kiểm tra nếu thời gian đã hết và toast chưa được hiển thị
+          // Hiển thị toast
+          isToastShown = true; // Đặt biến thành true để ngăn việc hiển thị toast lại
+
+          toast.warning("Đã hết thời gian đặt !", {
+            onClose: () => {
+              // Xóa interval khi đếm đến 0 và thực hiện các hành động khác
+              clearInterval(intervalId);
+              sessionStorage.removeItem("movieId");
+              sessionStorage.removeItem("showTimeId");
+              sessionStorage.removeItem("theatreId");
+              sessionStorage.removeItem("room");
+              isToastShown = false;
+              navigate("/detail/" + movieId); // Chuyển hướng sau khi thời gian hết
+            },
+          });
+        }
+        return time - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [navigate]);
+
+  useEffect(() => {
+    getSeatsByShowTime(showTimeId, theatreId, room, token)
+      .then((data) => {
+        setSeatsData(data);
+      })
+
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  function handleSelectedState(seatId, seatPrice) {
+    const isSelected = selectedSeats.includes(seatId);
     if (isSelected) {
-      setSelectedSeats((selectedSeats) =>
-        selectedSeats.filter((selectedSeat) => selectedSeat !== seat)
-      );
+      setSelectedSeats(selectedSeats.filter((id) => id !== seatId));
+      setPrice(price - seatPrice);
+      setAmount(amount - 1);
+
+      setBooking((prevBooking) => ({
+        ...prevBooking,
+        price: prevBooking.price - seatPrice,
+        amount: prevBooking.amount - 1,
+        listSeatId: selectedSeats.filter((id) => id !== seatId),
+      }));
     } else {
-      setSelectedSeats([...selectedSeats, seat]);
+      setSelectedSeats([...selectedSeats, seatId]);
+      setPrice(price + seatPrice);
+      setAmount(amount + 1);
+
+      setBooking((prevBooking) => ({
+        ...prevBooking,
+        price: prevBooking.price + seatPrice,
+        amount: prevBooking.amount + 1,
+        listSeatId: [...selectedSeats, seatId],
+      }));
+    }
+  }
+
+  function validatePayment() {
+    if (booking.amount !== 0 && booking.price !== 0) {
+      return true;
+    }
+    return false;
+  }
+
+  function paymentHandle() {
+    if (validatePayment()) {
+      payment(booking, token)
+        .then((data) => {
+          // navigate(data.urlPayment);
+          window.location = data.urlPayment;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }
 
   return (
     <Container>
+      <ToastContainer />
       <Book>
         <Left>
           <img src="/images/movie2.jpg" alt="" />
           <Infor>
-            <h3>Đạo diễn</h3>
+            {/* <h3>Đạo diễn</h3>
             <p>Denis Vileneuve</p>
             <h3>Thời lượng</h3>
-            <p>167 phút</p>
-            <h3>Công chiếu</h3>
-            <p>6 tháng 2 năm 2024</p>
+            <p>167 phút</p> */}
+            <h3>Thời gian đặt vé</h3>
+            <p>{timeRemaining} giây</p>
+            <h3>Số lượng vé</h3>
+            <p>{booking.amount} vé</p>
+            <h3>Giá tiền</h3>
+            <p>
+              {booking.price.toLocaleString("vi", {
+                style: "currency",
+                currency: "VND",
+              })}
+            </p>
           </Infor>
         </Left>
         <Right>
           <ShowCase>
             <SeatListItem>
-              <SeatBaner className="seat" /> <SmallText>N/A</SmallText>
+              <SeatBaner className="seat" /> <SmallText>Còn trống</SmallText>
             </SeatListItem>
             <SeatListItem>
               <SeatBaner className="seat selected" />{" "}
-              <SmallText>Selected</SmallText>
+              <SmallText>Đang chọn</SmallText>
             </SeatListItem>
             <SeatListItem>
               <SeatBaner className="seat occupied" />{" "}
-              <SmallText>Occupied</SmallText>
+              <SmallText>Đã đặt</SmallText>
             </SeatListItem>
           </ShowCase>
 
           <Cinema>
             <Screen />
             <SeatsContainer>
-              {rows.map((row) =>
-                Array.from({ length: seatsPerRow }, (_, i) => i + 1).map(
-                  (seatNumber) => {
-                    const seat = `${row}${seatNumber}`;
-                    const isSelected = selectedSeats.includes(seat);
-                    const isOccupied =
-                      movies.occupied[row] &&
-                      movies.occupied[row].includes(seatNumber);
-                    return (
-                      <Seat
-                        cinema
-                        tabIndex="0"
-                        key={seat}
-                        className={clsx(
-                          "seat",
-                          isSelected && "selected",
-                          isOccupied && "occupied"
-                        )}
-                        onClick={
-                          isOccupied ? null : () => handleSelectedState(seat)
-                        }
-                      >
-                        {row + seatNumber}
-                      </Seat>
-                    );
-                  }
-                )
-              )}
+              {seatsData.map(({ id, seatNumber, price, booked }) => {
+                const isSelected = selectedSeats.includes(id);
+                return (
+                  <Seat
+                    key={id}
+                    tabIndex="0"
+                    className={clsx(
+                      "seat",
+                      isSelected && "selected",
+                      booked && "occupied"
+                    )}
+                    onClick={
+                      !booked ? () => handleSelectedState(id, price) : null
+                    }
+                  >
+                    {seatNumber}
+                  </Seat>
+                );
+              })}
             </SeatsContainer>
+            <SubmitButton onClick={paymentHandle}>Xác nhận</SubmitButton>
           </Cinema>
         </Right>
       </Book>
@@ -96,26 +190,38 @@ const Booking = (props) => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.main`
   position: relative;
   top: 15px;
   width: 100vw;
   height: 100vh;
+  min-height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1f2025;
+
+  &:after {
+    background: url("/images/home-background.png") center center/ cover
+      no-repeat fixed;
+    content: "";
+    position: absolute;
+    inset: 0px;
+    opacity: 1;
+    z-index: -1;
+  }
 `;
 
 const Book = styled.div`
   width: 65%;
   height: 75%;
   display: flex;
+  max-height: 540px;
+  min-height: 500px;
 `;
 
 const Left = styled.div`
-  width: 20%;
   position: relative;
+  width: 20%;
   height: 100%;
   border: 1px solid #fff;
 
@@ -136,6 +242,10 @@ const Right = styled.div`
 const Infor = styled.div`
   color: #fff;
   padding: 0 20px;
+  h3,
+  p {
+    margin: 5px 0px;
+  }
 `;
 
 const ShowCase = styled.ul`
@@ -249,6 +359,24 @@ const SeatsContainer = styled.div`
   grid-gap: 6px;
   grid-template-columns: repeat(8, min-content);
   align-items: center;
+`;
+
+const SubmitButton = styled.button`
+  background-color: #f9f9f9;
+  margin-top: 15px;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  transition: all 0.2s ease 0s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(200, 200, 200, 0.7);
+    color: #f9f9f9;
+    border-color: transparent;
+  }
 `;
 
 export default Booking;

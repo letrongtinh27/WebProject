@@ -3,17 +3,25 @@ package com.edu.hcmuaf.springserver.service;
 import com.edu.hcmuaf.springserver.auth.AuthenticationRequest;
 import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
 import com.edu.hcmuaf.springserver.auth.RegisterRequest;
+import com.edu.hcmuaf.springserver.dto.UserRequest;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.repositories.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -26,53 +34,25 @@ public class UserService {
     private JwtService jwtService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
 
-
     public List<User> getListUser() {
         return userRepository.findAll();
     }
 
     public User getUserProfileByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow();
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     public AuthenticationResponse authentication(AuthenticationRequest authenticationRequest) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-            User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-            var jwtToken = jwtService.generateToken(user, authorities);
-            var jwtRefreshToken = jwtService.generateRefreshToken(user, authorities);
-
-            return AuthenticationResponse.builder().code(200).message("Succeed").token(jwtToken).refreshToken(jwtRefreshToken).build();
-        } catch (AuthenticationException e) {
-            return AuthenticationResponse.builder().code(401).message("User not found").build();
-        }
+        return authenticateAndGenerateToken(authenticationRequest, false);
     }
 
-    public AuthenticationResponse AdminAuthentication(AuthenticationRequest authenticationRequest) {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-            User admin = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-            if (admin.getRole().equals("admin")) {
-                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-                var jwtToken = jwtService.generateToken(admin, authorities);
-                var jwtRefreshToken = jwtService.generateRefreshToken(admin, authorities);
-
-                return AuthenticationResponse.builder().code(200).message("Succeed").token(jwtToken).refreshToken(jwtRefreshToken).build();
-            } else return AuthenticationResponse.builder().code(401).message("Not an admin").build();
-
-        } catch (AuthenticationException e) {
-            return AuthenticationResponse.builder().code(401).message("User not found").build();
-        }
+    public AuthenticationResponse adminAuthentication(AuthenticationRequest authenticationRequest) {
+        return authenticateAndGenerateToken(authenticationRequest, true);
     }
-
 
     public AuthenticationResponse register(RegisterRequest registerRequest) {
-        if(userRepository.existsUserByUsername(registerRequest.getUsername()) || userRepository.existsUserByEmail(registerRequest.getEmail())) {
-            return AuthenticationResponse.builder().code(400).message("Username already exits").build();
+        if (userRepository.existsUserByUsername(registerRequest.getUsername()) || userRepository.existsUserByEmail(registerRequest.getEmail())) {
+            return AuthenticationResponse.builder().code(400).message("Username or email already exists").build();
         }
 
         User newUser = new User();
@@ -86,19 +66,51 @@ public class UserService {
 
         userRepository.save(newUser);
 
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword()));
-            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            var jwtToken = jwtService.generateToken(newUser, authorities);
-            var jwtRefreshToken = jwtService.generateRefreshToken(newUser, authorities);
-            return AuthenticationResponse.builder().code(200).message("Registration successful").token(jwtToken).refreshToken(jwtRefreshToken).build();
-        } catch (AuthenticationException e) {
-            return AuthenticationResponse.builder().code(500).message("Internal server error").build();
-        }
-
+        return authenticateAndGenerateToken(new AuthenticationRequest(newUser.getUsername(), registerRequest.getPassword()), false);
     }
 
-    public User createAdmin(User user){ return userRepository.save(user);}
+    private AuthenticationResponse authenticateAndGenerateToken(AuthenticationRequest authenticationRequest, boolean isAdmin) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+            User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+            if (isAdmin && !user.getRole().equals("admin")) {
+                return AuthenticationResponse.builder().code(401).message("Not an admin").build();
+            }
+
+            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            String jwtToken = jwtService.generateToken(user, authorities);
+
+            return AuthenticationResponse.builder().code(200).message("Succeed").token(jwtToken).tokenExpirationTime(jwtService.getTokenExpirationTime()).build();
+        } catch (AuthenticationException e) {
+            return AuthenticationResponse.builder().code(401).message("User not found").build();
+        }
+    }
+
+    public boolean updateUser(UserRequest.EditUser userRequest) throws ParseException {
+
+        User user = userRepository.findByUsername(userRequest.getUsername()).orElse(null);
+
+        if(user!=null) {
+            if(userRequest.isChangePassword()) {
+                user.setPassword(encoder.encode(userRequest.getPassword()));
+            }
+            user.setEmail(userRequest.getEmail());
+            user.setPhone_number(userRequest.getPhone());
+            user.setFull_name(userRequest.getFullName());
+            user.setGender(userRequest.getGender());
+
+            SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+            java.util.Date parsedDate = inputFormat.parse(userRequest.getBirthday().toString());
+            java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+            user.setBirthday(sqlDate);
+
+            userRepository.save(user);
+
+            return true;
+        }
+        return false;
+    }
 
 }
+
