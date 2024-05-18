@@ -16,6 +16,8 @@ import {ShowTimeEdit} from "./components/showtime/ShowTimeEdit";
 import TheatreCreate from "./components/theatre/TheatreCreate";
 import {ShowTimeCreate} from "./components/showtime/ShowTimeCreate";
 import MovieCreate from "./components/movie/MovieCreate";
+import UserEdit from "./components/user/UserEdit";
+import UserCreate from "./components/user/UserCreate";
 
 const App = () => {
   return (
@@ -39,7 +41,11 @@ const App = () => {
                     edit={ShowTimeEdit}
                     create={ShowTimeCreate}
                     options={{label: 'Show Time'}} />
-          <Resource name="users" list={UserList} options={{label: 'User'}} />
+          <Resource name="users"
+                    list={UserList}
+                    edit={UserEdit}
+                    create={UserCreate}
+                    options={{label: 'User'}} />
           <Resource name="tickets"
                     list={TicketList}
                     options={{label: 'Ticket'}} />

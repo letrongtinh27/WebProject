@@ -18,4 +18,10 @@ public class TheatreService {
     public Theatre getTheatreById(int id) {
         return theatreRepository.findOneById(id);
     }
+
+    public void deleteTheatreById(long id) {theatreRepository.deleteById(id);}
+
+    public Theatre createTheatre(Theatre theatre) { return theatreRepository.save(theatre);}
+
+    public Theatre updateTheatre(Theatre theatre, int id) { return null;}
 }

@@ -1,8 +1,10 @@
 import {DataProvider, fetchUtils} from 'react-admin'
+import {log} from "util";
 
 const apiUrl = 'http://localhost:8080/api'
 const httpClient = fetchUtils.fetchJson
 
+let token = localStorage.getItem("admin")
 export const dataProvider: DataProvider = {
 // @ts-ignore
     getList: async (resource: any, params: any) => {
@@ -12,6 +14,7 @@ export const dataProvider: DataProvider = {
                 headers: new Headers({
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
                 }),
             })
             console.log("Json: ", json)
