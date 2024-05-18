@@ -68,6 +68,8 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/auth/login_admin/**")
                                 .permitAll()
+                                .requestMatchers("/api/auth/login")
+                                .permitAll()
                                 .requestMatchers("/api/shows/get**")
                                 .permitAll()
 
