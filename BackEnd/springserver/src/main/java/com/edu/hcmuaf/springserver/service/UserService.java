@@ -23,6 +23,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.sql.Date;
+
 
 @Service
 public class UserService {
@@ -63,6 +65,7 @@ public class UserService {
         newUser.setFull_name(registerRequest.getUsername());
         newUser.setRole("user");
         newUser.setGender("Nam");
+        newUser.setBirthday(Date.valueOf("2002-01-01"));
 
         userRepository.save(newUser);
 
@@ -80,6 +83,7 @@ public class UserService {
 
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             String jwtToken = jwtService.generateToken(user, authorities);
+            System.out.println(jwtService.getTokenExpirationTime());
 
             return AuthenticationResponse.builder().code(200).message("Succeed").token(jwtToken).tokenExpirationTime(jwtService.getTokenExpirationTime()).build();
         } catch (AuthenticationException e) {
