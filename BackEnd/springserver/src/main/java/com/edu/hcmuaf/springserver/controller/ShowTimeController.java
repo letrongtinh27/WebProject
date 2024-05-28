@@ -78,6 +78,7 @@ public class ShowTimeController {
         return ResponseEntity.badRequest().body(null);
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteShowTime(@PathVariable long id) {
         showTimeService.deleteShowTime(id);
@@ -93,5 +94,6 @@ public class ShowTimeController {
     public ResponseEntity updateShowTime(@RequestBody ShowTime showTime, @PathVariable int id) {
         return ResponseEntity.ok(showTimeService.updateShowTime(id, showTime));
     }
+
 
 }
