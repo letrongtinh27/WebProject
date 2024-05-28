@@ -51,21 +51,6 @@ public class UserController {
         } else return ResponseEntity.badRequest().body(null);
     }
 
-//    @PostMapping("/")
-//    public ResponseEntity<?> createTheatre(User user) {
-//        return ResponseEntity.ok(userService.createAdmin(user));
-//    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateTheatre(String username, User user) {
-        return null;
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTheatre() {
-        return null;
-    }
-
     @PostMapping("/edit")
     public ResponseEntity<?> updateUser(@RequestBody UserRequest.EditUser userRequest, Authentication authentication) throws ParseException {
         boolean update = userService.updateUser(userRequest);
@@ -75,5 +60,11 @@ public class UserController {
             return getProfile(authentication);
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/admin_create")
+    public ResponseEntity<?> createUser(@RequestBody UserRequest.CreateUser user) throws ParseException {
+        userService.createUser(user);
+        return  ResponseEntity.badRequest().build();
     }
 }

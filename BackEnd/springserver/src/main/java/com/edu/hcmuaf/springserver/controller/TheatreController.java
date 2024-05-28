@@ -46,7 +46,7 @@ public class TheatreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTheatre(Theatre theatre, int id) {
+    public ResponseEntity<?> updateTheatre(@RequestBody Theatre theatre,@PathVariable int id) {
         return ResponseEntity.ok(theatreService.updateTheatre(theatre, id));
     }
 

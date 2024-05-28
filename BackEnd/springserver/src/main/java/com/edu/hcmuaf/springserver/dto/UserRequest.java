@@ -21,4 +21,19 @@ public class UserRequest {
         private boolean changePassword;
         private String password;
     }
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    @ToString
+    public static class CreateUser {
+        private int id;
+        private String username;
+        private String fullName;
+        private String email;
+        private String phone;
+        private String gender;
+        private String birthday;
+        private String password;
+    }
 }

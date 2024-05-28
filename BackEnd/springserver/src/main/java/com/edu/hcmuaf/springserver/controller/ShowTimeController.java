@@ -78,20 +78,20 @@ public class ShowTimeController {
         return ResponseEntity.badRequest().body(null);
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteShowTime(@PathVariable long id) {
-//        showTimeService.deleteShowTime(id);
-//        return ResponseEntity.noContent().build();
-//    }
-//
-//    @PostMapping("/")
-//    public ResponseEntity<?> createShowTime(ShowTime showTime) {
-//        return ResponseEntity.ok(showTimeService.createShowTime(showTime));
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity updateShowTime(ShowTime showTime, int id) {
-//        return ResponseEntity.ok(showTimeService.updateShowTime(showTime,id));
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteShowTime(@PathVariable long id) {
+        showTimeService.deleteShowTime(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<?> createShowTime(@RequestBody ShowTime showTime) {
+        return ResponseEntity.ok(showTimeService.createShowTime(showTime));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateShowTime(@RequestBody ShowTime showTime, @PathVariable int id) {
+        return ResponseEntity.ok(showTimeService.updateShowTime(id, showTime));
+    }
 
 }
