@@ -16,6 +16,8 @@ import {
   setUserLoginDetails,
 } from "../features/user/userSlice";
 
+import images from "../data/images";
+
 const Account = ({ updateHeader }) => {
   const dispatch = useDispatch();
   const token = Cookie.get("token");

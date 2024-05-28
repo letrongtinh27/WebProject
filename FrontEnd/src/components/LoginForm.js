@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { login, register } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import images from "../data/images";
 
 const LoginForm = (props) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -218,7 +219,7 @@ const LoginForm = (props) => {
           <label>Đăng nhập bằng:</label>
           <IconGooge>
             <a href="#">
-              <img src="./images/Google__G__logo.svg" />
+              <img src={images.googleLogo} />
             </a>
           </IconGooge>
         </LoginGoole>
@@ -397,8 +398,6 @@ const RowInput = styled.div`
     &:hover {
       opacity: 0.8;
     }
-
-    // Áp dụng hiệu ứng loading khi có class loading
 
     &.loading::after {
       content: "";

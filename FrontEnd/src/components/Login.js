@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import LoginForm from "./LoginForm";
+import images from "../data/images";
 
 const Login = (props) => {
   return (
     <Container>
       <Content>
-        <Bigimage />
+        <Bigimage backgroundImage={images.bg2} />
         <LoginForm />
       </Content>
     </Container>
@@ -40,7 +41,7 @@ const Bigimage = styled.div`
   background-position: top;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("/images/bg2.jpg");
+  background-image: url(${(props) => props.backgroundImage});
   position: absolute;
   top: 0;
   right: 0;
