@@ -51,10 +51,10 @@ public class UserController {
         } else return ResponseEntity.badRequest().body(null);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<?> createTheatre(User user) {
-        return ResponseEntity.ok(userService.createAdmin(user));
-    }
+//    @PostMapping("/")
+//    public ResponseEntity<?> createTheatre(User user) {
+//        return ResponseEntity.ok(userService.createAdmin(user));
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTheatre(String username, User user) {

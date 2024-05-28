@@ -52,7 +52,7 @@ const Header = ({ updateHeader }) => {
           setUser(data);
         })
         .catch((error) => {
-          Cookies.remove("token");
+          // Cookies.remove("token");
           // setIsLoggedIn(false);
           // dispatch(setSignOutState());
           console.log(error);
