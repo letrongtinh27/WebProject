@@ -116,5 +116,18 @@ public class UserService {
         return false;
     }
 
+    public User createUser(UserRequest.CreateUser userRequest) throws ParseException {
+        User user = userRepository.findByUsername(userRequest.getUsername()).orElse(null);
+
+        user.setEmail(user.getEmail());
+        user.setUsername(user.getUsername());
+        user.setBirthday(user.getBirthday());
+        user.setGender(user.getGender());
+        user.setRole(user.getRole());
+        user.setFull_name(user.getFull_name());
+        user.setPassword(encoder.encode(userRequest.getPassword()));
+        user.setPhone_number(user.getPhone_number());
+        return userRepository.save(user);
+    }
 }
 

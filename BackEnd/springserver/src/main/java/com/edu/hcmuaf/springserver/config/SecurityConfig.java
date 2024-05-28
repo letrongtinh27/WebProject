@@ -44,9 +44,15 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/shows/all")
                                 .permitAll()
+                                .requestMatchers("/api/shows/**")
+                                .permitAll()
+                                .requestMatchers("/api/users/**")
+                                .permitAll()
+                                .requestMatchers("/api/tickets/**")
+                                .permitAll()
                                 .requestMatchers("/api/auth/login/**", "/api/auth/register/**")
                                 .permitAll()
-                                .requestMatchers("/api/users/**").hasAnyAuthority("user")
+//                                .requestMatchers("/api/users/**").hasAnyAuthority("user")
                                 .requestMatchers("/api/shows/**").hasAnyAuthority("user")
                                 .requestMatchers("/api/auth/**").hasAnyAuthority("user")
                                 .requestMatchers("/api/seats/**").hasAnyAuthority("user")
@@ -63,6 +69,4 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-
 }

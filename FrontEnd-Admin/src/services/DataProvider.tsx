@@ -9,6 +9,7 @@ export const dataProvider: DataProvider = {
 // @ts-ignore
     getList: async (resource: any, params: any) => {
         try {
+            console.log(token)
             const {json} = await httpClient(`${apiUrl}/${resource}/all`, {
                 method: 'GET',
                 headers: new Headers({
