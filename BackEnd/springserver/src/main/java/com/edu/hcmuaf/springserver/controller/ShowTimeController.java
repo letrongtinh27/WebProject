@@ -1,6 +1,7 @@
 package com.edu.hcmuaf.springserver.controller;
 
 import com.edu.hcmuaf.springserver.dto.ShowsResponse;
+import com.edu.hcmuaf.springserver.entity.Movie;
 import com.edu.hcmuaf.springserver.entity.ShowTime;
 import com.edu.hcmuaf.springserver.entity.Theatre;
 import com.edu.hcmuaf.springserver.service.ShowTimeService;
@@ -16,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/shows")
@@ -67,5 +69,29 @@ public class ShowTimeController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getShowTimeById(@PathVariable int id) {
+        Optional<ShowTime> showTime = showTimeService.getShowTimeById(id);
+        if (showTime != null ) {
+            return ResponseEntity.ok(showTime);
+        }
+        return ResponseEntity.badRequest().body(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteShowTime(@PathVariable long id) {
+        showTimeService.deleteShowTime(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<?> createShowTime(ShowTime showTime) {
+        return ResponseEntity.ok(showTimeService.createShowTime(showTime));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateShowTime(ShowTime showTime, int id) {
+        return ResponseEntity.ok(showTimeService.updateShowTime(showTime,id));
+    }
 
 }

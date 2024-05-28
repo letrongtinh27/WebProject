@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,6 +19,7 @@ public class Theatre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long location_id;
     private String name;
     private String address;
@@ -24,7 +27,12 @@ public class Theatre {
     private String email;
     private String description;
     private Long room_summary;
-    private Date opening_hours;
+    private Time opening_hours;
     private Long rooms;
 
+    @OneToOne
+    @JoinTable(name = "location",
+            joinColumns = @JoinColumn(name = "location_id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private Location location;
 }

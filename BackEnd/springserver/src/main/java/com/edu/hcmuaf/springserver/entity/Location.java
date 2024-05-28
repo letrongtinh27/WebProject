@@ -2,10 +2,6 @@ package com.edu.hcmuaf.springserver.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Component;
-
-import java.sql.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -13,14 +9,11 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "location")
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "id")
     private Long id;
-
-    @Column(name = "name")
     private String name;
+    private String address;
 }

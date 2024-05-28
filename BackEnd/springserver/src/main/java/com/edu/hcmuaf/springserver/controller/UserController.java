@@ -52,12 +52,12 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createTheatre() {
-        return null;
+    public ResponseEntity<?> createTheatre(User user) {
+        return ResponseEntity.ok(userService.createAdmin(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTheatre() {
+    public ResponseEntity<?> updateTheatre(String username, User user) {
         return null;
     }
 
