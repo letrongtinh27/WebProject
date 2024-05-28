@@ -10,6 +10,7 @@ import {
 } from "../features/user/userSlice";
 import Cookies from "js-cookie";
 import { loadDataProfile } from "../data/data";
+import images from "../data/images";
 
 const Header = ({ updateHeader }) => {
   const dispatch = useDispatch();
@@ -80,19 +81,19 @@ const Header = ({ updateHeader }) => {
   return (
     <Nav>
       <Logo>
-        <img src="/images/logo.svg" alt="Disney+" />
+        <img src={images.logo} alt="Disney+" />
       </Logo>
       <NavMenu>
-        <a href="/home">
-          <img src="/images/home-icon.svg" alt="Home" />
+        <a href="/">
+          <img src={images.homeIcon} alt="Home" />
           <span>TRANG CHỦ</span>
         </a>
         <a href="/movie">
-          <img src="/images/movie-icon.svg" alt="Movie" />
+          <img src={images.movieIcon} alt="Movie" />
           <span>PHIM</span>
         </a>
         <a href="/search">
-          <img src="/images/search-icon.svg" alt="Search" />
+          <img src={images.searchIcon} alt="Search" />
           <span>TÌM KIẾM</span>
         </a>
       </NavMenu>

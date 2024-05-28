@@ -4,13 +4,11 @@ import Viewers from "./Viewers";
 import Newreleases from "./Newreleases.js";
 import NewMovies from "./NewMovies";
 import Comingsoon from "./Comingsoons";
-
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setMovies } from "../features/movie/movieSlice";
-import { selectUserName } from "../features/user/userSlice";
-import { useEffect, useState } from "react";
-import movieData from "../mockdata/mockData.json";
+import { useEffect } from "react";
 import { getAllMovie } from "../data/data.js";
+import images from "../data/images.js";
 
 const Home = (props) => {
   const dispatch = useDispatch();
@@ -48,7 +46,7 @@ const Home = (props) => {
   }, [dispatch]);
 
   return (
-    <Container>
+    <Container backgroundImage={images.homeBackground}>
       <ImgSlider />
       <Viewers />
       <Newreleases />
@@ -67,7 +65,7 @@ const Container = styled.main`
   padding: 0 calc(3.5vw + 5px);
 
   &:after {
-    background: url("/images/home-background.png") center center/ cover
+    background: url(${(props) => props.backgroundImage}) center center/ cover
       no-repeat fixed;
     content: "";
     position: absolute;
