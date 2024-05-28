@@ -19,4 +19,10 @@ public class MovieService {
     public Movie getMovieById(int id) {
         return movieRepository.findOneById(id);
     }
+    public void deleteMovieById(long id) {movieRepository.deleteById(id);}
+
+    public Movie createMovie(Movie movie) { return movieRepository.save(movie);}
+    public Movie updateMovie(Movie movie, int id) {
+        return null;
+    }
 }

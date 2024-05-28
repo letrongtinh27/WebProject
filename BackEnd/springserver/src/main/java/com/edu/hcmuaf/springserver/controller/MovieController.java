@@ -33,17 +33,19 @@ public class MovieController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createMovie() {
-        return null;
+    public ResponseEntity<?> createMovie(Movie movie) {
+        return ResponseEntity.ok(movieService.createMovie(movie));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMovie() {
+    public ResponseEntity updateMovie(Movie movie, int id) {
+//        return ResponseEntity.ok(movieService.updateMovie(movie,id));
         return null;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMovie() {
-        return null;
+    public ResponseEntity<Void> deleteMovie(@PathVariable int id) {
+        movieService.deleteMovieById(id);
+        return ResponseEntity.noContent().build();
     }
 }

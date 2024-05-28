@@ -44,9 +44,12 @@ public class TicketController {
         return null;
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTicket() {
+    public ResponseEntity<?> deleteTicket() { 
+// sửa lại
         return null;
-    }
+    } 
+
+
 
     @GetMapping("/get/{userId}")
     public ResponseEntity<?> getTicketsByUserId(@PathVariable int userId) {
@@ -67,4 +70,5 @@ public class TicketController {
         return ResponseEntity.badRequest().build();
     }
 }
+  
 

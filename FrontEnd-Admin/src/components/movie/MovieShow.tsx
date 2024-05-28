@@ -1,16 +1,12 @@
 import {
-    ArrayInput,
-    CheckboxGroupInput,
+    DateTimeInput,
     Edit,
-    FunctionField,
-    ImageField, ReferenceArrayInput, required, SelectArrayInput, SelectField, SelectInput,
-    Show, SimpleForm, SimpleFormIterator,
-    SimpleShowLayout,
+    ImageField, ImageInput, required,
     TabbedForm,
-    TextField, TextInput, useGetList,
+    TextInput, useGetList,
     useRecordContext
 } from 'react-admin';
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Grid } from "@mui/material";
 import {Category, Movie} from "../../types";
 import {MovieCategory} from "../movie/MovieCategory"
@@ -47,6 +43,7 @@ export const MovieShow = (props: any) => {
                     sx={{maxWidth: '40em'}}
                 >
                     <Grid container columnSpacing={2}>
+                        {/*<ImageInput source="img_new"/>*/}
                         <Grid item xs={12} sm={12}>
                             <ImageField source="background_img_url" label="Back ground"/>
                         </Grid>
@@ -70,7 +67,7 @@ export const MovieShow = (props: any) => {
                     </Grid>
                     <Grid container columnSpacing={2}>
                         <TextInput source="description" fullWidth multiline minRows={4} maxRows={4}
-                                   style={{overflow: "auto"}} label="test"/>
+                                   style={{overflow: "auto"}} label="description"/>
                     </Grid>
                     <Grid container columnSpacing={2}>
                         <TextInput source="sub_title" fullWidth label="sub" />
@@ -80,6 +77,9 @@ export const MovieShow = (props: any) => {
                     </Grid>
                     <Grid container columnSpacing={2}>
                         <TextInput source="type" fullWidth label="type"/>
+                    </Grid>
+                    <Grid container columnSpacing={2}>
+                        <DateTimeInput source="released_date" fullWidth label="released date"/>
                     </Grid>
                 </TabbedForm.Tab>
                 <TabbedForm.Tab
