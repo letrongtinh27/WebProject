@@ -1,39 +1,38 @@
 import styled from "styled-components";
+import images from "../data/images";
+import videos from "../data/videos";
 
 const Viewers = (props) => {
   return (
     <Container>
       <Wrap>
-        <img src="/images/viewers-disney.png"></img>
+        <img src={images.viewersDisney}></img>
         <video autoPlay={true} loop={true} playsInline={true}>
-          <source src="/videos/disney.mp4" type="video/mp4"></source>
+          <source src={videos.disneyVideo} type="video/mp4"></source>
         </video>
       </Wrap>
       <Wrap>
-        <img src="/images/viewers-marvel.png"></img>
+        <img src={images.viewersMarvel}></img>
         <video autoPlay={true} loop={true} playsInline={true}>
-          <source src="/videos/marvel.mp4" type="video/mp4"></source>
+          <source src={videos.marvelVideo} type="video/mp4"></source>
         </video>
       </Wrap>
       <Wrap>
-        <img src="/images/viewers-national.png"></img>
+        <img src={images.viewersNational}></img>
         <video autoPlay={true} loop={true} playsInline={true}>
-          <source
-            src="/videos/national-geographic.mp4"
-            type="video/mp4"
-          ></source>
+          <source src={videos.nationalVideo} type="video/mp4"></source>
         </video>
       </Wrap>
       <Wrap>
-        <img src="/images/viewers-pixar.png"></img>
+        <img src={images.viewersPixar}></img>
         <video autoPlay={true} loop={true} playsInline={true}>
-          <source src="/videos/pixar.mp4" type="video/mp4"></source>
+          <source src={videos.pixarVideo} type="video/mp4"></source>
         </video>
       </Wrap>
       <Wrap>
-        <img src="/images/viewers-starwars.png"></img>
+        <img src={images.viewersStarwars}></img>
         <video autoPlay={true} loop={true} playsInline={true}>
-          <source src="/videos/star-wars.mp4" type="video/mp4"></source>
+          <source src={videos.starWarsVideo} type="video/mp4"></source>
         </video>
       </Wrap>
     </Container>

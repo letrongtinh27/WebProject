@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import images from "../data/images";
 
 const ImgSlider = (props) => {
   var settings = {
@@ -17,26 +18,25 @@ const ImgSlider = (props) => {
     <Carousel {...settings}>
       <Wrap>
         <a>
-          <img src="/images/slider-badag.jpg"></img>
+          <img src={images.sliderBadag}></img>
         </a>
       </Wrap>
 
       <Wrap>
         {" "}
         <a>
-          <img src="/images/slider-badging.jpg"></img>
+          <img src={images.sliderBadging}></img>
         </a>
       </Wrap>
 
       <Wrap>
         <a>
-          <img src="/images/slider-scale.jpg"></img>
+          <img src={images.sliderScale}></img>
         </a>
       </Wrap>
-
       <Wrap>
         <a>
-          <img src="/images/slider-scales.jpg"></img>
+          <img src={images.sliderScales}></img>
         </a>
       </Wrap>
     </Carousel>

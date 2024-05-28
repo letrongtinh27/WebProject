@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import ReactLoading from "react-loading";
 import { paymentCallback } from "../data/data";
+import images from "../data/images";
 
 const Payment = (props) => {
   const [loading, setLoading] = useState(true);
@@ -34,7 +35,7 @@ const Payment = (props) => {
       <PaymentMain>
         <PaymentLogo>
           <a href="#">
-            <img src="/images/logo.svg" alt="Disney+" />
+            <img src={images.logo} alt="Disney+" />
           </a>
         </PaymentLogo>
         <PaymentHeader>Cổng thanh toán</PaymentHeader>
@@ -44,7 +45,7 @@ const Payment = (props) => {
           ) : (
             <label>
               {messagePayment}
-              <a href="/home"> Quay về trang chủ</a>
+              <a href="/"> Quay về trang chủ</a>
             </label>
           )}
         </PaymentBody>
