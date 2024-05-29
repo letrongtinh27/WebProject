@@ -9,6 +9,7 @@ import com.edu.hcmuaf.springserver.entity.Seat;
 import com.edu.hcmuaf.springserver.entity.Ticket;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.*;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,8 @@ public class PaymentController {
     private SeatService seatService;
     @Autowired
     private ShowTimeService showTimeService;
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/pay")
     public ResponseEntity<?> createPay(@RequestBody PaymentRequest paymentRequest, HttpServletRequest req, Authentication authentication) throws UnsupportedEncodingException {
@@ -46,8 +49,6 @@ public class PaymentController {
         String vnp_Command = "pay";
         String orderType = "other";
         String bankCode = "NCB";
-
-        System.out.println(paymentRequest);
 
         String username = authentication.getPrincipal().toString();
         User user = userService.getUserProfileByUsername(username);
@@ -163,7 +164,7 @@ public class PaymentController {
 
     @GetMapping("/payment-callback")
     public ResponseEntity<?> transaction(@Param("vnp_TxnRef") String vnp_TxnRef,
-                                         @Param("vnp_TransactionStatus") String vnp_ResponseCode) {
+                                         @Param("vnp_TransactionStatus") String vnp_ResponseCode) throws MessagingException {
         if(vnp_ResponseCode.equals("00")) {
             List<Reservation> reservationList = reservationService.findReservationsByOrder(vnp_TxnRef);
             for (Reservation reservation : reservationList) {
@@ -186,6 +187,11 @@ public class PaymentController {
 
                     ticketService.saveTicket(ticket);
                     reservationService.editReservation(reservation);
+                    try {
+                        emailService.sendHtmlEmail(ticket.getReservation().getEmail(), ticket);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             return ResponseEntity.ok("Thanh toán thành công đơn hàng " + vnp_TxnRef);
@@ -197,7 +203,8 @@ public class PaymentController {
                 reservationService.editReservation(reservation);
             }
             return ResponseEntity.ok("Thanh toán đơn hàng " + vnp_TxnRef + " thất bại");
+        } else {
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.badRequest().build();
     }
 }

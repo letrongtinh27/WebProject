@@ -16,7 +16,8 @@ import {
   setUserLoginDetails,
 } from "../features/user/userSlice";
 
-import images from "../data/images";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Account = ({ updateHeader }) => {
   const dispatch = useDispatch();
@@ -156,6 +157,7 @@ const Account = ({ updateHeader }) => {
             changePassword: false,
           }));
           setPassword("");
+          toast.success("Thay đổi thông tin thành công !");
         })
         .catch((error) => {
           console.error(error);
@@ -232,6 +234,7 @@ const Account = ({ updateHeader }) => {
         <h1>Tài khoản</h1>
       </AccountTitle>
       <AccountContainer>
+        <ToastContainer />
         <AccountContent>
           <AccountUsername>
             <h4>

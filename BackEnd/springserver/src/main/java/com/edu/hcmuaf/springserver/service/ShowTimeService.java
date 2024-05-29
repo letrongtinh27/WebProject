@@ -1,6 +1,7 @@
 package com.edu.hcmuaf.springserver.service;
 
 import com.edu.hcmuaf.springserver.entity.ShowTime;
+
 import com.edu.hcmuaf.springserver.entity.Theatre;
 import com.edu.hcmuaf.springserver.repositories.ShowTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,11 @@ import java.util.logging.SimpleFormatter;
 public class ShowTimeService {
     @Autowired
     private ShowTimeRepository showTimeRepository;
+  
     public List<ShowTime> getShowTimesByMovieIdAndTheatreId(int movieId, int theatreId) {
         return showTimeRepository.findShowTimeByMovieIdAndTheatreId(movieId, theatreId).orElse(null);
-
     }
+  
     public List<ShowTime> getAllShowTime() {
         return showTimeRepository.findAll();
     }
@@ -52,5 +54,6 @@ public class ShowTimeService {
     public void deleteShowTime(long id) {
         showTimeRepository.deleteById(id);
     }
+
 
 }
