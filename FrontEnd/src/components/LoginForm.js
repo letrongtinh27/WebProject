@@ -64,7 +64,6 @@ const LoginForm = (props) => {
               toast.update(id, {
                 render: "Tài khoản hoặc mật khẩu không đúng !",
                 type: "error",
-                isLoading: true,
               });
             }
           })
@@ -72,7 +71,6 @@ const LoginForm = (props) => {
             toast.update(id, {
               render: "Đăng nhập không thành công !",
               type: "error",
-              isLoading: true,
             });
             console.log(error);
           })

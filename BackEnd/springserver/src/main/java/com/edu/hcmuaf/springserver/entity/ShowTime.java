@@ -18,7 +18,8 @@ public class ShowTime {
     @OneToOne
     @JoinTable(name = "movies",
             joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+            inverseJoinColumns = @JoinColumn(name = "id")
+    )
     private Movie movie_st;
 
     @OneToOne
