@@ -71,12 +71,13 @@ public class ShowTimeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getShowTimeById(@PathVariable int id) {
-        ShowTime showTime = showTimeService.getShowTimeById(id);
+        Optional<ShowTime> showTime = Optional.ofNullable(showTimeService.getShowTimeById(id));
         if (showTime != null ) {
             return ResponseEntity.ok(showTime);
         }
         return ResponseEntity.badRequest().body(null);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteShowTime(@PathVariable long id) {
@@ -85,13 +86,14 @@ public class ShowTimeController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createShowTime(ShowTime showTime) {
+    public ResponseEntity<?> createShowTime(@RequestBody ShowTime showTime) {
         return ResponseEntity.ok(showTimeService.createShowTime(showTime));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateShowTime(ShowTime showTime, int id) {
-        return ResponseEntity.ok(showTimeService.updateShowTime(showTime,id));
+    public ResponseEntity updateShowTime(@RequestBody ShowTime showTime, @PathVariable int id) {
+        return ResponseEntity.ok(showTimeService.updateShowTime(id, showTime));
     }
+
 
 }
