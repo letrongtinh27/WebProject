@@ -1,71 +1,29 @@
-package com.edu.hcmuaf.springserver.controller;
+package com.edu.hcmuaf.springserver.service;
 
-import com.edu.hcmuaf.springserver.dto.ShowsResponse;
 import com.edu.hcmuaf.springserver.entity.ShowTime;
-import com.edu.hcmuaf.springserver.entity.Theatre;
-import com.edu.hcmuaf.springserver.service.ShowTimeService;
+import com.edu.hcmuaf.springserver.repositories.ShowTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
-import javax.swing.text.DateFormatter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-@RestController
-@RequestMapping("api/shows")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
-public class ShowTimeController {
+@Service
+public class ShowTimeService {
     @Autowired
-    private ShowTimeService showTimeService;
-
-    @GetMapping("/all")
-    public ResponseEntity<?> getListShowTime() {
-        List<ShowTime> showTimeList = showTimeService.getAllShowTime();
-        if (showTimeList != null ) {
-            return ResponseEntity.ok(showTimeList);
-        }
-        return ResponseEntity.badRequest().body(null);
+    private ShowTimeRepository showTimeRepository;
+    public List<ShowTime> getShowTimesByMovieIdAndTheatreId(int movieId, int theatreId) {
+        return showTimeRepository.findShowTimeByMovieIdAndTheatreId(movieId, theatreId).orElse(null);
+    }
+    public List<ShowTime> getAllShowTime() {
+        return showTimeRepository.findAll();
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<?> getShowsByMovieIdAndTheatreId(@RequestParam int movieId, @RequestParam int theatreId, @RequestParam String date) {
-        List<ShowsResponse> responses = new ArrayList<>();
+    public ShowTime getShowTimeById(int id) {return showTimeRepository.findShowTimesById(id).orElse(null);}
 
-        List<ShowTime> showTimeList = showTimeService.getShowTimesByMovieIdAndTheatreId(movieId, theatreId);
+    public void deleteShowTime(long id) { showTimeRepository.deleteById(id);}
 
-        if(!showTimeList.isEmpty()){
-            for (ShowTime shows : showTimeList) {
-                ShowsResponse s = new ShowsResponse();
+    public ShowTime createShowTime(ShowTime showTime) { return showTimeRepository.save(showTime);}
 
-                LocalDate dt = shows.getStart_time().toLocalDate();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M");
-                s.setDate(dt.format(formatter));
-
-                LocalDateTime now = LocalDateTime.now();
-
-                if(s.getDate().equals(date)) {
-                    s.setId(shows.getId());
-                    s.setMovieId(shows.getMovieId());
-                    s.setRoom(shows.getRoom());
-                    s.setTheatreId(shows.getTheatreId());
-                    s.setStart_time(shows.getStart_time().toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm")));
-                    s.setStatus(shows.getStatus());
-
-                    if(now.isBefore(shows.getStart_time())) {
-                        responses.add(s);
-                    }
-                }
-            }
-            return ResponseEntity.ok(responses);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
+    public ShowTime updateShowTime(ShowTime showTime, int id) { return null;}
 
 }

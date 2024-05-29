@@ -56,10 +56,18 @@ const Detail = (props) => {
       <ContenMeta>
         <Modal $isOpen={isModalOpen} toggleModal={toggleModal}></Modal>
         <Controls>
-          <Player onClick={toggleModal}>
-            <img src="/images/ticket-solid.svg" alt="" />
-            <span>Mua vé</span>
-          </Player>
+          {movie.type === "commingsoon" ? (
+            <Player>
+              <img src="/images/ticket-solid.svg" alt="" />
+
+              <span>Chưa mở bán vé</span>
+            </Player>
+          ) : (
+            <Player onClick={toggleModal}>
+              <img src="/images/ticket-solid.svg" alt="" />
+              <span>Mua vé</span>
+            </Player>
+          )}
           <Trailer onClick={toggleTrailer}>
             <img src="/images/play-icon-black.png" alt="" />
             <span>Xem Trailer</span>

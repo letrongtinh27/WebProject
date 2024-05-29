@@ -71,7 +71,7 @@ public class ShowTimeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getShowTimeById(@PathVariable int id) {
-        Optional<ShowTime> showTime = showTimeService.getShowTimeById(id);
+        ShowTime showTime = showTimeService.getShowTimeById(id);
         if (showTime != null ) {
             return ResponseEntity.ok(showTime);
         }

@@ -116,5 +116,7 @@ public class UserService {
         return false;
     }
 
+    public User createAdmin(User user){ return userRepository.save(user);}
+
 }
 
