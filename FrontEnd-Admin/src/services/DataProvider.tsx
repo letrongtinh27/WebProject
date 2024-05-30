@@ -1,7 +1,7 @@
 import {DataProvider, fetchUtils} from 'react-admin'
 import {log} from "util";
 
-const apiUrl = 'http://localhost:8080/api'
+const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
 const httpClient = fetchUtils.fetchJson
 
 let token = localStorage.getItem("admin")
