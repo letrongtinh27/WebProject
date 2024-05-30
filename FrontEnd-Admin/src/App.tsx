@@ -18,6 +18,27 @@ import {ShowTimeCreate} from "./components/showtime/ShowTimeCreate";
 import MovieCreate from "./components/movie/MovieCreate";
 import UserEdit from "./components/user/UserEdit";
 import UserCreate from "./components/user/UserCreate";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBpVYv95S1VXJQmSapueenEfllvrOcSKo8",
+  authDomain: "admin-a7c28.firebaseapp.com",
+  projectId: "admin-a7c28",
+  storageBucket: "admin-a7c28.appspot.com",
+  messagingSenderId: "298063824418",
+  appId: "1:298063824418:web:5fbcc67c48a916870b2c7b",
+  measurementId: "G-8HYVVGZYC0"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 const App = () => {
   return (

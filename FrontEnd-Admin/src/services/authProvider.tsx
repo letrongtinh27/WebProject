@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {AuthProvider, fetchUtils} from 'react-admin';
 
-const apiUrl = 'http://localhost:8080/api'
+const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
 
 // const httpClient = axios.create({
 //     baseURL: apiUrl,
