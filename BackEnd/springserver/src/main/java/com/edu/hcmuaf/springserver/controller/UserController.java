@@ -1,5 +1,7 @@
 package com.edu.hcmuaf.springserver.controller;
 
+import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
+import com.edu.hcmuaf.springserver.auth.RegisterAdminRequest;
 import com.edu.hcmuaf.springserver.dto.UserRequest;
 import com.edu.hcmuaf.springserver.dto.UserResponse;
 import com.edu.hcmuaf.springserver.entity.User;
@@ -71,9 +73,14 @@ public class UserController {
     }
 
     @PostMapping ("/admin_create")
-    public ResponseEntity<?> createUser(@RequestBody User user) throws ParseException {
-        User user1 = userService.createUser(user);
-        return  ResponseEntity.ok(user1);
+    public ResponseEntity<?> createUser(@RequestBody RegisterAdminRequest adminRequest) throws ParseException {
+//        User user1 = userService.createUser(user);
+//        return  ResponseEntity.ok(user1);
+        AuthenticationResponse authenticationResponse = userService.createUser(adminRequest);
+        if(authenticationResponse != null) {
+            return ResponseEntity.ok(authenticationResponse);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/")

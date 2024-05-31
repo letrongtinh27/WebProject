@@ -32,6 +32,7 @@ public class ShowTime {
     private int movieId;
     @Column(name = "theatre_id")
     private int theatreId;
+
     private int room;
     private LocalDateTime start_time;
     private LocalDateTime end_time;

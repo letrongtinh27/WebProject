@@ -1,6 +1,7 @@
 import {
+    Create,
     DateInput,
-    Edit,
+    Edit, PasswordInput,
     TabbedForm, TextField,
     TextInput,
     useRecordContext,
@@ -12,9 +13,8 @@ import {Theatre, User} from "../../types";
 
 
 export const UserCreate = (props: any) => {
-
     return(
-        <Edit>
+        <Create>
             <TabbedForm>
                 <TabbedForm.Tab
                     label="Thông tin tài khoản"
@@ -25,6 +25,9 @@ export const UserCreate = (props: any) => {
                     </Grid>
                     <Grid container columnSpacing={2}>
                         <TextInput source="email" label={"Email"} fullWidth></TextInput>
+                    </Grid>
+                    <Grid container columnSpacing={2}>
+                        <PasswordInput source="password" label={"Password"} fullWidth></PasswordInput>
                     </Grid>
                     <Grid container columnSpacing={2}>
                         <TextInput source="phone_number" label={"Phone_number"} fullWidth></TextInput>
@@ -44,7 +47,7 @@ export const UserCreate = (props: any) => {
                 </TabbedForm.Tab>
 
             </TabbedForm>
-        </Edit>
+        </Create>
     );
 }
 export default UserCreate;

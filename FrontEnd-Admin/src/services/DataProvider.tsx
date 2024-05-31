@@ -1,7 +1,7 @@
 import {DataProvider, fetchUtils} from 'react-admin'
 import {log} from "util";
-
-const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
+// const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
+const apiUrl = 'http://localhost:8080/api'
 const httpClient = fetchUtils.fetchJson
 
 let token = localStorage.getItem("admin")
@@ -47,7 +47,37 @@ export const dataProvider: DataProvider = {
     // @ts-ignore
     create: async (resource: any, params: any) => {
         console.log(params)
-        // try {
+        console.log(params.data)
+        console.log(resource)
+        if (resource === 'users') {
+
+            const data = {
+                username: params.data.user,
+                email: params.data.email,
+                password: params.data.password,
+                phone_number: params.data.phone_number,
+                full_name: params.data.full_name,
+                gender: params.data.gender,
+                birthday: params.data.birthday,
+                role: params.data.role
+            }
+            console.log(data)
+
+            const {json} = await httpClient(`${apiUrl}/${resource}/admin_create`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+            if (json.code === 400) {
+                // Hiển thị cửa sổ thông báo lỗi
+                alert(`Lỗi ${json.code}: ${json.message}`);
+                return Promise.reject(json);
+            }
+
+            window.location.href = `/#/${resource}`;
+            return Promise.resolve({data: json});
+        }
+
         const {json} = await httpClient(`${apiUrl}/${resource}/`, {
             method: 'POST',
             body: JSON.stringify(params.data),
@@ -67,6 +97,19 @@ export const dataProvider: DataProvider = {
         console.log(resource)
         console.log(params)
         let category;
+        if (resource === 'users') {
+            console.log(params.data)
+            const formData = new FormData();
+            // formData.append('user', params.data.user || '');
+            // formData.append('email', params.data.email || '');
+            // formData.append('password', params.data.password || '');
+            // formData.append('phone_number', params.data.phone_number || '');
+            // formData.append('full_name', params.data.fullName || '');
+            // formData.append('gender', params.data.gender || '');
+            // formData.append('birthday', params.data.birthday|| '');
+            // formData.append('role', params.data.role || '');
+            // console.log(formData)
+        }
         // if (resource === 'movies') {
         //     console.log(params)
         //     const formData = new FormData();
