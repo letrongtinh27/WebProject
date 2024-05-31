@@ -3,7 +3,7 @@ import {
     Create,
     DateTimeInput,
     Edit,
-    ImageField, ImageInput, required,
+    ImageField, ImageInput, required, SelectInput,
     TabbedForm,
     TextInput, useGetList,
     useRecordContext
@@ -20,6 +20,13 @@ const RichTextInput = React.lazy(() =>
 );
 
 export const MovieCreate = (props: any) => {
+    const choices = [
+        { id: 'PG', name: 'PG' },
+        { id: 'PG-13', name: 'PG-13' },
+        { id: 'NC-17', name: 'NC-17' },
+        { id: 'G', name: 'G' },
+        { id: 'R', name: 'R' },
+    ];
     const [category, setCategories] = useState<Category[]>([]);
     const {data}: any = useGetList<Category>('category',{
         pagination: {page: 1, perPage: 100},
@@ -68,7 +75,13 @@ export const MovieCreate = (props: any) => {
     <TextInput source="sub_title" fullWidth label="sub" />
         </Grid>
         <Grid container columnSpacing={2}>
-    <TextInput source="age_type" fullWidth label="age"/>
+            <SelectInput
+                source="age_type"
+                fullWidth
+                label="Age"
+                choices={choices}
+                {...props}
+            />
         </Grid>
         <Grid container columnSpacing={2}>
     <TextInput source="type" fullWidth label="type"/>

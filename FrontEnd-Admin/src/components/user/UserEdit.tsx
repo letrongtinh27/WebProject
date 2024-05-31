@@ -25,7 +25,7 @@ export const UserEdit = (props: any) => {
                     sx={{maxWidth: '40em'}}
                 >
                     <Grid container columnSpacing={2}>
-                        <TextField source="user" label={"User"} fullWidth></TextField>
+                        <TextInput source="username" label={"User"} fullWidth></TextInput>
                     </Grid>
                     <Grid container columnSpacing={2}>
                         <TextInput source="email" label={"Email"} fullWidth></TextInput>

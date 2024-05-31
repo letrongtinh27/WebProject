@@ -2,7 +2,7 @@ import {
     Create,
     Edit, NumberInput, SelectInput,
     TabbedForm,
-    TextInput, useGetList,
+    TextInput, TimeInput, useGetList,
     useRecordContext,
 } from 'react-admin';
 
@@ -64,6 +64,9 @@ export const TheatreCreate = (props: any) => {
                                      optionText="address"
                                      optionValue="id"
                         />
+                    </Grid>
+                    <Grid container columnSpacing={2}>
+                        <TimeInput source="Opening_hours" label={"Thời gian mở cửa"} fullWidth></TimeInput>
                     </Grid>
                 </TabbedForm.Tab>
 

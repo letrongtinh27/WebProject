@@ -19,8 +19,8 @@ export const TicketShow = (props: any) => {
         <Show>
             <SimpleShowLayout>
                 <TextField source="id" label="ID"/>
-                <TextField source="showTime.movie_st.title" label="Movie"/>
-                <TextField source="showTime.theatre_name.name" label="Theatre"/>
+                <TextField source="showTime.movie.title" label="Movie"/>
+                <TextField source="showTime.theatre.name" label="Theatre"/>
                 <TextField source="seat.row_char" label="Row"/>
                 <TextField source="seat.seat_number" label="Number"/>
             </SimpleShowLayout>
