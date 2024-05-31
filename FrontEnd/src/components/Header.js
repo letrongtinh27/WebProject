@@ -54,8 +54,6 @@ const Header = ({ updateHeader }) => {
         })
         .catch((error) => {
           Cookies.remove("token");
-          // setIsLoggedIn(false);
-          // dispatch(setSignOutState());
           console.log(error);
         });
     }

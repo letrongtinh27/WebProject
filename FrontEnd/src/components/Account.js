@@ -561,68 +561,6 @@ const AccountBody = styled.div`
   height: auto;
 `;
 
-// const AccountCol = styled.div`
-// display: flex;
-// flex-basis: 50%;
-// max-width: 50%;
-//   margin-bottom: 0;
-//   padding: 0 4px 20px;
-//   }
-// `;
-
-// const AccountColInner = styled.div`
-//   background-position: 50% 50%;
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   flex: 1 0 auto;
-//   margin-right: 0;
-//   position: relative;
-//   width: 100%;
-
-//   p {
-//     margin-bottom: 15px;
-//     width: 100%;
-
-//     label {
-//       position: absolute;
-//       top: -15px;
-//       left: auto;
-//       color: #fff;
-//       font-weight: normal;
-//       margin-bottom: 10px;
-//       font-size: 15px;
-//     }
-
-//     input {
-//       padding: 15px;
-//       margin-bottom: 0;
-//       border-radius: 4px;
-//       background-color: transparent;
-//       border: 1px solid #454d6a;
-//       color: white;
-//       width: 95%;
-//       height: 40px;
-//       min-width: 300px;
-//     }
-
-//     a {
-//       display: block;
-//       text-transform: uppercase;
-//       font-weight: 600;
-//       font-size: 15px;
-//       padding: 8px 0;
-//       width: 66%;
-//       height: 40px;
-//       border-radius: 5px;
-//       color: #fff;
-//       background: #454d6a;
-//       &:hover {
-//         background: #616161;
-//       }
-//     }
-//   }
-// `;
-
 const StyledSelectContainer = styled.div`
   width: 97%;
 
