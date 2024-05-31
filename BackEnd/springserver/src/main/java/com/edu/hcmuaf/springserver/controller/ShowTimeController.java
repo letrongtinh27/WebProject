@@ -92,7 +92,7 @@ public class ShowTimeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateShowTime(@RequestBody ShowTime showTime, @PathVariable int id) {
+    public ResponseEntity<?> updateShowTime(@RequestBody ShowTime showTime, @PathVariable int id) {
         return ResponseEntity.ok(showTimeService.updateShowTime(id, showTime));
     }
 }
