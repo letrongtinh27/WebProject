@@ -39,18 +39,17 @@ export const dataProvider: DataProvider = {
                 Accept: 'application/json',
             }),
         });
-        console.log("Params: ", params)
-        console.log("Data:", json)
         return { data: json };
     },
 
     // @ts-ignore
     create: async (resource: any, params: any) => {
+        let movie;
+        let theatre;
+        let categories
         console.log(params)
-        console.log(params.data)
         console.log(resource)
         if (resource === 'users') {
-
             const data = {
                 username: params.data.user,
                 email: params.data.email,
@@ -69,7 +68,6 @@ export const dataProvider: DataProvider = {
                 credentials: 'include'
             });
             if (json.code === 400) {
-                // Hiển thị cửa sổ thông báo lỗi
                 alert(`Lỗi ${json.code}: ${json.message}`);
                 return Promise.reject(json);
             }
@@ -78,7 +76,74 @@ export const dataProvider: DataProvider = {
             return Promise.resolve({data: json});
         }
 
-        const {json} = await httpClient(`${apiUrl}/${resource}/`, {
+        if (resource === 'theatres') {
+            const data = {
+                location_id: params.data.locations_id,
+                name: params.data.name,
+                address: params.data.address,
+                phone_number: params.data.phone_number,
+                email: params.data.email,
+                description: params.data.description,
+                room_summary: params.data.room_summary,
+                opening_hours:new Date(params.data.Opening_hours).toLocaleTimeString('en-GB', { hour12: false }),
+                rooms: params.data.rooms
+            }
+            console.log(params)
+
+            const {json} = await httpClient(`${apiUrl}/${resource}/`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+            window.location.href = `/#/${resource}`;
+            return Promise.resolve({data: json});
+        }
+        if (resource === 'movies') {
+
+            const data: {
+                background_img_url: string;
+                title_img_url: string;
+                title: string;
+                released_date: string;
+                trailer_video_url: string;
+                poster_url: string;
+                description: string;
+                sub_title: string;
+                age_type: string;
+                type: string;
+                categories: { id: number; name: null }[];
+            } = {
+                background_img_url: params.data.background_img_url || '',
+                title_img_url: params.data.title_img_url || '',
+                title: params.data.title,
+                released_date: new Date(params.data.released_date).toLocaleDateString('sv-SE'),
+                trailer_video_url: params.data.trailer_video_url || '',
+                poster_url: params.data.trailer_video_url || '',
+                description: params.data.description,
+                sub_title: params.data.sub_title,
+                age_type: params.data.age_type,
+                type: params.data.type,
+                categories: params.data.category.map((categoryId: number) => ({
+                    id: categoryId,
+                    name: ""
+                }))
+            }
+            console.log(data)
+            const {json} = await httpClient(`${apiUrl}/${resource}/`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+            window.location.href = `/#/${resource}`;
+            return Promise.resolve({data: json});
+
+        }
+        if (resource === 'shows') {
+
+        }
+
+
+            const {json} = await httpClient(`${apiUrl}/${resource}/`, {
             method: 'POST',
             body: JSON.stringify(params.data),
 
@@ -97,48 +162,74 @@ export const dataProvider: DataProvider = {
         console.log(resource)
         console.log(params)
         let category;
-        if (resource === 'users') {
-            console.log(params.data)
-            const formData = new FormData();
-            // formData.append('user', params.data.user || '');
-            // formData.append('email', params.data.email || '');
-            // formData.append('password', params.data.password || '');
-            // formData.append('phone_number', params.data.phone_number || '');
-            // formData.append('full_name', params.data.fullName || '');
-            // formData.append('gender', params.data.gender || '');
-            // formData.append('birthday', params.data.birthday|| '');
-            // formData.append('role', params.data.role || '');
-            // console.log(formData)
+        if (resource === 'movie') {
+            const data: {
+                background_img_url: string;
+                title_img_url: string;
+                title: string;
+                released_date: string;
+                trailer_video_url: string;
+                poster_url: string;
+                description: string;
+                sub_title: string;
+                age_type: string;
+                type: string;
+                categories: { id: number; name: null }[];
+            } = {
+                background_img_url: params.data.background_img_url || '',
+                title_img_url: params.data.title_img_url || '',
+                title: params.data.title,
+                released_date: new Date(params.data.released_date).toLocaleDateString('sv-SE'),
+                trailer_video_url: params.data.trailer_video_url || '',
+                poster_url: params.data.trailer_video_url || '',
+                description: params.data.description,
+                sub_title: params.data.sub_title,
+                age_type: params.data.age_type,
+                type: params.data.type,
+                categories: params.data.category.map((categoryId: number) => ({
+                    id: categoryId,
+                    name: ""
+                }))
+            }
+            console.log(data)
+            const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+                method: 'PUT',
+                body: JSON.stringify(params.data),
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                }),
+                credentials: 'include'
+            });
+            return Promise.resolve({ data: json });
+
         }
-        // if (resource === 'movies') {
-        //     console.log(params)
-        //     const formData = new FormData();
-        //
-        //     formData.append('background_img_url',params.background_img_url || '');
-        //     formData.append('title_img_url',params.title_img_url || '');
-        //     formData.append('poster_url',params.poster_url || '');
-        //     formData.append('title',params.title || '');
-        //     formData.append('trailer_video_url',params.trailer_video_url || '');
-        //     formData.append('sub_title',params.sub_title || '');
-        //     formData.append('age_type',params.age_type || '');
-        //     formData.append('type',params.type || '');
-        //     formData.append('released_date',params.released_date || '');
-        //     formData.append('description',params.description || '');
-        //
-        //     console.log(formData)
-        //     if (formData.entries().next().done) {
-        //         console.error('FormData is empty');
-        //         return Promise.reject('FormData is empty');
-        //     }
-        //     const {json} = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
-        //         method: 'PUT',
-        //         body: formData,
-        //         credentials: 'include'
-        //     });
-        //
-        //     window.location.href = `/#/${resource}`;
-        //     return Promise.resolve({data: json});
-        // }
+        if (resource === 'theatres') {
+            const data = {
+                location_id: params.data.locations_id,
+                name: params.data.name,
+                address: params.data.address,
+                phone_number: params.data.phone_number,
+                email: params.data.email,
+                description: params.data.description,
+                room_summary: params.data.room_summary,
+                opening_hours: new Date(params.data.Opening_hours).toLocaleTimeString('en-GB', {hour12: false}),
+                rooms: params.data.rooms
+            }
+            console.log(params)
+            const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+                method: 'PUT',
+                body: JSON.stringify(params.data),
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                }),
+                credentials: 'include'
+            });
+            return Promise.resolve({ data: json });
+        }
+
+
         const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
