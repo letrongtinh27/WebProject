@@ -58,11 +58,11 @@ const App = () => {
                     options={{label: 'Theatres'}}
                     create={TheatreCreate}
           />
-          {/*<Resource name="shows"*/}
-          {/*          list={ShowTimeList}*/}
-          {/*          edit={ShowTimeEdit}*/}
-          {/*          create={ShowTimeCreate}*/}
-          {/*          options={{label: 'Show Time'}} />*/}
+          <Resource name="shows"
+                    list={ShowTimeList}
+                    edit={ShowTimeEdit}
+                    create={ShowTimeCreate}
+                    options={{label: 'Show Time'}} />
           <Resource name="users"
                     list={UserList}
                     edit={UserEdit}

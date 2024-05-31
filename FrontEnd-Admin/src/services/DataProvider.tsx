@@ -50,7 +50,6 @@ export const dataProvider: DataProvider = {
         console.log(params.data)
         console.log(resource)
         if (resource === 'users') {
-
             const data = {
                 username: params.data.user,
                 email: params.data.email,
@@ -69,13 +68,38 @@ export const dataProvider: DataProvider = {
                 credentials: 'include'
             });
             if (json.code === 400) {
-                // Hiển thị cửa sổ thông báo lỗi
                 alert(`Lỗi ${json.code}: ${json.message}`);
                 return Promise.reject(json);
             }
 
             window.location.href = `/#/${resource}`;
             return Promise.resolve({data: json});
+        }
+        console.log(params)
+        if (resource === 'theatres') {
+            const data = {
+                location_id: params.data.locations_id,
+                name: params.data.name,
+                address: params.data.address,
+                phone_number: params.data.phone_number,
+                email: params.data.email,
+                description: params.data.description,
+                room_summary: params.data.room_summary,
+                opening_hours:new Date(params.data.Opening_hours).toLocaleTimeString('en-GB', { hour12: false }),
+                rooms: params.data.rooms
+            }
+            console.log(data)
+
+            const {json} = await httpClient(`${apiUrl}/${resource}/`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+            window.location.href = `/#/${resource}`;
+            return Promise.resolve({data: json});
+        }
+        if (resource === 'showtime') {
+
         }
 
         const {json} = await httpClient(`${apiUrl}/${resource}/`, {
