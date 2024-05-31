@@ -47,7 +47,7 @@ export const TicketList = () => {
                     secondaryText={(record) => record.title}
                 />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid rowClick="show">
                     <TextField source="id" label="ID"/>
                     <TextField source="showTime.movie_st.title" label="Movie"/>
                     <TextField source="showTime.theatre_name.name" label="Theatre"/>

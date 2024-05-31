@@ -58,3 +58,12 @@ export interface User extends RaRecord {
     role: string
 }
 
+export interface Ticket extends RaRecord {
+    id: string
+    show_time_id: number
+    seat: number
+    reservation_id: number
+    ticket_code: string
+    price: number
+}
+
