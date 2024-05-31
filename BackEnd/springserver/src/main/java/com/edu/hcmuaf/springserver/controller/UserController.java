@@ -72,8 +72,6 @@ public class UserController {
 
     @PostMapping ("/admin_create")
     public ResponseEntity<?> createUser(@RequestBody RegisterAdminRequest adminRequest) throws ParseException {
-//        User user1 = userService.createUser(user);
-//        return  ResponseEntity.ok(user1);
         AuthenticationResponse authenticationResponse = userService.createUser(adminRequest);
         if(authenticationResponse != null) {
             return ResponseEntity.ok(authenticationResponse);
