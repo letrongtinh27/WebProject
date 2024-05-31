@@ -62,8 +62,6 @@ public class UserController {
     @PostMapping("/edit")
     public ResponseEntity<?> updateUser(@RequestBody UserRequest.EditUser userRequest, Authentication authentication) throws ParseException {
         boolean update = userService.updateUser(userRequest);
-        System.out.println(userRequest);
-//        boolean update = true
         if(update) {
             return getProfile(authentication);
         }
