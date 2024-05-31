@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Cookies from "js-cookie";
 import { getAllTheatre, getShowsByMovieIdAndTheatreId } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
+import ReactLoading from "react-loading";
 import "react-toastify/dist/ReactToastify.css";
 
 const Modal = ({ $isOpen, toggleModal }) => {
@@ -12,6 +13,8 @@ const Modal = ({ $isOpen, toggleModal }) => {
   const navigate = useNavigate();
 
   const token = Cookies.get("token");
+
+  const [loading, setLoading] = useState(true);
 
   const [selectedDay, setSelectedDay] = useState(undefined);
   const [selectedTime, setSelectedTime] = useState(undefined);
@@ -40,15 +43,17 @@ const Modal = ({ $isOpen, toggleModal }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getShowsByMovieIdAndTheatreId(id, selectedTheatre, selectedDay)
       .then((data) => {
+        setLoading(false);
         setShows(data);
       })
       .catch((error) => {
         setShows([]);
         // console.error(error);
       });
-  }, [selectedDay, selectedTime, selectedTheatre]);
+  }, [selectedDay, selectedTheatre]);
 
   useEffect(() => {
     getAllTheatres();
@@ -75,28 +80,20 @@ const Modal = ({ $isOpen, toggleModal }) => {
 
   function validateBooking() {
     if (token === undefined || token === null || token === "") {
-      toast.warning("Vui lòng đăng nhập !", {
-        position: "bottom-right",
-      });
+      toast.warning("Vui lòng đăng nhập !");
       return false;
     }
 
     if (selectedTheatre === undefined) {
-      toast.warning("Vui lòng chọn rạp !", {
-        position: "bottom-right",
-      });
+      toast.warning("Vui lòng chọn rạp !");
       return false;
     }
     if (selectedDay === undefined) {
-      toast.warning("Vui lòng chọn ngày !", {
-        position: "bottom-right",
-      });
+      toast.warning("Vui lòng chọn ngày !");
       return false;
     }
     if (selectedTime === undefined) {
-      toast.warning("Vui lòng chọn suất chiếu !", {
-        position: "bottom-right",
-      });
+      toast.warning("Vui lòng chọn suất chiếu !");
       return false;
     }
     return true;
@@ -141,8 +138,6 @@ const Modal = ({ $isOpen, toggleModal }) => {
 
   return (
     <ModalWrapper $isOpen={$isOpen}>
-      <ToastContainer />
-
       <ModalContent>
         <ModalCloseButton onClick={toggleModal}>&times;</ModalCloseButton>
 
@@ -184,24 +179,28 @@ const Modal = ({ $isOpen, toggleModal }) => {
         <div>
           <h3 style={{ color: "white", margin: "5px" }}>Choose Time:</h3>
           <ContainerTime>
-            {shows.map((show) => (
-              <TimeButton
-                key={show.id}
-                htmlFor={show.start_time}
-                $isSelected={selectedTimeButton === show.start_time}
-              >
-                {show.start_time}
-                <input
-                  type="radio"
-                  name="time"
-                  data-datashowid={show.id}
-                  data-datatheatreroom={show.room}
-                  id={show.start_time}
-                  value={show.start_time}
-                  onChange={handleTimeChange}
-                />
-              </TimeButton>
-            ))}
+            {loading ? (
+              <ReactLoading type="spin" color={"#ffff"} width={"10%"} />
+            ) : (
+              shows.map((show) => (
+                <TimeButton
+                  key={show.id}
+                  htmlFor={show.start_time}
+                  $isSelected={selectedTimeButton === show.start_time}
+                >
+                  {show.start_time}
+                  <input
+                    type="radio"
+                    name="time"
+                    data-datashowid={show.id}
+                    data-datatheatreroom={show.room}
+                    id={show.start_time}
+                    value={show.start_time}
+                    onChange={handleTimeChange}
+                  />
+                </TimeButton>
+              ))
+            )}
           </ContainerTime>
         </div>
         <SubmitContainer>

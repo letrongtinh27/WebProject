@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Modal from "./Modal";
 import { getMovieById } from "../data/data";
+import { ToastContainer, toast } from "react-toastify";
 
 const Detail = (props) => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ const Detail = (props) => {
   }, [id]);
   return (
     <Container>
+      <ToastContainer />
       <Background>
         {movie.background_img_url !== "" ? (
           <img src={movie.background_img_url} alt=""></img>
@@ -49,7 +51,6 @@ const Detail = (props) => {
           ></img>
         )}
       </Background>
-
       <ImageTitle>
         <img src={movie.title_img_url} alt="" />
       </ImageTitle>
