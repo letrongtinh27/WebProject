@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:8080/api/" });
+const API = axios.create({
+  baseURL: "https://cinema-server-production-0b4b.up.railway.app/api/",
+});
 
 // movie
 export const getAllMovie = async () => {

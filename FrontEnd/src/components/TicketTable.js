@@ -6,10 +6,12 @@ import { selectUserId } from "../features/user/userSlice";
 import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
 import { getTicketByUserID } from "../data/data";
+import ReactLoading from "react-loading";
 
 const TicketTable = (props) => {
   const userId = useSelector(selectUserId);
   const token = Cookie.get("token");
+  const [loading, setLoading] = useState(true);
 
   const [tickets, setTickets] = useState([]);
   const columns = [
@@ -37,25 +39,35 @@ const TicketTable = (props) => {
   ];
 
   useEffect(() => {
+    setLoading(true);
     getTicketByUserID(userId, token)
       .then((data) => {
-        console.log(data);
+        setLoading(false);
         setTickets(data);
       })
       .catch((error) => {
+        setLoading(false);
         setTickets([]);
       });
   }, []);
 
   return (
-    <DataTable
-      pagination={true}
-      paginationPerPage={5}
-      paginationRowsPerPageOptions={[5, 10]}
-      columns={columns}
-      data={tickets}
-      customStyles={customStyles}
-    ></DataTable>
+    <>
+      {loading ? (
+        <div style={{ display: "ruby-text" }}>
+          <ReactLoading type="spin" color={"#ffff"} width={"10%"} />
+        </div>
+      ) : (
+        <DataTable
+          pagination={true}
+          paginationPerPage={5}
+          paginationRowsPerPageOptions={[5, 10]}
+          columns={columns}
+          data={tickets}
+          customStyles={customStyles}
+        ></DataTable>
+      )}
+    </>
   );
 };
 

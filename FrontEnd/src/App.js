@@ -17,6 +17,28 @@ import { useSelector } from "react-redux";
 import Payment from "./components/Payment";
 import Account from "./components/Account";
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyASBDMWMRPZREmwFP8pTzcFZXvUfwecHs0",
+  authDomain: "cinema-945d3.firebaseapp.com",
+  projectId: "cinema-945d3",
+  storageBucket: "cinema-945d3.appspot.com",
+  messagingSenderId: "823462420068",
+  appId: "1:823462420068:web:df1163916c3db8fe258971",
+  measurementId: "G-3SN1FMV12S",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 function App() {
   const checkAccount = useSelector(selectUserName) != "" ? true : false;
 
