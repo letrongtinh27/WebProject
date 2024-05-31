@@ -99,7 +99,6 @@ export const dataProvider: DataProvider = {
             return Promise.resolve({data: json});
         }
         if (resource === 'movies') {
-
             const data: {
                 background_img_url: string;
                 title_img_url: string;
