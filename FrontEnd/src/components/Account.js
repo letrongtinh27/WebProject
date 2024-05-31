@@ -291,19 +291,20 @@ const Account = ({ updateHeader }) => {
                     Giới tính *
                   </label>
                 </p>
-
-                <Select
-                  styles={customStyles}
-                  id="reg_gender"
-                  classNamePrefix="select"
-                  isLoading={false}
-                  isRtl={false}
-                  isSearchable={true}
-                  defaultValue={genders.at(0)}
-                  options={genders}
-                  name="gender"
-                  onChange={onHandleChangeGender}
-                />
+                <StyledSelectContainer>
+                  <Select
+                    styles={customStyles}
+                    id="reg_gender"
+                    classNamePrefix="select"
+                    isLoading={false}
+                    isRtl={false}
+                    isSearchable={true}
+                    defaultValue={genders.at(0)}
+                    options={genders}
+                    name="gender"
+                    onChange={onHandleChangeGender}
+                  />
+                </StyledSelectContainer>
               </AccountColInner>
             </AccountCol>
             <AccountColM2>
@@ -376,7 +377,12 @@ const Account = ({ updateHeader }) => {
                       onChange={handleChange}
                     />
 
-                    <label htmlFor="req_showpassword">Hiện mật khẩu</label>
+                    <label
+                      className="label_changepassword"
+                      htmlFor="req_showpassword"
+                    >
+                      Hiện mật khẩu
+                    </label>
                   </ShowPassword>
                 </AccountCol>
               </ChangePassword>
@@ -436,6 +442,7 @@ const Account = ({ updateHeader }) => {
         <AccountContent
           style={{
             minHeight: "200px",
+            minWidth: "390px",
             padding: 0,
             border: "0px",
             borderRadius: "10px",
@@ -490,8 +497,8 @@ const AccountContainer = styled.main`
 
 const AccountContent = styled.div`
   max-width: 1100px;
-  min-width: 500px;
-  max-height: 950px;
+  min-width: 390px;
+  height: auto;
   border: 1px solid #454d6a;
   border-radius: 5px;
   padding: 25px 0px 0px 0px;
@@ -554,12 +561,90 @@ const AccountBody = styled.div`
   height: auto;
 `;
 
+// const AccountCol = styled.div`
+// display: flex;
+// flex-basis: 50%;
+// max-width: 50%;
+//   margin-bottom: 0;
+//   padding: 0 4px 20px;
+//   }
+// `;
+
+// const AccountColInner = styled.div`
+//   background-position: 50% 50%;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+//   flex: 1 0 auto;
+//   margin-right: 0;
+//   position: relative;
+//   width: 100%;
+
+//   p {
+//     margin-bottom: 15px;
+//     width: 100%;
+
+//     label {
+//       position: absolute;
+//       top: -15px;
+//       left: auto;
+//       color: #fff;
+//       font-weight: normal;
+//       margin-bottom: 10px;
+//       font-size: 15px;
+//     }
+
+//     input {
+//       padding: 15px;
+//       margin-bottom: 0;
+//       border-radius: 4px;
+//       background-color: transparent;
+//       border: 1px solid #454d6a;
+//       color: white;
+//       width: 95%;
+//       height: 40px;
+//       min-width: 300px;
+//     }
+
+//     a {
+//       display: block;
+//       text-transform: uppercase;
+//       font-weight: 600;
+//       font-size: 15px;
+//       padding: 8px 0;
+//       width: 66%;
+//       height: 40px;
+//       border-radius: 5px;
+//       color: #fff;
+//       background: #454d6a;
+//       &:hover {
+//         background: #616161;
+//       }
+//     }
+//   }
+// `;
+
+const StyledSelectContainer = styled.div`
+  width: 97%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
 const AccountCol = styled.div`
-display: flex;
-flex-basis: 50%;
-max-width: 50%;
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 0;
   padding: 0 4px 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 10px 20px;
+    max-width: 100% !important;
+
+    .label_changepassword {
+      top: auto !important;
+    }
   }
 `;
 
@@ -567,7 +652,7 @@ const AccountColInner = styled.div`
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
-  flex: 1 0 auto;
+  flex: 1 0 50%;
   margin-right: 0;
   position: relative;
   width: 100%;
@@ -612,6 +697,14 @@ const AccountColInner = styled.div`
       &:hover {
         background: #616161;
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex: 1 0 100%;
+    width: 100%;
+    input {
+      width: 100% !important;
     }
   }
 `;
