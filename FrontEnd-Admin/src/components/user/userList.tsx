@@ -46,7 +46,7 @@ export const UserList = () => {
                     secondaryText={(record) => record.title}
                 />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid rowClick="show">
                     <TextField source="id" label="ID"/>
                     <TextField source="username" label="UserName"/>
                     <TextField source="email" label="Email"/>

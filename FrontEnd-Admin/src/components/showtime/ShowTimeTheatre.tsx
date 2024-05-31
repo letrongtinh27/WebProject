@@ -24,7 +24,7 @@ export const ShowTimeTheatre = () => {
     const record = useRecordContext<ShowTime>()
     const defaultTheatre = useMemo(() => {
         if (record) {
-            return record.theatreId;
+            return record.theatre.id;
         }
         return null;
     }, [record]);

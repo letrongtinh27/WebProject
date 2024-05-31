@@ -24,11 +24,12 @@ export const ShowTimeFilm = () => {
 
     const record = useRecordContext<ShowTime>()
     const defaultMovie = useMemo(() => {
-        if (record && record.movieId) {
-            return record.movieId;
+        if (record) {
+            return record.movie.id;
         }
         return null;
     }, [record]);
+    console.log(record)
 
     const defaultTheatre = useMemo(() => {
         if (record) {

@@ -22,6 +22,7 @@ import UserCreate from "./components/user/UserCreate";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import TicketShow from "./components/ticket/ticketShow";
+import UserShow from "./components/user/UserShow";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -65,7 +66,7 @@ const App = () => {
                     options={{label: 'Show Time'}} />
           <Resource name="users"
                     list={UserList}
-                    edit={UserEdit}
+                    edit={UserShow}
                     create={UserCreate}
                     options={{label: 'User'}} />
           <Resource name="tickets"
