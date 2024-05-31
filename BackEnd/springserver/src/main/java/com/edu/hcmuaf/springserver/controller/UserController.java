@@ -51,6 +51,14 @@ public class UserController {
         } else return ResponseEntity.badRequest().body(null);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable int id) {
+        User user = userService.findUserById(id);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else return ResponseEntity.badRequest().body(null);
+    }
+
     @PostMapping("/edit")
     public ResponseEntity<?> updateUser(@RequestBody UserRequest.EditUser userRequest, Authentication authentication) throws ParseException {
         boolean update = userService.updateUser(userRequest);
@@ -60,9 +68,15 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PutMapping("/admin_create")
-    public ResponseEntity<?> createUser(@RequestBody UserRequest.CreateUser user) throws ParseException {
-        userService.createUser(user);
-        return  ResponseEntity.badRequest().build();
+    @PostMapping ("/admin_create")
+    public ResponseEntity<?> createUser(@RequestBody User user) throws ParseException {
+        User user1 = userService.createUser(user);
+        return  ResponseEntity.ok(user1);
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<?> deleteUser(@PathVariable long id) {
+        userService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

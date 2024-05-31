@@ -27,6 +27,7 @@ public class ShowTime {
             joinColumns = @JoinColumn(name = "theatre_id"),
             inverseJoinColumns = @JoinColumn(name = "id"))
     private Theatre theatre_name;
+
     @Column(name = "movie_id")
     private int movieId;
     @Column(name = "theatre_id")
