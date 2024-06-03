@@ -14,7 +14,6 @@ import java.util.Random;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.edu.hcmuaf.springserver.dto.PaymentRequest;
 import jakarta.servlet.http.HttpServletRequest;
 public class VNPayConfig {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
