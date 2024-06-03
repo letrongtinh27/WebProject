@@ -1,61 +1,31 @@
 import * as React from "react";
 
 import {
-  CreateButton,
-  ExportButton,
-  TopToolbar,
   EditButton,
-  ChipField,
-  SearchInput,
-  DateInput,
-  SelectColumnsButton,
-  DatagridConfigurable,
-  useGetList,
-  BooleanInput,
-  BooleanField,
-  SimpleList,
+  DatagridConfigurable, DeleteButton, FilterLiveSearch,
 } from "react-admin";
 
 import {
-  Datagrid,
   List,
-  NumberField,
-  ImageField,
   TextField,
-  BulkDeleteButton,
-  BulkUpdateButton,
 } from "react-admin";
 
 import { useMediaQuery, Theme } from "@mui/material";
 
-const VisitorListActions = () => (
-  <TopToolbar>
-    <CreateButton />
-    <SelectColumnsButton />
-    <ExportButton />
-  </TopToolbar>
-);
 
 export const ShowTimeList = () => {
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
   return (
-    <List>
-      {isSmall ? (
-        <SimpleList
-          primaryText={(record) => record.id}
-          secondaryText={(record) => record.title}
-        />
-      ) : (
-        <Datagrid rowClick="edit">
+    <List
+    >
+        <DatagridConfigurable  rowClick="edit">
           <TextField source="id" label="ID" />
           <TextField source="movie.title" label="Title" />
           <TextField source="theatre.name" label="Theatre" />
           <TextField source="room" label="Room" />
           <TextField source="start_time" label="Thời gian bắt đầu" />
-
           <EditButton />
-        </Datagrid>
-      )}
+        </DatagridConfigurable >
     </List>
   );
 };

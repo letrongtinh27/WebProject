@@ -1,9 +1,9 @@
 import axios from "axios";
 import { AuthProvider, fetchUtils } from "react-admin";
+const apiUrl = 'http://localhost:8080/api'
 
-const apiUrl = "https://cinema-server-production-0b4b.up.railway.app/api";
-// const apiUrl = 'http://localhost:8080/api'
 
+let token = localStorage.getItem("admin")
 // const httpClient = axios.create({
 //     baseURL: apiUrl,
 // });
@@ -101,44 +101,21 @@ export const authProvider: AuthProvider = {
     // });
   },
   //@ts-ignore
-  // getIdentity: async () => {
-  //     await httpClient.get(`${process.env.REACT_APP_API_URL}/user/info`, {
-  //         headers: {
-  //             Accept: 'application/json',
-  //             'Content-Type': 'application/json'
-  //         },
-  //         withCredentials: true
-  //     }).then((response: any) => {
-  //         console.log(response)
-  //         if (response.status === 200) {
-  //             return Promise.resolve({
-  //                 id: "admin",
-  //                 fullName: response.fullName,
-  //                 email: response.email,
-  //                 phone: response.phone,
-  //                 avt: response.avtUrl
-  //             });
-  //         } else console.log(response.status)
-  //     }).catch(async (error) => {
-  //         if (error.status === 401) {
-  //             await httpClient.post(`${process.env.REACT_APP_API_URL}/auth/refresh-token`, {
-  //                 headers: {
-  //                     Accept: 'application/json',
-  //                     'Content-Type': 'application/json'
-  //                 },
-  //                 withCredentials: true
-  //             }).then((response: any) => {
-  //                 console.log(response)
-  //                 Promise.resolve();
-  //             }).catch((error) => {
-  //                 console.log(error)
-  //                 // @ts-ignore
-  //                 return authProvider.logout();
-  //             })
-  //         } else {
-  //             console.log(error)
-  //             return Promise.reject({message: error.response.data.message});
-  //         }
-  //     });
-  // }
+  getIdentity: async () => {
+      await httpClient.get(`${apiUrl}/users/profile`, {
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true
+      }).then((response: any) => {
+          console.log(response)
+          if (response.status === 200) {
+              return Promise.resolve(response.data);
+          } else console.log(response.status)
+      }).catch(async (error) => {
+          authProvider.logout;
+      });
+  }
 };

@@ -1,5 +1,5 @@
 import {
-    Edit,
+    Edit, NumberInput,
     TabbedForm,
     TextInput,
     useRecordContext,
@@ -44,10 +44,10 @@ export const TheatreEdit = (props: any) => {
                         <TextInput source="description" label={"Mô tả"} fullWidth></TextInput>
                     </Grid>
                     <Grid container columnSpacing={2}>
-                        <TextInput source="room_summary" label={"Phòng"} fullWidth></TextInput>
+                        <NumberInput source="room_summary" label={"Phòng"} fullWidth></NumberInput>
                     </Grid>
                     <Grid container columnSpacing={2}>
-                        <TextInput source="rooms" label={"Tổng số phòng"} fullWidth></TextInput>
+                        <NumberInput source="rooms" label={"Tổng số phòng"} fullWidth></NumberInput>
                     </Grid>
                     <TheatreLocation/>
                     <TheatreOpeningHours/>
