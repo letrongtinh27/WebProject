@@ -1,5 +1,5 @@
 import {RaRecord} from 'react-admin';
-import { format } from 'date-fns';
+
 export interface Movie extends RaRecord {
     id: string
     background_img_url: string
