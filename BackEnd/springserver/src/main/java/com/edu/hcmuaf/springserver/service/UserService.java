@@ -4,25 +4,20 @@ import com.edu.hcmuaf.springserver.auth.AuthenticationRequest;
 import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
 import com.edu.hcmuaf.springserver.auth.RegisterAdminRequest;
 import com.edu.hcmuaf.springserver.auth.RegisterRequest;
-import com.edu.hcmuaf.springserver.dto.UserRequest;
+import com.edu.hcmuaf.springserver.dto.request.UserRequest;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.repositories.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.sql.Date;
 
@@ -53,6 +48,10 @@ public class UserService {
         return authenticateAndGenerateToken(authenticationRequest, true);
     }
 
+    public AuthenticationResponse authenticationGoogle(User user) {
+        return authenticateAndGenerateToken(user);
+    }
+
     public AuthenticationResponse register(RegisterRequest registerRequest) {
         if (userRepository.existsUserByUsername(registerRequest.getUsername()) || userRepository.existsUserByEmail(registerRequest.getEmail())) {
             return AuthenticationResponse.builder().code(400).message("Username or email already exists").build();
@@ -63,7 +62,7 @@ public class UserService {
         newUser.setPassword(encoder.encode(registerRequest.getPassword()));
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPhone_number("");
-        newUser.setFull_name(registerRequest.getUsername());
+        newUser.setFull_name(registerRequest.getUsername().isEmpty() ? registerRequest.getEmail() : registerRequest.getFullname());
         newUser.setRole("user");
         newUser.setGender("Nam");
         newUser.setBirthday(Date.valueOf("2002-01-01"));
@@ -84,7 +83,18 @@ public class UserService {
 
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             String jwtToken = jwtService.generateToken(user, authorities);
-            System.out.println(jwtService.getTokenExpirationTime());
+
+            return AuthenticationResponse.builder().code(200).message("Succeed").token(jwtToken).tokenExpirationTime(jwtService.getTokenExpirationTime()).build();
+        } catch (AuthenticationException e) {
+            return AuthenticationResponse.builder().code(401).message("User not found").build();
+        }
+    }
+
+    private AuthenticationResponse authenticateAndGenerateToken(User user) {
+        try {
+
+            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            String jwtToken = jwtService.generateToken(user, authorities);
 
             return AuthenticationResponse.builder().code(200).message("Succeed").token(jwtToken).tokenExpirationTime(jwtService.getTokenExpirationTime()).build();
         } catch (AuthenticationException e) {
@@ -106,7 +116,7 @@ public class UserService {
             user.setGender(userRequest.getGender());
 
             SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
-            java.util.Date parsedDate = inputFormat.parse(userRequest.getBirthday().toString());
+            java.util.Date parsedDate = inputFormat.parse(userRequest.getBirthday());
             java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
             user.setBirthday(sqlDate);
 
@@ -138,6 +148,11 @@ public class UserService {
         return userRepository.findUsersById(id);
     }
 
+    public User findUserByEmail(String email){
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
     public void deleteById(long id) { userRepository.deleteById(id);}
+
 }
 

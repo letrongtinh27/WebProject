@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://cinema-server-production-0b4b.up.railway.app/api/",
+  // baseURL: "https://cinema-server-production-0b4b.up.railway.app/api/",
+  baseURL: "http://localhost:8080/api/",
 });
 
 // movie
@@ -29,6 +30,13 @@ export const login = async (authenticationRequest) => {
 
 export const register = async (registerRequest) => {
   const { data } = await API.post(`auth/register`, registerRequest);
+  return data;
+};
+
+export const loginGoogle = async (sub, fullName, email) => {
+  const { data } = await API.get(
+    `auth/login-google?sub=${sub}&fullName=${fullName}&email=${email}`
+  );
   return data;
 };
 
