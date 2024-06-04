@@ -7,37 +7,77 @@ const API = axios.create({
 
 // movie
 export const getAllMovie = async () => {
-  const { data } = await API.get(`movies/all`);
-  return data;
+  try {
+    const response = await API.get(`movies/all`);
+    return response.data;
+  } catch (error) {
+    // console.error("Error fetching profile data:", error);
+    throw error;
+  }
 };
 
 export const getMovieById = async ({ id }) => {
-  const { data } = await API.get(`movies/${id}`);
-  return data;
+  try {
+    const response = await API.get(`movies/${id}`);
+    return response.data;
+  } catch (error) {
+    // console.error("Error fetching profile data:", error);
+    throw error;
+  }
+};
+
+export const searchMovieByName = async (name) => {
+  try {
+    const response = await API.get(`movies/search?name=` + name);
+    return response.data;
+  } catch (error) {
+    // console.error("Error fetching profile data:", error);
+    throw error;
+  }
 };
 
 // theatre
 export const getAllTheatre = async () => {
-  const { data } = await API.get(`theatres/all`);
-  return data;
+  try {
+    const response = await API.get(`theatres/all`);
+    return response.data;
+  } catch (error) {
+    // console.error("Error fetching profile data:", error);
+    throw error;
+  }
 };
 
 // authen
 export const login = async (authenticationRequest) => {
-  const { data } = await API.post(`auth/login`, authenticationRequest);
-  return data;
+  try {
+    const response = await API.post(`auth/login`, authenticationRequest);
+    return response.data;
+  } catch (error) {
+    // console.error("Error fetching profile data:", error);
+    throw error;
+  }
 };
 
 export const register = async (registerRequest) => {
-  const { data } = await API.post(`auth/register`, registerRequest);
-  return data;
+  try {
+    const response = await API.post(`auth/register`, registerRequest);
+    return response.data;
+  } catch (error) {
+    // console.error("Error fetching profile data:", error);
+    throw error;
+  }
 };
 
 export const loginGoogle = async (sub, fullName, email) => {
-  const { data } = await API.get(
-    `auth/login-google?sub=${sub}&fullName=${fullName}&email=${email}`
-  );
-  return data;
+  try {
+    const response = await API.get(
+      `auth/login-google?sub=${sub}&fullName=${fullName}&email=${email}`
+    );
+    return response.data;
+  } catch (error) {
+    // console.error("Error fetching profile data:", error);
+    throw error;
+  }
 };
 
 // user
@@ -50,7 +90,7 @@ export const loadDataProfile = async (token) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching profile data:", error);
+    // console.error("Error fetching profile data:", error);
     throw error;
   }
 };
@@ -64,7 +104,7 @@ export const editUserProfile = async (profile, token) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching profile data:", error);
+    // console.error("Error fetching profile data:", error);
     throw error;
   }
 };
@@ -109,7 +149,7 @@ export const getSeatsByShowTime = async (
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching profile data:", error);
+    // console.error("Error fetching profile data:", error);
     throw error;
   }
 };
@@ -124,7 +164,7 @@ export const payment = async (booking, token) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching profile data:", error);
+    // console.error("Error fetching profile data:", error);
     throw error;
   }
 };
@@ -144,7 +184,7 @@ export const paymentCallback = async (vnp_TxnRef, vnp_ResponseCode, token) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching profile data:", error);
+    // console.error("Error fetching profile data:", error);
     throw error;
   }
 };
