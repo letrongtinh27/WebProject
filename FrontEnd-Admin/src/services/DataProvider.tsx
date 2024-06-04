@@ -9,7 +9,32 @@ export const dataProvider: DataProvider = {
 // @ts-ignore
     getList: async (resource: any, params: any) => {
         try {
-            console.log(token)
+            const {page, perPage} = params.pagination;
+            const {field, order} = params.sort;
+
+            const query = {
+                filter: JSON.stringify(fetchUtils.flattenObject(params.filter)),
+                sort: field,
+                order: order,
+                page: page - 1,
+                perPage: perPage,
+            };
+            if (resource === 'movies') {
+                const {json} = await httpClient(`${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`, {
+                    method: 'GET',
+                    headers: new Headers({
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    }),
+                })
+                console.log("Json: ", json)
+                console.log("Content: ", json.content)
+                return {
+                    data: json.content,
+                    total: json.length,
+                }
+            }
             const {json} = await httpClient(`${apiUrl}/${resource}/all`, {
                 method: 'GET',
                 headers: new Headers({
