@@ -10,11 +10,6 @@ import {Ticket} from "../../types";
 
 
 export const TicketShow = (props: any) => {
-    const NameTicket = () => {
-        const record = useRecordContext<Ticket>();
-        return record ? record.ticket_code : null;
-    }
-
     return(
         <Show>
             <SimpleShowLayout>

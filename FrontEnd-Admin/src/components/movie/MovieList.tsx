@@ -39,7 +39,11 @@ const VisitorListActions = () => (
 export const MovieList = () => {
     const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
     return (
-        <List>
+        <List
+            sort={{field: 'title', order: 'DESC'}}
+            perPage={10}
+            filters={ [<SearchInput source = "q" alwaysOn /> ] }
+        >
         {isSmall ? (
                     <SimpleList
                         primaryText={(record) => record.id}

@@ -12,7 +12,7 @@ import {
     useGetList,
     BooleanInput,
     BooleanField,
-    SimpleList,
+    SimpleList, email,
 } from 'react-admin';
 
 import {
@@ -39,20 +39,14 @@ const VisitorListActions = () => (
 export const UserList = () => {
     const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
     return (
-        <List>
-            {isSmall ? (
-                <SimpleList
-                    primaryText={(record) => record.id}
-                    secondaryText={(record) => record.title}
-                />
-            ) : (
+        <List
+            // filters={[ <SearchInput source="q"/>]}
+        >
                 <Datagrid rowClick="show">
                     <TextField source="id" label="ID"/>
                     <TextField source="username" label="UserName"/>
                     <TextField source="email" label="Email"/>
-                    <EditButton/>
                 </Datagrid>
-            )}
         </List>
     );
 };

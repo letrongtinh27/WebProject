@@ -46,7 +46,6 @@ export const UserEdit = (props: any) => {
                         <TextInput source="role" label={"Role"} fullWidth></TextInput>
                     </Grid>
                 </TabbedForm.Tab>
-
             </TabbedForm>
         </Edit>
     );

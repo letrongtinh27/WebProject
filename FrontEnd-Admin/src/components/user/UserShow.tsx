@@ -13,13 +13,8 @@ import {Theatre, User} from "../../types";
 
 
 export const UserShow = (props: any) => {
-    const NameUser = () => {
-        const record = useRecordContext<User>();
-        return record ? record.user : null;
-    }
-
     return(
-        <Show title={<NameUser/>}>
+        <Show>
             <SimpleShowLayout>
                     <TextField source="username" label={"User"} ></TextField>
                     <TextField source="email" label={"Email"} ></TextField>
