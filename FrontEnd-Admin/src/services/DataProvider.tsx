@@ -32,7 +32,7 @@ export const dataProvider: DataProvider = {
                 console.log("Content: ", json.content)
                 return {
                     data: json.content,
-                    total: json.length,
+                    total: parseInt(json.totalElements, 10),
                 }
             }
             const {json} = await httpClient(`${apiUrl}/${resource}/all`, {
@@ -65,6 +65,24 @@ export const dataProvider: DataProvider = {
             }),
         });
         return { data: json };
+    },
+
+    getMany: async (resource: any, params: any) => {
+        const ids = params.ids.map((cate: object | any) => typeof cate === "object" ? cate.id : cate)
+        const query = {
+            ids: JSON.stringify({ids: ids}),
+        };
+        let result: never[] = [];
+        await httpClient(`${apiUrl}/${resource}/ids?${fetchUtils.queryParameters(query)}`, {
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }),
+            credentials: 'include',
+        }).then((response: any) => {
+            result = Array.isArray(response.data) ? response.data : [response.data];
+        })
+        return Promise.resolve({data: result})
     },
 
     // @ts-ignore

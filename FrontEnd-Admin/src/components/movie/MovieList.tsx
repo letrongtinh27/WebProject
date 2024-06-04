@@ -12,7 +12,7 @@ import {
     useGetList,
     BooleanInput,
     BooleanField,
-    SimpleList,
+    SimpleList, FilterLiveSearch,
 } from 'react-admin';
 
 import {
@@ -44,18 +44,19 @@ export const MovieList = () => {
             perPage={10}
             filters={ [<SearchInput source = "q" alwaysOn /> ] }
         >
+            {/*<FilterLiveSearch label={"Tìm..."} name={"search"}/>*/}
         {isSmall ? (
                     <SimpleList
                         primaryText={(record) => record.id}
                         secondaryText={(record) => record.title}
                     />
                 ) : (
-            <Datagrid rowClick="edit">
+            <DatagridConfigurable rowClick="edit">
                 <TextField source="id" label="ID"/>
                 <TextField source="title" label="Title"/>
                 <TextField source="type" label="Type"/>
                 <EditButton/>
-            </Datagrid>
+            </DatagridConfigurable>
         )}
         </List>
     );

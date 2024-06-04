@@ -51,7 +51,7 @@ public class MovieController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Movie>> getAllProducts(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<Movie>> getAll(@RequestParam(defaultValue = "0") int page,
                                                       @RequestParam(defaultValue = "{}") String filter,
                                                       @RequestParam(defaultValue = "16") int perPage,
                                                       @RequestParam(defaultValue = "title") String sort,

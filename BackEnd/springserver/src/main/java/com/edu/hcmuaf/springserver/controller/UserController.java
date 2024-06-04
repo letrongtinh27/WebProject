@@ -7,6 +7,7 @@ import com.edu.hcmuaf.springserver.dto.UserResponse;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -83,5 +84,15 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<User>> getAllShowTime(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "{}") String filter,
+                                                     @RequestParam(defaultValue = "16") int perPage,
+                                                     @RequestParam(defaultValue = "title") String sort,
+                                                     @RequestParam(defaultValue = "DESC") String order) {
+        Page<User> users = userService.getAllwithSort(filter, page, perPage, sort, order);
+        return ResponseEntity.ok(users);
     }
 }

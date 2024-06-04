@@ -7,8 +7,16 @@ import com.edu.hcmuaf.springserver.auth.RegisterRequest;
 import com.edu.hcmuaf.springserver.dto.UserRequest;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.repositories.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +27,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -139,5 +148,38 @@ public class UserService {
     }
 
     public void deleteById(long id) { userRepository.deleteById(id);}
+
+    public Page<User> getAllwithSort(String filter, int page, int perPage, String sortBy, String order) {
+        Sort.Direction direction = Sort.Direction.ASC;
+        if (order.equalsIgnoreCase("DESC"))
+            direction = Sort.Direction.DESC;
+
+        JsonNode filterJson;
+        try {
+            filterJson = new ObjectMapper().readTree(java.net.URLDecoder.decode(filter, StandardCharsets.UTF_8));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        Specification<User> specification = (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (filterJson.has("q")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("username"), "%" + filterJson.get("q").asText().toLowerCase() + "%"));
+            }
+            if (filterJson.has("username")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("username"), "%" + filterJson.get("username").asText() + "%"));
+            }
+            if (filterJson.has("email")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("email"), "%" + filterJson.get("email").asText() + "%"));
+            }
+            return predicate;
+        };
+        if (sortBy.equals("username")) {
+            return userRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "username")));
+        }
+        if (sortBy.equals("email"))  {
+            return userRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "email")));
+        }
+        return userRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
+    }
 }
 
