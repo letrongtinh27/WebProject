@@ -3,9 +3,11 @@ package com.edu.hcmuaf.springserver.controller;
 import com.edu.hcmuaf.springserver.entity.Movie;
 import com.edu.hcmuaf.springserver.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,27 @@ public class MovieController {
             return ResponseEntity.ok(movie);
         }
         return ResponseEntity.badRequest().body(null);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchMovie(@Param("name") String name) {
+        if(!name.equals(" ") && !name.isEmpty()) {
+            List<Movie> movies = movieService.getAllMovie();
+            List<Movie> searchMovies = new ArrayList<>();
+            if(movies != null) {
+                for (Movie movie : movies) {
+                    if(movie.getTitle().toLowerCase().contains(name.toLowerCase())) {
+                        searchMovies.add(movie);
+                    }
+                }
+            }
+            if(!searchMovies.isEmpty()) {
+                return ResponseEntity.ok((searchMovies));
+            }
+
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/")

@@ -40,9 +40,12 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/api/movies/all")
                                 .permitAll()
-//                                .requestMatchers("/api/theatres/**")
-//                                .permitAll()
-//
+                                .requestMatchers("/api/movies/search")
+                                .permitAll()
+                                .requestMatchers("/api/movies/{id}")
+                                .permitAll()
+                                .requestMatchers("/api/theatres/**")
+                                .permitAll()
                                 .requestMatchers("/api/shows/get**")
                                 .permitAll()
 //
