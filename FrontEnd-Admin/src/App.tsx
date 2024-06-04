@@ -51,7 +51,8 @@ const analytics = getAnalytics(app);
 const App = () => {
   return (
       <Admin title="Admin" dataProvider={dataProvider} authProvider={authProvider}
-             layout={MyLayout}>
+             // layout={MyLayout}
+      >
 
         <Resource name={'movies'}
                   list={MovieList}

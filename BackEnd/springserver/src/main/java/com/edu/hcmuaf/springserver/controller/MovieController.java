@@ -3,6 +3,7 @@ package com.edu.hcmuaf.springserver.controller;
 import com.edu.hcmuaf.springserver.entity.Movie;
 import com.edu.hcmuaf.springserver.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +15,12 @@ import java.util.List;
 public class MovieController {
     @Autowired
     private MovieService movieService;
+
     @GetMapping("/all")
     public ResponseEntity<?> getListMovie() {
         List<Movie> listMovie = movieService.getAllMovie();
-        if(listMovie != null) {
-            return ResponseEntity.ok(listMovie) ;
+        if (listMovie != null) {
+            return ResponseEntity.ok(listMovie);
         }
         return ResponseEntity.badRequest().body(null);
     }
@@ -26,7 +28,7 @@ public class MovieController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getMovieById(@PathVariable int id) {
         Movie movie = movieService.getMovieById(id);
-        if(movie != null) {
+        if (movie != null) {
             return ResponseEntity.ok(movie);
         }
         return ResponseEntity.badRequest().body(null);
@@ -38,8 +40,8 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateMovie(@RequestBody Movie movie,@PathVariable int id) {
-        return ResponseEntity.ok(movieService.updateMovie(movie,id));
+    public ResponseEntity updateMovie(@RequestBody Movie movie, @PathVariable int id) {
+        return ResponseEntity.ok(movieService.updateMovie(movie, id));
     }
 
     @DeleteMapping("/{id}")
@@ -48,4 +50,13 @@ public class MovieController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public ResponseEntity<Page<Movie>> getAllProducts(@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "{}") String filter,
+                                                      @RequestParam(defaultValue = "16") int perPage,
+                                                      @RequestParam(defaultValue = "title") String sort,
+                                                      @RequestParam(defaultValue = "DESC") String order) {
+        Page<Movie> movies = movieService.getAllwithSort(filter, page, perPage, sort, order);
+        return ResponseEntity.ok(movies);
+    }
 }
