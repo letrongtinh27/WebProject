@@ -12,7 +12,7 @@ import {
     useGetList,
     BooleanInput,
     BooleanField,
-    SimpleList,
+    SimpleList, FilterLiveSearch,
 } from 'react-admin';
 
 import {
@@ -26,14 +26,6 @@ import {
 } from "react-admin";
 
 import { useMediaQuery, Theme } from "@mui/material";
-
-const VisitorListActions = () => (
-    <TopToolbar>
-        <CreateButton/>
-        <SelectColumnsButton/>
-        <ExportButton/>
-    </TopToolbar>
-);
 
 
 export const MovieList = () => {
@@ -50,12 +42,12 @@ export const MovieList = () => {
                         secondaryText={(record) => record.title}
                     />
                 ) : (
-            <Datagrid rowClick="edit">
+            <DatagridConfigurable rowClick="edit">
                 <TextField source="id" label="ID"/>
                 <TextField source="title" label="Title"/>
                 <TextField source="type" label="Type"/>
                 <EditButton/>
-            </Datagrid>
+            </DatagridConfigurable>
         )}
         </List>
     );

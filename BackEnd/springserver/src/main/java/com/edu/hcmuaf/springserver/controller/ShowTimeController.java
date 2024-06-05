@@ -4,6 +4,7 @@ import com.edu.hcmuaf.springserver.dto.response.ShowsResponse;
 import com.edu.hcmuaf.springserver.entity.ShowTime;
 import com.edu.hcmuaf.springserver.service.ShowTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,5 +90,15 @@ public class ShowTimeController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateShowTime(@RequestBody ShowTime showTime, @PathVariable int id) {
         return ResponseEntity.ok(showTimeService.updateShowTime(id, showTime));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ShowTime>> getAllShowTime(@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "{}") String filter,
+                                                      @RequestParam(defaultValue = "16") int perPage,
+                                                      @RequestParam(defaultValue = "movie.title") String sort,
+                                                      @RequestParam(defaultValue = "DESC") String order) {
+        Page<ShowTime> showTimes = showTimeService.getAllwithSort(filter, page, perPage, sort, order);
+        return ResponseEntity.ok(showTimes);
     }
 }

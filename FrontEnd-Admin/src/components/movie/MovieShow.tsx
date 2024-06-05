@@ -10,12 +10,128 @@ import React, {useEffect, useState} from "react";
 import {Grid } from "@mui/material";
 import {Category, Movie} from "../../types";
 import {MovieCategory} from "../movie/MovieCategory"
+import {useWatch} from "react-hook-form";
+import Typography from "@mui/material/Typography";
 
-const RichTextInput = React.lazy(() =>
-    import('ra-input-rich-text').then(module => ({
-        default: module.RichTextInput,
-    }))
-);
+const ImageUploader: React.FC<ImageUploaderProps> = ({ source, label }) => {
+    const isReturned = useWatch({ name: source });
+    const newSource = `${source}_new`;
+
+    return isReturned ? (
+        <>
+            <Typography variant="h6" gutterBottom>
+                {label}:
+            </Typography>
+            <ImageField
+                source={source}
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '5px',
+                    marginBottom: '5px',
+                    maxHeight: '100px',
+                }}
+            />
+            <ImageInput
+                source={newSource}
+                accept="image/*"
+                placeholder={<p>Add new Avt Img</p>}
+                label={`Thêm ảnh ${label} mới`}
+            >
+                <ImageField
+                    source="src"
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '5px',
+                        marginBottom: '5px',
+                        maxHeight: '100px',
+                    }}
+                />
+            </ImageInput>
+        </>
+    ) : (
+        <ImageInput name={source} source={source}>
+            <ImageField source="src" label={label} />
+        </ImageInput>
+    );
+};
+
+// const ReturnedImg1 = () => {
+//     const isReturned = useWatch({name: 'background_img_url'});
+//     return isReturned ?
+//         <>
+//             <ImageField source="background_img_url" sx={{
+//                 display: "flex",
+//                 justifyContent: "center",
+//                 marginTop: "5px",
+//                 marginBottom: "5px",
+//                 maxHeight: "100px"
+//             }}/>
+//             <ImageInput source="background_img_url_new" accept="image/*"
+//                         placeholder={<p>Add new Avt Img</p>} label={"Thêm ảnh Background mới"}>
+//                 <ImageField source="src" sx={{
+//                     display: "flex",
+//                     justifyContent: "center",
+//                     marginTop: "5px",
+//                     marginBottom: "5px",
+//                     maxHeight: "100px"
+//                 }}/>
+//             </ImageInput>
+//         </> : <ImageInput name={"background_img_url"} source={"background_img_url"}>
+//             <ImageField source="src" label="Background"/>
+//         </ImageInput>;
+// };
+// const ReturnedImg2 = () => {
+//     const isReturned = useWatch({name: 'title_img_url'});
+//     return isReturned ?
+//         <>
+//             <ImageField source="title_img_url" sx={{
+//                 display: "flex",
+//                 justifyContent: "center",
+//                 marginTop: "5px",
+//                 marginBottom: "5px",
+//                 maxHeight: "100px"
+//             }}/>
+//             <ImageInput source="title_img_url_new" accept="image/*"
+//                         placeholder={<p>Add new Avt Img</p>} label={"Thêm ảnh Title mới"}>
+//                 <ImageField source="src" sx={{
+//                     display: "flex",
+//                     justifyContent: "center",
+//                     marginTop: "5px",
+//                     marginBottom: "5px",
+//                     maxHeight: "100px"
+//                 }}/>
+//             </ImageInput>
+//         </> : <ImageInput name={"title_img_url"} source={"title_img_url"}>
+//             <ImageField source="src" label="Title Image"/>
+//         </ImageInput>;
+// };
+// const ReturnedImg3 = () => {
+//     const isReturned = useWatch({name: 'poster_url'});
+//     return isReturned ?
+//         <>
+//             <ImageField source="poster_url" sx={{
+//                 display: "flex",
+//                 justifyContent: "center",
+//                 marginTop: "5px",
+//                 marginBottom: "5px",
+//                 maxHeight: "100px"
+//             }}/>
+//             <ImageInput source="poster_url_new" accept="image/*"
+//                         placeholder={<p>Add new Avt Img</p>} label={"Thêm ảnh Poster mới"}>
+//                 <ImageField source="src" sx={{
+//                     display: "flex",
+//                     justifyContent: "center",
+//                     marginTop: "5px",
+//                     marginBottom: "5px",
+//                     maxHeight: "100px"
+//                 }}/>
+//             </ImageInput>
+//         </> : <ImageInput name={"poster_url"} source={"poster_url"}>
+//             <ImageField source="src" label="Poster"/>
+//         </ImageInput>;
+// };
 
 export const MovieShow = (props: any) => {
     const choices = [
@@ -50,16 +166,12 @@ export const MovieShow = (props: any) => {
                     sx={{maxWidth: '40em'}}
                 >
                     <Grid container columnSpacing={2}>
-                        {/*<ImageInput source="img_new"/>*/}
-                        <Grid item xs={12} sm={12}>
-                            <ImageField source="background_img_url" label="Back ground"/>
-                        </Grid>
-                        <Grid item xs={12} sm={12}>
-                            <ImageField source="title_img_url" src="url" label="image"/>
-                        </Grid>
-                        <Grid item xs={12} sm={12}>
-                            <ImageField source="poster_url" src="url" label="poster"/>
-                        </Grid>
+                      {/*<ReturnedImg1/>*/}
+                      {/*  <ReturnedImg2/>*/}
+                      {/*  <ReturnedImg3/>*/}
+                        <ImageUploader source="background_img_url" label="Background" />
+                        <ImageUploader source="title_img_url" label="Title Image" />
+                        <ImageUploader source="poster_url" label="Poster" />
                     </Grid>
                 </TabbedForm.Tab>
                 <TabbedForm.Tab
@@ -107,5 +219,11 @@ export const MovieShow = (props: any) => {
     );
 }
 
+interface ImageUploaderProps {
+    source: string;
+    label: string;
+}
+
 const req = [required()];
 export default MovieShow;
+
