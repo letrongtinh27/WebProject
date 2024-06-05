@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {
   EditButton,
-  DatagridConfigurable, DeleteButton, FilterLiveSearch,
+  DatagridConfigurable, DeleteButton, FilterLiveSearch, SearchInput,
 } from "react-admin";
 
 import {
@@ -17,13 +17,15 @@ export const ShowTimeList = () => {
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
   return (
     <List
+        sort={{field: 'movie.title', order: 'DESC'}}
+        perPage={10}
+        filters={ [<SearchInput source = "q" alwaysOn /> ] }
     >
         <DatagridConfigurable  rowClick="edit">
           <TextField source="id" label="ID" />
           <TextField source="movie.title" label="Title" />
           <TextField source="theatre.name" label="Theatre" />
           <TextField source="room" label="Room" />
-          <TextField source="start_time" label="Thời gian bắt đầu" />
           <EditButton />
         </DatagridConfigurable >
     </List>

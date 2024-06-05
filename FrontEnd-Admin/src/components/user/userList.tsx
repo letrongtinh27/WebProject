@@ -40,7 +40,10 @@ export const UserList = () => {
     const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
     return (
         <List
-            // filters={[ <SearchInput source="q"/>]}
+            sort={{field: 'username', order: 'DESC'}}
+            perPage={10}
+            filters={ [<SearchInput source = "q" alwaysOn /> ] }
+
         >
                 <Datagrid rowClick="show">
                     <TextField source="id" label="ID"/>

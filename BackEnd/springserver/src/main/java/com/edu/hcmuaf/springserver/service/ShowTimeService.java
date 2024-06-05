@@ -75,16 +75,16 @@ public class ShowTimeService {
         Specification<ShowTime> specification = (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (filterJson.has("q")) {
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("title"), "%" + filterJson.get("q").asText().toLowerCase() + "%"));
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("movie.title"), "%" + filterJson.get("q").asText().toLowerCase() + "%"));
             }
-            if (filterJson.has("title")) {
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("title"), "%" + filterJson.get("name").asText() + "%"));
+            if (filterJson.has("movie.title")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("movie.title"), "%" + filterJson.get("movie.title").asText() + "%"));
             }
-            if (filterJson.has("theatre")) {
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("theatre"), "%" + filterJson.get("address").asText() + "%"));
+            if (filterJson.has("theatre.name")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("theatre"), "%" + filterJson.get("theatre.name").asText() + "%"));
             }
             if (filterJson.has("room")) {
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("room"), "%" + filterJson.get("address").asText() + "%"));
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("room"), "%" + filterJson.get("room").asText() + "%"));
             }
             return predicate;
         };

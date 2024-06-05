@@ -61,7 +61,7 @@ public class TheatreController {
     public ResponseEntity<Page<Theatre>> getAll(@RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "{}") String filter,
                                                         @RequestParam(defaultValue = "16") int perPage,
-                                                        @RequestParam(defaultValue = "title") String sort,
+                                                        @RequestParam(defaultValue = "name") String sort,
                                                         @RequestParam(defaultValue = "DESC") String order) {
         Page<Theatre> theatres = theatreService.getAllwithSort(filter, page, perPage, sort, order);
         return ResponseEntity.ok(theatres);

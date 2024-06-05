@@ -27,14 +27,6 @@ import {
 
 import { useMediaQuery, Theme } from "@mui/material";
 
-const VisitorListActions = () => (
-    <TopToolbar>
-        <CreateButton/>
-        <SelectColumnsButton/>
-        <ExportButton/>
-    </TopToolbar>
-);
-
 
 export const MovieList = () => {
     const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
@@ -44,7 +36,6 @@ export const MovieList = () => {
             perPage={10}
             filters={ [<SearchInput source = "q" alwaysOn /> ] }
         >
-            {/*<FilterLiveSearch label={"Tìm..."} name={"search"}/>*/}
         {isSmall ? (
                     <SimpleList
                         primaryText={(record) => record.id}

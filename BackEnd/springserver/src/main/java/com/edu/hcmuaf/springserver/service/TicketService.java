@@ -67,11 +67,11 @@ public class TicketService {
             if (filterJson.has("theatre")) {
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("theatre"), "%" + filterJson.get("theatre").asText() + "%"));
             }
-            if (filterJson.has("row")) {
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("row"), "%" + filterJson.get("row").asText() + "%"));
+            if (filterJson.has("seat")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("seat"), "%" + filterJson.get("seat").asText() + "%"));
             }
-            if (filterJson.has("number")) {
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("number"), "%" + filterJson.get("number").asText() + "%"));
+            if (filterJson.has("seat_number")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("seat_number"), "%" + filterJson.get("seat").asText() + "%"));
             }
             return predicate;
         };
@@ -81,11 +81,11 @@ public class TicketService {
         if (sortBy.equals("theatre"))  {
             return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "theatre")));
         }
-        if (sortBy.equals("row"))  {
-            return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "row")));
+        if (sortBy.equals("seat.row_char"))  {
+            return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "seat")));
         }
-        if (sortBy.equals("number"))  {
-            return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "number")));
+        if (sortBy.equals("seat.seat_number"))  {
+            return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "seat")));
         }
         return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
     }
