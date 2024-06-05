@@ -1,22 +1,24 @@
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   setSignOutState,
-  selectUserName,
-  selectFullName,
   setUserLoginDetails,
 } from "../features/user/userSlice";
 import Cookies from "js-cookie";
-import { loadDataProfile } from "../data/data";
+import { loadDataProfile, searchMovieByName } from "../data/data";
 import images from "../data/images";
 
 const Header = ({ updateHeader }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = Cookies.get("token");
-  const fullName = useSelector(selectFullName);
+  const searchResultRef = useRef(null);
+  const [searching, setSearching] = useState(false);
+  const [searchName, setSearchName] = useState();
+  const [searchMovies, setSearchMovies] = useState([]);
+
   const [userDetail, setUserDetail] = useState({
     username: "",
     email: "",
@@ -76,6 +78,32 @@ const Header = ({ updateHeader }) => {
     // Render lại khi fullName thay đổi
   }, [updateHeader]);
 
+  useEffect(() => {
+    searchMovieByName(searchName)
+      .then((data) => {
+        console.log(data);
+        setSearchMovies(data);
+      })
+      .catch((error) => {
+        setSearchMovies([]);
+        console.log(error);
+      });
+  }, [searchName]);
+
+  const searchHandle = (e) => {
+    setSearching(true);
+    setSearchName(e.target.value);
+  };
+
+  document.addEventListener("click", (e) => {
+    if (
+      searchResultRef.current &&
+      !searchResultRef.current.contains(e.target)
+    ) {
+      setSearching(false);
+    }
+  });
+
   return (
     <Nav>
       <Logo>
@@ -90,9 +118,41 @@ const Header = ({ updateHeader }) => {
           <img src={images.movieIcon} alt="Movie" />
           <span>PHIM</span>
         </a>
-        <a href="/search">
+        <a>
           <img src={images.searchIcon} alt="Search" />
           <span>TÌM KIẾM</span>
+          <Search>
+            <input
+              onChange={searchHandle}
+              type="text"
+              autoFocus
+              placeholder="Nhập tên phim"
+            />
+          </Search>
+          {searching ? (
+            <SearchResult ref={searchResultRef}>
+              <ul>
+                {searchMovies.map((movie, key) => (
+                  <li key={key}>
+                    <a href={`/detail/` + movie.id}>
+                      <ResultPoster>
+                        <img
+                          src={movie.poster_url}
+                          alt={`${movie.title} poster`}
+                        />
+                      </ResultPoster>
+                      <ResultTitle>
+                        {movie.title}
+                        <span>Ngày chiếu: {movie.released_date}</span>
+                      </ResultTitle>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </SearchResult>
+          ) : (
+            <></>
+          )}
         </a>
       </NavMenu>
       {!isLoggedIn ? (
@@ -139,6 +199,93 @@ const Logo = styled.a`
     display: block;
     width: 100%;
   }
+`;
+
+const Search = styled.div`
+  display: none;
+  opacity: 0;
+  input {
+    height: 25px;
+    width: 200px;
+    margin-left: 25px;
+    border-style: none;
+    font-size: 12px;
+    letter-spacing: 2px;
+    outline: none;
+    border-radius: 10px;
+    transition: all 0.5s ease-in-out;
+    background-color: rgb(249, 249, 249);
+    color: #090b13;
+    }
+  }
+`;
+
+const SearchResult = styled.div`
+  position: absolute;
+  overflow: auto;
+  top: 0;
+  margin-top: 70px;
+  height: auto;
+  max-height: 400px;
+  border: 1px solid black;
+  background: #fff;
+  display: grid;
+  opacity: 0.95;
+
+  ul {
+    background: rgba(0, 0, 0, 0.95);
+    float: left;
+    box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.52);
+    margin: 0;
+    padding: 0;
+
+    li {
+      border-bottom: solid 1px rgba(255, 255, 255, 0.08);
+      float: left;
+      width: 100%;
+      display: block;
+      padding: 12px;
+
+      a {
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      &:hover {
+        background: rgba(10, 10, 10, 0.5);
+        opacity: 1;
+      }
+    }
+  }
+`;
+
+const ResultPoster = styled.div`
+  float: left !important;
+  display: inline-block !important;
+  margin-right: 20px !important;
+  width: 55px !important;
+  height: 70px !important;
+  overflow: hidden !important;
+
+  img {
+    margin-top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+`;
+
+const ResultTitle = styled.div`
+  display: flex;
+  flex-flow: column;
+  letter-spacing: 1.42px;
+  margin-top: -40px;
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const NavMenu = styled.div`
@@ -193,6 +340,10 @@ const NavMenu = styled.div`
     }
 
     &:hover {
+      ${Search} {
+        display: block;
+        opacity: 1;
+      }
       span:before {
         transform: scaleX(1);
         visibility: visible;

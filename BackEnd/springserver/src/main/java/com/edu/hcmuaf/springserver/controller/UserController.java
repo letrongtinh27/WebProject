@@ -2,22 +2,18 @@ package com.edu.hcmuaf.springserver.controller;
 
 import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
 import com.edu.hcmuaf.springserver.auth.RegisterAdminRequest;
-import com.edu.hcmuaf.springserver.dto.UserRequest;
-import com.edu.hcmuaf.springserver.dto.UserResponse;
+import com.edu.hcmuaf.springserver.dto.request.UserRequest;
+import com.edu.hcmuaf.springserver.dto.response.UserResponse;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @RestController

@@ -216,7 +216,7 @@ const LoginForm = (props) => {
         <LoginGoole>
           <label>Đăng nhập bằng:</label>
           <IconGooge>
-            <a href="#">
+            <a href="http://localhost:8080/">
               <img src={images.googleLogo} />
             </a>
           </IconGooge>
