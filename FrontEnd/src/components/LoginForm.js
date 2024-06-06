@@ -51,7 +51,7 @@ const LoginForm = (props) => {
 
     if (!userName) {
       if (validateLogin()) {
-        const id = toast.loading("Đang đăng nhập...");
+        const id = toast.loading("Đang đăng nhập...", { autoClose: false });
         login(formdata)
           .then((data) => {
             if (data.code === 200) {
@@ -195,6 +195,7 @@ const LoginForm = (props) => {
             type="submit"
             onClick={handleLogin}
             className={isLoading ? "loading" : ""}
+            disabled={isLoading ? true : false}
           >
             {isLoading ? "Đang xử lý" : "Đăng nhập"}
           </button>

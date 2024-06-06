@@ -168,7 +168,6 @@ const Account = ({ updateHeader }) => {
   const genders = [
     { value: "Nam", label: "Nam" },
     { value: "Nữ", label: "Nữ" },
-    { value: "Khác", label: "Khác" },
   ];
   // kiểm tra định dạng email
   function isValidEmailFormat(email) {
@@ -299,7 +298,9 @@ const Account = ({ updateHeader }) => {
                     isLoading={false}
                     isRtl={false}
                     isSearchable={true}
-                    defaultValue={genders.at(0)}
+                    defaultValue={
+                      gender === "Nam" ? genders.at(0) : genders.at(1)
+                    }
                     options={genders}
                     name="gender"
                     onChange={onHandleChangeGender}
@@ -719,3 +720,5 @@ const ShowPassword = styled.div`
 `;
 
 export default Account;
+
+export { AccountTitle };

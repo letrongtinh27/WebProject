@@ -15,6 +15,7 @@ const Header = ({ updateHeader }) => {
   const navigate = useNavigate();
   const token = Cookies.get("token");
   const searchResultRef = useRef(null);
+  const navRef = useRef(null);
   const [searching, setSearching] = useState(false);
   const [searchName, setSearchName] = useState();
   const [searchMovies, setSearchMovies] = useState([]);
@@ -28,6 +29,10 @@ const Header = ({ updateHeader }) => {
     birthday: "",
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const showNavbar = () => {
+    navRef.current.classList.toggle("responsive_nav");
+  };
 
   const setUser = (user) => {
     dispatch(
@@ -81,7 +86,6 @@ const Header = ({ updateHeader }) => {
   useEffect(() => {
     searchMovieByName(searchName)
       .then((data) => {
-        console.log(data);
         setSearchMovies(data);
       })
       .catch((error) => {
@@ -106,17 +110,17 @@ const Header = ({ updateHeader }) => {
 
   return (
     <Nav>
-      <Logo>
+      <Logo href="/">
         <img src={images.logo} alt="Disney+" />
       </Logo>
-      <NavMenu>
+      <NavMenu ref={navRef}>
         <a href="/">
           <img src={images.homeIcon} alt="Home" />
           <span>TRANG CHỦ</span>
         </a>
-        <a href="/movie">
+        <a href="/theatre">
           <img src={images.movieIcon} alt="Movie" />
-          <span>PHIM</span>
+          <span>HỆ THỐNG RẠP</span>
         </a>
         <a>
           <img src={images.searchIcon} alt="Search" />
@@ -168,6 +172,11 @@ const Header = ({ updateHeader }) => {
           </SignOut>
         </>
       )}
+      <MenuLogo>
+        <button onClick={showNavbar}>
+          <img src={images.menuLogo} />
+        </button>
+      </MenuLogo>
     </Nav>
   );
 };
@@ -185,6 +194,10 @@ const Nav = styled.nav`
   padding: 0 36px;
   letter-spacing: 16px;
   z-index: 3;
+
+  .responsive_nav {
+    display: none;
+  }
 `;
 
 const Logo = styled.a`
@@ -300,6 +313,22 @@ const NavMenu = styled.div`
   margin-right: auto;
   margin-left: 25px;
 
+  &.responsive_nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    background-color: #090b13;
+
+    a {
+      padding: 10px 36px;
+      width: 100%;
+    }
+  }
+
   a {
     display: flex;
     align-items: center;
@@ -350,6 +379,41 @@ const NavMenu = styled.div`
         opacity: 1 !important;
       }
     }
+
+    @media only screen and (max-width: 479px) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+
+    &:hover {
+      ${Search} {
+        display: contents !important;
+        opacity: 1;
+      }
+    }
+
+    &.responsive_nav {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      width: 100%;
+      height: auto;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      background-color: #090b13;
+
+      a {
+        display: block !important;
+        padding: 10px 36px;
+        width: 100%;
+        position: relative;
+        text-align: left;
+      }
+    }
   }
 `;
 
@@ -392,6 +456,10 @@ const DropDown = styled.div`
       font-weight: 700;
     }
   }
+
+  @media (max-width: 768px) {
+    left: 80%;
+  }
 `;
 
 const SignOut = styled.div`
@@ -416,7 +484,23 @@ const SignOut = styled.div`
     }
   }
 `;
-
+const MenuLogo = styled.div`
+  display: none;
+  button {
+    background-color: #090b13;
+    border: none;
+    cursor: pointer;
+    img {
+      height: 20px;
+      min-width: 20px;
+      width: 20px;
+      z-index: auto;
+    }
+  }
+  @media only screen and (max-width: 479px) {
+    display: block;
+  }
+`;
 export default Header;
 
 // Login redux 1:51:19
