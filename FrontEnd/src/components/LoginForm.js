@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectUserName } from "../features/user/userSlice";
 import Cookies from "js-cookie";
+import ReactLoading from "react-loading";
 import { login, register } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -194,10 +195,13 @@ const LoginForm = (props) => {
           <button
             type="submit"
             onClick={handleLogin}
-            className={isLoading ? "loading" : ""}
             disabled={isLoading ? true : false}
           >
-            {isLoading ? "Đang xử lý" : "Đăng nhập"}
+            {isLoading ? (
+              <ReactLoading type="spin" color={"#ffff"} width={"9%"} />
+            ) : (
+              "Đăng nhập"
+            )}
           </button>
         </RowInput>
         <RowInput>
@@ -269,12 +273,12 @@ const LoginForm = (props) => {
           ></input>
         </RowInput>
         <RowInput>
-          <button
-            type="submit"
-            onClick={handleRegister}
-            className={isLoading ? "loading" : ""}
-          >
-            {isLoading ? "Đang xử lý" : "Đăng ký"}
+          <button type="submit" onClick={handleRegister}>
+            {isLoading ? (
+              <ReactLoading type="spin" color={"#ffff"} width={"9%"} />
+            ) : (
+              "Đăng ký"
+            )}
           </button>
         </RowInput>
         <Register>
@@ -295,7 +299,7 @@ const LoginForm = (props) => {
 
 const Login = styled.div`
   min-width: 300px;
-  min-height: 550px;
+  min-height: 500px;
   width: 30%;
   height: auto;
   margin: 5% auto;
@@ -309,21 +313,6 @@ const Login = styled.div`
     font-size: 2rem;
     color: #f9f9f9;
   }
-`;
-// Định nghĩa keyframes spin
-const spin = keyframes`
-    0% {
-        content: ".";
-    }
-    33% {
-        content: "..";
-    }
-    66% {
-        content: "...";
-    }
-    100% {
-        content: "";
-    }
 `;
 
 // Styled component RowInput
@@ -398,11 +387,9 @@ const RowInput = styled.div`
       opacity: 0.8;
     }
 
-    &.loading::after {
-      content: "";
-      animation: ${spin} 2s steps(1, end) infinite;
+    div {
+      margin: 0 auto;
     }
-  }
 `;
 
 const Register = styled.div`

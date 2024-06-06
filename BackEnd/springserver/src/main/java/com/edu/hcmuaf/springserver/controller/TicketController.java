@@ -1,6 +1,6 @@
 package com.edu.hcmuaf.springserver.controller;
 
-import com.edu.hcmuaf.springserver.dto.TicketResponse;
+import com.edu.hcmuaf.springserver.dto.response.TicketResponse;
 import com.edu.hcmuaf.springserver.entity.ShowTime;
 import com.edu.hcmuaf.springserver.entity.Ticket;
 import com.edu.hcmuaf.springserver.service.TicketService;

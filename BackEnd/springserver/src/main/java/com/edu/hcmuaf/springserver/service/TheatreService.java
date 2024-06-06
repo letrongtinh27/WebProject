@@ -37,6 +37,7 @@ public class TheatreService {
     public Theatre createTheatre(TheatreRequest theatreRequest) {
         System.out.println(theatreRequest);
         Theatre theatre = new Theatre();
+        theatre.setImage(theatreRequest.getImage());
         theatre.setAddress(theatreRequest.getAddress());
         theatre.setEmail(theatreRequest.getEmail());
         theatre.setName(theatreRequest.getName());
@@ -50,6 +51,7 @@ public class TheatreService {
 
     public Theatre updateTheatre(TheatreRequest theatreRequest, int id) {
         Theatre existTheatre = theatreRepository.findOneById(id);
+        existTheatre.setImage(theatreRequest.getImage());
         existTheatre.setAddress(theatreRequest.getAddress());
         existTheatre.setEmail(theatreRequest.getEmail());
         existTheatre.setName(theatreRequest.getName());

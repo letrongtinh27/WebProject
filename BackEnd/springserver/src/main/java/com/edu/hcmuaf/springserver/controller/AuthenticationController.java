@@ -3,8 +3,10 @@ package com.edu.hcmuaf.springserver.controller;
 import com.edu.hcmuaf.springserver.auth.AuthenticationRequest;
 import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
 import com.edu.hcmuaf.springserver.auth.RegisterRequest;
+import com.edu.hcmuaf.springserver.auth.ResetPasswordRequest;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.UserService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -64,6 +66,15 @@ public class AuthenticationController {
         registerRequest.setFullname(fullname);
 
         return register(registerRequest);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws MessagingException {
+        AuthenticationResponse authenticationResponse = userService.resetPassword(resetPasswordRequest);
+        if(authenticationResponse != null) {
+            return ResponseEntity.ok(authenticationResponse);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 }
