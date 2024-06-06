@@ -4,13 +4,14 @@ import clsx from "clsx";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getSeatsByShowTime, payment } from "../data/data";
+import { getMovieById, getSeatsByShowTime, payment } from "../data/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Booking = (props) => {
   const [seatsData, setSeatsData] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [movie, setMovie] = useState([]);
 
   const token = Cookies.get("token");
 
@@ -63,6 +64,14 @@ const Booking = (props) => {
   }, [navigate]);
 
   useEffect(() => {
+    getMovieById({ id: movieId })
+      .then((data) => {
+        setMovie(data);
+      })
+      .catch((error) => {
+        setMovie([]);
+      });
+
     getSeatsByShowTime(showTimeId, theatreId, room, token)
       .then((data) => {
         setSeatsData(data);
@@ -125,12 +134,8 @@ const Booking = (props) => {
       <ToastContainer />
       <Book>
         <Left>
-          <img src="/images/movie2.jpg" alt="" />
+          <img src={movie.poster_url} alt="" />
           <Infor>
-            {/* <h3>Đạo diễn</h3>
-            <p>Denis Vileneuve</p>
-            <h3>Thời lượng</h3>
-            <p>167 phút</p> */}
             <h3>Thời gian đặt vé</h3>
             <p>{timeRemaining} giây</p>
             <h3>Số lượng vé</h3>
@@ -182,6 +187,19 @@ const Booking = (props) => {
                 );
               })}
             </SeatsContainer>
+            <Infor2>
+              <h3>Thời gian đặt vé</h3>
+              <p>{timeRemaining} giây</p>
+              <h3>Số lượng vé</h3>
+              <p>{booking.amount} vé</p>
+              <h3>Giá tiền</h3>
+              <p>
+                {booking.price.toLocaleString("vi", {
+                  style: "currency",
+                  currency: "VND",
+                })}
+              </p>
+            </Infor2>
             <SubmitButton onClick={paymentHandle}>Xác nhận</SubmitButton>
           </Cinema>
         </Right>
@@ -217,6 +235,9 @@ const Book = styled.div`
   display: flex;
   max-height: 540px;
   min-height: 500px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Left = styled.div`
@@ -228,6 +249,10 @@ const Left = styled.div`
   img {
     width: 100%;
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Right = styled.div`
@@ -237,6 +262,9 @@ const Right = styled.div`
   border: 1px solid #fff;
   padding: 10px 40px;
   background: unset;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Infor = styled.div`
@@ -245,6 +273,20 @@ const Infor = styled.div`
   h3,
   p {
     margin: 5px 0px;
+  }
+`;
+
+const Infor2 = styled.div`
+  color: #fff;
+  display: none;
+  width: 120%;
+  h3,
+  p {
+    margin: 5px 5px;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
   }
 `;
 

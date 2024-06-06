@@ -12,10 +12,6 @@ import images from "../data/images.js";
 
 const Home = (props) => {
   const dispatch = useDispatch();
-  // const userName = useSelector(selectUserName);
-  // let recommends = [];
-  // let newMovies = [];
-  // let commingsoons = [];
 
   useEffect(() => {
     const fetchData = async () => {
