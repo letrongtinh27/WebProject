@@ -97,6 +97,9 @@ public class MovieService {
         }
         Specification<Movie> specification = (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
+            if (filterJson.has("q")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("title"), "%" + filterJson.get("q").asText().toLowerCase() + "%"));
+            }
             if (filterJson.has("title")) {
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("title"), "%" + filterJson.get("title").asText() + "%"));
             }

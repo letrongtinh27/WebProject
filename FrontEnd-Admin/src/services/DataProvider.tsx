@@ -1,10 +1,57 @@
 import {DataProvider, fetchUtils} from 'react-admin'
 import {log} from "util";
+import {imgProvider} from "./ImgProvider";
 // const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
 const apiUrl = 'http://localhost:8080/api'
 const httpClient = fetchUtils.fetchJson
 
 let token = localStorage.getItem("admin")
+
+
+// httpClient.interceptors.response.use(
+//     response => response,
+//     async error => {
+//         if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+//             await httpClient.post(`${process.env.REACT_APP_API_URL}/auth/refresh-token`, {
+//                 headers: {
+//                     Accept: 'application/json',
+//                     'Content-Type': 'application/json'
+//                 },
+//                 withCredentials: true
+//             }).then((response: any) => {
+//                 console.log(response)
+//                 Promise.resolve();
+//             }).catch((error) => {
+//                 if (error.response.status === 400) {
+//                     // @ts-ignore
+//                     authProvider.logout();
+//                     window.location.href = '/#/login';
+//                     return Promise.reject({message: "Your session is expired. Please login again."});
+//                 }
+//             });
+//         } else {
+//             if (error.response.status === 400) {
+//                 // @ts-ignore
+//                 authProvider.logout();
+//                 window.location.href = '/#/login';
+//                 return Promise.reject({message: "Your session is expired. Please login again."});
+//             }
+//             return Promise.reject({message: "There was an error. Please try again."});
+//         }
+//     }
+// )
+
+async function getBase64(file: any) {
+    return new Promise((resolve, reject) => {
+        const reader: any = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => {
+            resolve(reader.result.split(',')[1])
+        }
+        reader.onerror = reject
+    })
+}
+
 export const dataProvider: DataProvider = {
 // @ts-ignore
     getList: async (resource: any, params: any) => {
@@ -19,8 +66,8 @@ export const dataProvider: DataProvider = {
                 page: page - 1,
                 perPage: perPage,
             };
-            if (resource === 'movies') {
-                const {json} = await httpClient(`${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`, {
+            if (resource === 'category') {
+                const {json} = await httpClient(`${apiUrl}/${resource}`, {
                     method: 'GET',
                     headers: new Headers({
                         'Content-Type': 'application/json',
@@ -31,11 +78,11 @@ export const dataProvider: DataProvider = {
                 console.log("Json: ", json)
                 console.log("Content: ", json.content)
                 return {
-                    data: json.content,
+                    data: json,
                     total: json.length,
                 }
             }
-            const {json} = await httpClient(`${apiUrl}/${resource}/all`, {
+            const {json} = await httpClient(`${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`, {
                 method: 'GET',
                 headers: new Headers({
                     'Content-Type': 'application/json',
@@ -47,8 +94,8 @@ export const dataProvider: DataProvider = {
             console.log("Content: ", json.content)
 
             return {
-                data: json,
-                total: json.length,
+                        data: json.content,
+                        total: parseInt(json.totalElements, 10),
             }
 
         } catch (err: any) {
@@ -67,8 +114,12 @@ export const dataProvider: DataProvider = {
         return { data: json };
     },
 
+
     // @ts-ignore
     create: async (resource: any, params: any) => {
+        let background = null;
+        let poster = null;
+        let titleimg = null;
         let movie;
         let theatre;
         let categories
@@ -124,6 +175,33 @@ export const dataProvider: DataProvider = {
             return Promise.resolve({data: json});
         }
         if (resource === 'movies') {
+            if (params.data.background_img_url_new != undefined && params.data.background_img_url_new != null ) {
+                let img = null;
+                await getBase64(params.data.background_img_url_new.rawFile)
+                    .then(res => {
+                        img = res;
+                    })
+                    .catch(err => console.log(err))
+                background = await imgProvider(img);
+            }
+            if (params.data.title_img_url_new != undefined && params.data.title_img_url_new != null ) {
+                let img = null;
+                await getBase64(params.data.title_img_url_new.rawFile)
+                    .then(res => {
+                        img = res;
+                    })
+                    .catch(err => console.log(err))
+                titleimg = await imgProvider(img);
+            }
+            if (params.data.poster_url_new != undefined && params.data.poster_url_new != null ) {
+                let img = null;
+                await getBase64(params.data.poster_url_new.rawFile)
+                    .then(res => {
+                        img = res;
+                    })
+                    .catch(err => console.log(err))
+                poster = await imgProvider(img);
+            }
             const data: {
                 background_img_url: string;
                 title_img_url: string;
@@ -137,12 +215,12 @@ export const dataProvider: DataProvider = {
                 type: string;
                 categories: { id: number; name: null }[];
             } = {
-                background_img_url: params.data.background_img_url || '',
-                title_img_url: params.data.title_img_url || '',
+                background_img_url: background =! null ? background : params.data.background_img_url || '',
+                title_img_url: titleimg != null ? titleimg : params.data.title_img_url || '',
                 title: params.data.title,
                 released_date: new Date(params.data.released_date).toLocaleDateString('sv-SE'),
                 trailer_video_url: params.data.trailer_video_url || '',
-                poster_url: params.data.trailer_video_url || '',
+                poster_url: poster != null ? poster : params.data.trailer_video_url || '',
                 description: params.data.description,
                 sub_title: params.data.sub_title,
                 age_type: params.data.age_type,
@@ -160,7 +238,6 @@ export const dataProvider: DataProvider = {
             });
             window.location.href = `/#/${resource}`;
             return Promise.resolve({data: json});
-
         }
         if (resource === 'shows') {
 
@@ -183,10 +260,41 @@ export const dataProvider: DataProvider = {
     }
     ,
     update: async (resource: any, params: any) => {
+        let background = null;
+        let titleimg = null;
+        let poster = null;
         console.log(resource)
         console.log(params)
         let category;
-        if (resource === 'movie') {
+
+        if (resource === 'movies') {
+            if (params.data.background_img_url_new != undefined && params.data.background_img_url_new != null ) {
+                let img = null;
+                await getBase64(params.data.background_img_url_new.rawFile)
+                    .then(res => {
+                        img = res;
+                    })
+                    .catch(err => console.log(err))
+                background = await imgProvider(img);
+            }
+            if (params.data.title_img_url_new != undefined && params.data.title_img_url_new != null ) {
+                let img = null;
+                await getBase64(params.data.title_img_url_new.rawFile)
+                    .then(res => {
+                        img = res;
+                    })
+                    .catch(err => console.log(err))
+                titleimg = await imgProvider(img);
+            }
+            if (params.data.poster_url_new != undefined && params.data.poster_url_new != null ) {
+                let img = null;
+                await getBase64(params.data.poster_url_new.rawFile)
+                    .then(res => {
+                        img = res;
+                    })
+                    .catch(err => console.log(err))
+                poster = await imgProvider(img);
+            }
             const data: {
                 background_img_url: string;
                 title_img_url: string;
@@ -200,12 +308,12 @@ export const dataProvider: DataProvider = {
                 type: string;
                 categories: { id: number; name: null }[];
             } = {
-                background_img_url: params.data.background_img_url || '',
-                title_img_url: params.data.title_img_url || '',
+                background_img_url: background =! null ? background : params.data.background_img_url || '',
+                title_img_url: titleimg != null ? titleimg : params.data.title_img_url || '',
                 title: params.data.title,
                 released_date: new Date(params.data.released_date).toLocaleDateString('sv-SE'),
                 trailer_video_url: params.data.trailer_video_url || '',
-                poster_url: params.data.trailer_video_url || '',
+                poster_url: poster != null ? poster : params.data.trailer_video_url || '',
                 description: params.data.description,
                 sub_title: params.data.sub_title,
                 age_type: params.data.age_type,

@@ -4,20 +4,46 @@ import {
     DateTimeInput,
     Edit,
     ImageField, ImageInput, required, SelectInput,
-    TabbedForm,
+    TabbedForm, TextField,
     TextInput, useGetList,
-    useRecordContext
 } from 'react-admin';
 import React, {useEffect, useState} from "react";
 import {Grid } from "@mui/material";
 import {Category, Movie} from "../../types";
 import {MovieCategory} from "../movie/MovieCategory"
+import {useWatch} from "react-hook-form";
+import Typography from "@mui/material/Typography";
 
-const RichTextInput = React.lazy(() =>
-    import('ra-input-rich-text').then(module => ({
-        default: module.RichTextInput,
-    }))
-);
+const ImageUploader: React.FC<ImageUploaderProps> = ({ source, label }) => {
+    const isReturned = useWatch({ name: source });
+    const newSource = `${source}_new`;
+
+    return (
+        <>
+            <Typography variant="h6" gutterBottom>
+                {label}:
+            </Typography>
+            <ImageInput
+                source={newSource}
+                accept="image/*"
+                placeholder={<p>Add new Avt Img</p>}
+                label={`Thêm ảnh ${label} mới`}
+            >
+                <ImageField
+                    source="src"
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '5px',
+                        marginBottom: '5px',
+                        maxHeight: '100px',
+                    }}
+                />
+            </ImageInput>
+        </>
+    )
+};
+
 
 export const MovieCreate = (props: any) => {
     const choices = [
@@ -32,6 +58,7 @@ export const MovieCreate = (props: any) => {
         pagination: {page: 1, perPage: 100},
         sort: {field: 'name', order: 'ASC'},
     });
+    console.log("Data" , data)
     useEffect(() => {
         if (data) {
             setCategories(data);
@@ -47,13 +74,9 @@ export const MovieCreate = (props: any) => {
 >
     <Grid container columnSpacing={2}>
         <Grid item xs={12} sm={12}>
-    <ImageField source="background_img_url" label="Back ground"/>
-        </Grid>
-        <Grid item xs={12} sm={12}>
-    <ImageField source="title_img_url" src="url" label="image"/>
-        </Grid>
-        <Grid item xs={12} sm={12}>
-    <ImageField source="poster_url" src="url" label="poster"/>
+            <ImageUploader source="background_img_url" label="Background" />
+            <ImageUploader source="title_img_url" label="Title Image" />
+            <ImageUploader source="poster_url" label="Poster" />
         </Grid>
         </Grid>
         </TabbedForm.Tab>
@@ -109,6 +132,10 @@ export const MovieCreate = (props: any) => {
     </TabbedForm>
     </Create>
 );
+}
+interface ImageUploaderProps {
+    source: string;
+    label: string;
 }
 
 const req = [required()];
