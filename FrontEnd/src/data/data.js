@@ -47,6 +47,15 @@ export const getAllTheatre = async () => {
   }
 };
 
+export const getTheatreById = async ({ id }) => {
+  try {
+    const response = await API.get(`theatres/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // authen
 export const login = async (authenticationRequest) => {
   try {
@@ -76,6 +85,18 @@ export const loginGoogle = async (sub, fullName, email) => {
     return response.data;
   } catch (error) {
     // console.error("Error fetching profile data:", error);
+    throw error;
+  }
+};
+
+export const resetPassword = async (resetPasswordRequest) => {
+  try {
+    const response = await API.post(
+      `auth/reset-password`,
+      resetPasswordRequest
+    );
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };
@@ -206,5 +227,30 @@ export const getTicketByUserID = async (userId, token) => {
     // Bắt lỗi và không throw error ra ngoài
     console.error("Error fetching shows:", error);
     return [];
+  }
+};
+
+// GoogleMap
+export const geocode = async (address) => {
+  try {
+    const response = await axios.get(
+      "https://maps.googleapis.com/maps/api/geocode/json",
+      {
+        params: {
+          address: address,
+          key: "AIzaSyBA-wMiHOMAOZuB8ngN1xv0p-9dViRnVeA",
+        },
+      }
+    );
+
+    if (response.data.status === "OK") {
+      const { lat, lng } = response.data.results[0].geometry.location;
+      return { lat, lng };
+    } else {
+      throw new Error("Không tìm thấy vị trí");
+    }
+  } catch (error) {
+    console.error("Lỗi khi lấy tọa độ:", error);
+    return null;
   }
 };

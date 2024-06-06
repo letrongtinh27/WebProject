@@ -36,11 +36,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         req -> req
+
                                 .requestMatchers("/login/oauth2/code/google")
                                 .permitAll()
                                 .requestMatchers("/api/theatres/**")
                                 .permitAll()
                                 .requestMatchers("/api/auth/login_admin/**")
+                                .permitAll()
+                                .requestMatchers("/api/auth/reset-password")
                                 .permitAll()
                                 .requestMatchers("/api/auth/login")
                                 .permitAll()
@@ -69,6 +72,7 @@ public class SecurityConfig {
 //                                .permitAll()
                                 .requestMatchers("/api/auth/login/**", "/api/auth/register/**", "/api/auth/login-google")
                                 .permitAll()
+                                .requestMatchers("/api/**").hasAnyAuthority("admin")
 
                                 .requestMatchers("/api/users/**").hasAnyAuthority("user")
                                 .requestMatchers("/api/shows/**").hasAnyAuthority("user")
@@ -76,7 +80,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/seats/**").hasAnyAuthority("user")
                                 .requestMatchers("/api/payment/**").hasAnyAuthority("user")
                                 .requestMatchers("/api/tickets/**").hasAnyAuthority("user")
-                                .requestMatchers("/api/**").hasAnyAuthority("admin")
+
 //                                .requestMatchers("/api/**").hasAnyAuthority("user")
 
                                 .anyRequest()

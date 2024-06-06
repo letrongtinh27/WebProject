@@ -34,8 +34,8 @@ const Theatre = (props) => {
 
   return (
     <Container backgroundImage={images.homeBackground}>
-      <ImgSlider />
-      <Viewers />
+      {/* <ImgSlider />
+      <Viewers /> */}
       <AccountTitle>
         <h1>Hệ Thống Rạp</h1>
       </AccountTitle>
@@ -45,11 +45,8 @@ const Theatre = (props) => {
           {theatre_HCM &&
             theatre_HCM.map((theatre, key) => (
               <Wrap key={key}>
-                <Link to={`/detail/` + theatre.id}>
-                  <img
-                    src="https://www.bhdstar.vn/wp-content/uploads/2023/12/GARDEN-243x330-1.jpg"
-                    alt={theatre.name}
-                  ></img>
+                <Link to={`/theatreDetail/` + theatre.id}>
+                  <img src={theatre.image} alt={theatre.name}></img>
                   <span>{theatre.name}</span>
                 </Link>
               </Wrap>
@@ -62,11 +59,8 @@ const Theatre = (props) => {
           {theatre_HN &&
             theatre_HN.map((theatre, key) => (
               <Wrap key={key}>
-                <Link to={`/detail/` + theatre.id}>
-                  <img
-                    src="https://www.bhdstar.vn/wp-content/uploads/2023/12/GARDEN-243x330-1.jpg"
-                    alt={theatre.name}
-                  ></img>
+                <Link to={`/theatreDetail/` + theatre.id}>
+                  <img src={theatre.image} alt={theatre.name}></img>
                   <span>{theatre.name}</span>
                 </Link>
               </Wrap>

@@ -65,7 +65,7 @@ public class PaymentController {
             Calendar calendar = Calendar.getInstance();
             for (int i = 0; i < paymentRequest.getAmount(); i++) {
                 if (ticketService.checkExistTicket(paymentRequest.getShowTimeId(), paymentRequest.getListSeatId().get(i))) {
-                    emailService.sendTextEmail(user.getEmail(),"Chỗ ngồi đã được đặt, chúng tôi xin lỗi vì điều đó. Xin hãy đặt ghế ngồi khác, xin cảm ơn!");
+                    emailService.sendTextEmail(user.getEmail(),"Kết quả đặt vé","Chỗ ngồi đã được đặt, chúng tôi xin lỗi vì điều đó. Xin hãy đặt ghế ngồi khác, xin cảm ơn!");
                     return ResponseEntity.badRequest().body(new PaymentResponse(HttpServletResponse.SC_BAD_REQUEST, "Chỗ ngồi đã được đặt",null));
                 } else {
                     Reservation reservation = new Reservation();

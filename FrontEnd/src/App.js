@@ -22,6 +22,8 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import LoginGoole from "./components/LoginGoogle";
 import Theatre from "./components/Theatre";
+import TheatreDetail from "./components/TheatreDetail";
+import ResetPassword from "./components/ResetPassword";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -67,6 +69,8 @@ function App() {
             element={checkAccount ? <Navigate to="/home" /> : <Login />}
           />
           <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/theatreDetail/:id" element={<TheatreDetail />} />
+
           <Route path="/booking" element={<Booking />} />
           <Route path="/theatre" element={<Theatre />} />
           <Route path="/payment-callback" element={<Payment />} />
@@ -79,6 +83,10 @@ function App() {
                 <Navigate to="/home" />
               )
             }
+          />
+          <Route
+            path="/reset-password"
+            element={checkAccount ? <Navigate to="/home" /> : <ResetPassword />}
           />
         </Routes>
       </Router>

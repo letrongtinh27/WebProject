@@ -27,8 +27,10 @@ import viewersNational from "../images/viewers-national.png";
 import viewersPixar from "../images/viewers-pixar.png";
 import viewersStarwars from "../images/viewers-starwars.png";
 import menuLogo from "../images/icons8-menu-50.png";
+import priceBoard from "../images/t5_20230903094133547.jpg";
 
 const images = {
+  priceBoard,
   menuLogo,
   lotteLogo,
   galaxyLogo,
