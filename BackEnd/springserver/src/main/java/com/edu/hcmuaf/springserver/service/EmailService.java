@@ -48,11 +48,11 @@ public class EmailService {
         javaMailSender.send(message);
     }
 
-    public void sendTextEmail(String to, String content) throws MessagingException {
+    public void sendTextEmail(String to, String subject, String content) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setTo(to);
-        helper.setSubject("Kết quả đặt vé xem phim");
+        helper.setSubject(subject);
 
         helper.setText(content);
 

@@ -1,15 +1,14 @@
 package com.edu.hcmuaf.springserver.service;
 
-import com.edu.hcmuaf.springserver.auth.AuthenticationRequest;
-import com.edu.hcmuaf.springserver.auth.AuthenticationResponse;
-import com.edu.hcmuaf.springserver.auth.RegisterAdminRequest;
-import com.edu.hcmuaf.springserver.auth.RegisterRequest;
+import com.edu.hcmuaf.springserver.auth.*;
+import com.edu.hcmuaf.springserver.config.VNPayConfig;
 import com.edu.hcmuaf.springserver.dto.request.UserRequest;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.repositories.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,8 @@ public class UserService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private EmailService emailService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
 
     public List<User> getListUser() {
@@ -198,6 +199,19 @@ public class UserService {
             return userRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "email")));
         }
         return userRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
+    }
+
+    public AuthenticationResponse resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException {
+        User user = userRepository.findByUsernameAndEmail(resetPasswordRequest.getUsername(), resetPasswordRequest.getEmail());
+        if(user == null) {
+            return AuthenticationResponse.builder().code(400).message("Username or email already exists").build();
+        }
+        String newPassword = VNPayConfig.getRandomNumber(8);
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+        emailService.sendTextEmail(user.getEmail(),"Mật khẩu mới","Mật khẩu mới của tài khoản: " + user.getUsername() + " là: " + newPassword);
+
+        return AuthenticationResponse.builder().code(200).message("Reset password success").build();
     }
 }
 

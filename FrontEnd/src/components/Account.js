@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import Select from "react-select";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editUserProfile } from "../data/data";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
+import ReactLoading from "react-loading";
+import { useNavigate } from "react-router-dom";
+
 import TicketTable from "./TicketTable";
 import {
   selectUserId,
@@ -14,6 +17,7 @@ import {
   selectGender,
   selectPhone,
   setUserLoginDetails,
+  setSignOutState,
 } from "../features/user/userSlice";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -21,7 +25,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Account = ({ updateHeader }) => {
   const dispatch = useDispatch();
-  const token = Cookie.get("token");
+  const navigate = useNavigate();
+
+  const token = Cookies.get("token");
   const username = useSelector(selectUserName);
   const fullName = useSelector(selectFullName);
   const email = useSelector(selectEmail);
@@ -31,7 +37,7 @@ const Account = ({ updateHeader }) => {
 
   const [isChangePassword, setIsChangePassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [messageBirthday, setMessageBirthday] = useState("");
   const [messageEmail, setMessageEmail] = useState("");
   const [messagePhone, setMessagePhone] = useState("");
@@ -146,9 +152,12 @@ const Account = ({ updateHeader }) => {
   };
 
   const handelEditProfile = () => {
+    setLoading(true);
     if (checkEditProfile()) {
       editUserProfile(userProfile, token)
         .then((data) => {
+          setLoading(false);
+
           setUser(data);
           console.log(data);
           updateHeader();
@@ -160,8 +169,18 @@ const Account = ({ updateHeader }) => {
           toast.success("Thay đổi thông tin thành công !");
         })
         .catch((error) => {
+          setLoading(false);
+
           console.error(error);
         });
+    }
+  };
+
+  const signOut = () => {
+    if (username) {
+      Cookies.remove("token");
+      dispatch(setSignOutState());
+      navigate("/");
     }
   };
 
@@ -238,7 +257,7 @@ const Account = ({ updateHeader }) => {
           <AccountUsername>
             <h4>
               {username}
-              <span> Đăng xuất</span>
+              <span onClick={signOut}> Đăng xuất</span>
             </h4>
           </AccountUsername>
           <AccountInformation>
@@ -427,7 +446,11 @@ const Account = ({ updateHeader }) => {
               <AccountColInner>
                 <p>
                   <a onClick={handelEditProfile} style={{ width: "100%" }}>
-                    Cập nhật
+                    {loading ? (
+                      <ReactLoading type="spin" color={"#ffff"} width={"15%"} />
+                    ) : (
+                      "Cập nhật"
+                    )}
                   </a>
                 </p>
               </AccountColInner>
