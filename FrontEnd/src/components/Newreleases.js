@@ -1,25 +1,62 @@
+import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { selectNewreleases } from "../features/movie/movieSlice";
 
 const Newreleases = (props) => {
   const movies = useSelector(selectNewreleases);
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
   return (
     <Container>
       <h4>Phim đang chiếu</h4>
-      <Content>
+      <StyledSlider {...settings}>
         {movies &&
           movies.map((movie, key) => (
             <Wrap key={key}>
-              {movie.id}
               <Link to={`/detail/` + movie.id}>
                 <img src={movie.poster_url} alt={movie.title}></img>
               </Link>
             </Wrap>
           ))}
-      </Content>
+      </StyledSlider>
     </Container>
   );
 };
@@ -33,14 +70,30 @@ const Container = styled.div`
   }
 `;
 
-const Content = styled.div`
-  display: grid;
-  grid-gap: 25px;
-  gap: 25px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+const StyledSlider = styled(Slider)`
+  .slick-list {
+    overflow: visible;
+  }
 
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  ul li button {
+    &:before {
+      font-size: 10px;
+      color: rgb(150, 158, 171);
+    }
+  }
+  .slick-slide div {
+    margin: 0 10px;
+  }
+  li.slick-active button:before {
+    color: white;
+  }
+
+  .slick-prev {
+    left: -75px;
+  }
+
+  .slick-next {
+    right: -75px;
   }
 `;
 
