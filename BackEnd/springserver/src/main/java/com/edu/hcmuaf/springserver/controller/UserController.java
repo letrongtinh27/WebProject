@@ -8,8 +8,11 @@ import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -25,10 +28,30 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
-        System.out.println(authentication);
-        String username = authentication.getPrincipal().toString();
-        System.out.println(username);
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        Object principal = authentication.getPrincipal();
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else if (principal instanceof OAuth2User) {
+            username = ((OAuth2User) principal).getAttribute("email"); // assuming email is the username
+        } else if (principal instanceof String) {
+            username = principal.toString();
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected principal type");
+        }
+
+        System.out.println("Username: " + username);
+
         User user = userService.getUserProfileByUsername(username);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
         userResponse.setUsername(user.getUsername());
@@ -39,11 +62,9 @@ public class UserController {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         userResponse.setBirthday(sdf.format(user.getBirthday()));
 
-        if(username != null) {
-            return ResponseEntity.ok(userResponse);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userResponse);
     }
+
 
     @GetMapping("/all")
     public ResponseEntity<?> getListUser() {
