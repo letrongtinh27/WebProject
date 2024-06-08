@@ -25,8 +25,9 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
-
+        System.out.println(authentication);
         String username = authentication.getPrincipal().toString();
+        System.out.println(username);
         User user = userService.getUserProfileByUsername(username);
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
@@ -38,8 +39,10 @@ public class UserController {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         userResponse.setBirthday(sdf.format(user.getBirthday()));
 
-
-        return ResponseEntity.ok(userResponse);
+        if(username != null) {
+            return ResponseEntity.ok(userResponse);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/all")

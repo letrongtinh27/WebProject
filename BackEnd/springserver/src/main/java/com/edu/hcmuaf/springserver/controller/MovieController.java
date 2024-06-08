@@ -24,7 +24,9 @@ public class MovieController {
     @GetMapping("/all")
     public ResponseEntity<?> getListMovie() {
         List<Movie> listMovie = movieService.getAllMovie();
+
         if (listMovie != null) {
+            listMovie.removeIf(movie -> movie.getIs_active() == 1);
             return ResponseEntity.ok(listMovie);
         }
         return ResponseEntity.badRequest().body(null);
@@ -45,6 +47,7 @@ public class MovieController {
             List<Movie> movies = movieService.getAllMovie();
             List<Movie> searchMovies = new ArrayList<>();
             if(movies != null) {
+                movies.removeIf(movie -> movie.getIs_active() == 1);
                 for (Movie movie : movies) {
                     if(movie.getTitle().toLowerCase().contains(name.toLowerCase())) {
                         searchMovies.add(movie);
@@ -66,7 +69,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateMovie(@RequestBody Movie movie, @PathVariable int id) {
+    public ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable int id) {
         return ResponseEntity.ok(movieService.updateMovie(movie, id));
     }
 
