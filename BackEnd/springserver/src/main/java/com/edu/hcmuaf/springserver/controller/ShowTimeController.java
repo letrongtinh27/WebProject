@@ -36,6 +36,7 @@ public class ShowTimeController {
         List<ShowsResponse> responses = new ArrayList<>();
 
         List<ShowTime> showTimeList = showTimeService.getShowTimesByMovieIdAndTheatreId(movieId, theatreId);
+        showTimeList.removeIf(showTime -> showTime.getStatus()==1);
 
         if(!showTimeList.isEmpty()){
             for (ShowTime shows : showTimeList) {

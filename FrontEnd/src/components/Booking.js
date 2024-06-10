@@ -162,12 +162,16 @@ const Booking = (props) => {
               <SeatBaner className="seat occupied" />{" "}
               <SmallText>Đã đặt</SmallText>
             </SeatListItem>
+            <SeatListItem>
+              <SeatBaner className="seat damaged" />{" "}
+              <SmallText>Ghế hỏng</SmallText>
+            </SeatListItem>
           </ShowCase>
 
           <Cinema>
             <Screen />
             <SeatsContainer>
-              {seatsData.map(({ id, seatNumber, price, booked }) => {
+              {seatsData.map(({ id, seatNumber, price, booked, status }) => {
                 const isSelected = selectedSeats.includes(id);
                 return (
                   <Seat
@@ -176,7 +180,8 @@ const Booking = (props) => {
                     className={clsx(
                       "seat",
                       isSelected && "selected",
-                      booked && "occupied"
+                      booked && "occupied",
+                      status && "damaged"
                     )}
                     onClick={
                       !booked ? () => handleSelectedState(id, price) : null
@@ -323,6 +328,10 @@ const SeatBaner = styled.span`
   &.occupied {
     background: #cfcfcf;
   }
+
+  &.damaged {
+    background: #e63946;
+  }
 `;
 
 const Seat = styled.span`
@@ -350,6 +359,10 @@ const Seat = styled.span`
 
   &.occupied {
     background: #cfcfcf;
+  }
+
+  &.damaged {
+    background: #e63946;
   }
 
   &:not(.occupied):hover,
