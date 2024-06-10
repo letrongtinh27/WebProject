@@ -18,8 +18,6 @@ public class TheatreController {
     @Autowired
     private TheatreService theatreService;
 
-    @Autowired
-    HttpServletRequest request;
 
     @GetMapping("/all")
     public ResponseEntity<?> getListTheatre() {
