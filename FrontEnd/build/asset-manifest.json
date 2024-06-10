@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.c3dda445.css",
-    "main.js": "/static/js/main.28d306c5.js",
+    "main.js": "/static/js/main.c75b6784.js",
     "static/media/national-geographic.mp4": "/static/media/national-geographic.bf1b675d8d0beb6c25bc.mp4",
     "static/media/star-wars.mp4": "/static/media/star-wars.90fa9f5ae993d23505b5.mp4",
     "static/media/pixar.mp4": "/static/media/pixar.971baf2b0d1f60c27f42.mp4",
@@ -9,6 +9,7 @@
     "static/media/marvel.mp4": "/static/media/marvel.25a822f51e652dec1417.mp4",
     "static/media/bg2.jpg": "/static/media/bg2.a35a3fc2f3a4435f7382.jpg",
     "static/media/background.png": "/static/media/background.daa65227cb688bbf3913.png",
+    "static/media/t5_jpg": "/static/media/t5_20230903094133547.30c84d084b2d9c4acfe5.jpg",
     "static/media/home-background.png": "/static/media/home-background.a0c4bdd961442f1bc8b1.png",
     "static/media/bgmv2.jpg": "/static/media/bgmv2.9dad89ceb0d5a2ff9fc8.jpg",
     "static/media/slider-scale.jpg": "/static/media/slider-scale.172c6eadbd086a14e2b2.jpg",
@@ -34,10 +35,10 @@
     "static/media/clock.svg": "/static/media/clock.af6abce8825a6c50f40be8b6d4c2320a.svg",
     "static/media/home-icon.svg": "/static/media/home-icon.b6a11f9b406f2f13cd82608a276428e5.svg",
     "main.c3dda445.css.map": "/static/css/main.c3dda445.css.map",
-    "main.28d306c5.js.map": "/static/js/main.28d306c5.js.map"
+    "main.c75b6784.js.map": "/static/js/main.c75b6784.js.map"
   },
   "entrypoints": [
     "static/css/main.c3dda445.css",
-    "static/js/main.28d306c5.js"
+    "static/js/main.c75b6784.js"
   ]
 }

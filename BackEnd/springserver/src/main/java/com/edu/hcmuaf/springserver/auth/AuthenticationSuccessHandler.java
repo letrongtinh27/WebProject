@@ -34,7 +34,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         String fullName = (String) attributes.get("name");
         String email = (String) attributes.get("email");
 
-        String redirectUrl = "http://localhost:3000/login-google?" + "sub=" + URLEncoder.encode(sub, StandardCharsets.UTF_8) +
+        String redirectUrl = "https://cinema-945d3.web.app/login-google?" + "sub=" + URLEncoder.encode(sub, StandardCharsets.UTF_8) +
                 "&fullName=" + URLEncoder.encode(fullName, StandardCharsets.UTF_8) +
                 "&email=" + URLEncoder.encode(email, StandardCharsets.UTF_8);
 
