@@ -92,7 +92,6 @@ public class UserService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
             User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            System.out.println("user1: " + user);
 
             if (isAdmin && !user.getRole().equals("admin")) {
                 return AuthenticationResponse.builder().code(401).message("Not an admin").build();
