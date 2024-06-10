@@ -90,6 +90,7 @@ public class ShowTimeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateShowTime(@RequestBody ShowTime showTime, @PathVariable int id) {
+        System.out.println("111");
         return ResponseEntity.ok(showTimeService.updateShowTime(id, showTime));
     }
 

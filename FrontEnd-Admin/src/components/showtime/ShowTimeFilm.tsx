@@ -13,14 +13,14 @@ export const ShowTimeFilm = () => {
 
     const {data}: any = useGetList<Movie>('movies',{
         pagination: {page: 1, perPage: 100},
-        sort: {field: 'name', order: 'ASC'},
+        sort: {field: 'title', order: 'ASC'},
     });
     useEffect(() => {
         if (data) {
             setMovie(data);
         }
     }, [data]);
-
+    console.log(data)
 
     const record = useRecordContext<ShowTime>()
     const defaultMovie = useMemo(() => {

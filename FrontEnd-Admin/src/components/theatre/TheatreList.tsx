@@ -51,7 +51,7 @@ export const TheatreList = () => {
                     secondaryText={(record) => record.title}
                 />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid rowClick="show">
                     <TextField source="id" label="ID"/>
                     <TextField source="name" label="Name"/>
                     <TextField source="address" label="Address"/>

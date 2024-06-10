@@ -1,4 +1,5 @@
 import {
+    BooleanInput,
     Create,
     DateTimeInput,
     Edit,
@@ -28,7 +29,7 @@ export const ShowTimeCreate = () => {
 
     const {data: dataMovie}: any = useGetList<Movie>('movies',{
         pagination: {page: 1, perPage: 100},
-        sort: {field: 'name', order: 'ASC'},
+        sort: {field: 'title', order: 'ASC'},
     });
     useEffect(() => {
         if (dataMovie) {
@@ -64,6 +65,9 @@ export const ShowTimeCreate = () => {
                     </Grid>
                     <Grid container>
                         <NumberInput source="room" fullWidth/>
+                    </Grid>
+                    <Grid>
+                        <BooleanInput source="status" fullWidth label="Is hidden"/>
                     </Grid>
                 </TabbedForm.Tab>
             </TabbedForm>

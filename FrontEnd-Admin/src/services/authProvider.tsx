@@ -12,6 +12,8 @@ const httpClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
+
+
 httpClient.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -109,13 +111,17 @@ export const authProvider: AuthProvider = {
               Authorization: `Bearer ${token}`,
           },
           withCredentials: true
-      }).then((response: any) => {
+      }).then(async (response: any) => {
           console.log(response)
           if (response.status === 200) {
               return Promise.resolve(response.data);
-          } else console.log(response.status)
+          }
+          else {
+              await authProvider.logout(token);
+          }
       }).catch(async (error) => {
-          authProvider.logout;
+          await authProvider.logout(token);
+          window.location.href = '/#/login';
       });
   }
 };

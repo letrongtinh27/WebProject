@@ -1,7 +1,9 @@
 package com.edu.hcmuaf.springserver.controller;
 
+import com.edu.hcmuaf.springserver.dto.request.UpdateMovieRequest;
 import com.edu.hcmuaf.springserver.entity.Movie;
 import com.edu.hcmuaf.springserver.service.MovieService;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.repository.query.Param;
@@ -69,7 +71,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable int id) {
+    public ResponseEntity updateMovie(@RequestBody UpdateMovieRequest movie, @PathVariable int id) {
         return ResponseEntity.ok(movieService.updateMovie(movie, id));
     }
 

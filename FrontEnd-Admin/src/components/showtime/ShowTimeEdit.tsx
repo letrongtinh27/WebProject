@@ -1,4 +1,5 @@
 import {
+    BooleanInput,
     DateTimeInput,
     Edit,
     ImageField, NumberInput, required,
@@ -20,9 +21,9 @@ export const ShowTimeEdit = () => {
         if (!record) {
             return null;
         }
-        const { movie_st, theatre_name } = record;
-        const title = movie_st?.title || '';
-        const name = theatre_name?.name || '';
+        const { movie, theatre } = record;
+        const title = movie?.title || '';
+        const name = theatre?.name || '';
         return `${name} - ${title}`;
     };
 
@@ -40,6 +41,9 @@ export const ShowTimeEdit = () => {
                  </Grid>
                  <Grid container>
                      <NumberInput source="room" fullWidth/>
+                 </Grid>
+                 <Grid container>
+                     <BooleanInput source="status" fullWidth label={"Is hidden"}/>
                  </Grid>
              </TabbedForm.Tab>
          </TabbedForm>

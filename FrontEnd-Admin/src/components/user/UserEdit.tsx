@@ -1,6 +1,6 @@
 import {
     DateInput,
-    Edit,
+    Edit, SelectInput,
     TabbedForm, TextField,
     TextInput,
     useRecordContext,
@@ -12,6 +12,10 @@ import {Theatre, User} from "../../types";
 
 
 export const UserEdit = (props: any) => {
+    const gender = [
+        {id: 1, name: 'Nam'},
+        {id: 2, name: 'Nữ'}
+    ]
     const NameUser = () => {
         const record = useRecordContext<User>();
         return record ? record.user : null;
@@ -43,7 +47,8 @@ export const UserEdit = (props: any) => {
                         <DateInput source="birthday" label={"Birthday"} fullWidth></DateInput>
                     </Grid>
                     <Grid container columnSpacing={2}>
-                        <TextInput source="role" label={"Role"} fullWidth></TextInput>
+                        <SelectInput source="role" choices={gender} fullWidth  {...props}
+                        />
                     </Grid>
                 </TabbedForm.Tab>
             </TabbedForm>
