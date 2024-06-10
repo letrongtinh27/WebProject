@@ -1,5 +1,5 @@
 import {
-  Admin, Logout,
+  Admin, CustomRoutes, Logout,
   Resource, UserMenu,
 } from "react-admin";
 import MovieList from "./components/movie/MovieList";
@@ -9,7 +9,7 @@ import ShowTimeList from "./components/showtime/ShowTimeList";
 import {authProvider} from "./services/authProvider";
 import UserList from "./components/user/userList";
 import TicketList from "./components/ticket/ticketList";
-import MovieShow from "./components/movie/MovieShow";
+import MovieEdit from "./components/movie/MovieEdit";
 import TheatreEdit from "./components/theatre/TheatreEdit";
 import {ShowTimeEdit} from "./components/showtime/ShowTimeEdit";
 import TheatreCreate from "./components/theatre/TheatreCreate";
@@ -24,9 +24,11 @@ import { getAnalytics } from "firebase/analytics";
 import TicketShow from "./components/ticket/ticketShow";
 import UserShow from "./components/user/UserShow";
 import React from "react";
-import CustomizeUserMenuItem from "./Layout/CustomizeUserMenuItem";
-import CustomAppBar from "./Layout/CustomAppBar";
-import {MyLayout} from "./Layout/MyLayout";
+import MovieShow from "./components/movie/MovieShow";
+import {ShowTimeShow} from "./components/showtime/ShowTimeShow";
+import TheatreShow from "./components/theatre/ThetreShow";
+import {Route} from "react-router-dom";
+import {ProfileEdit} from "./Layout/ProfileEdit";
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -53,21 +55,31 @@ const App = () => {
       <Admin title="Admin" dataProvider={dataProvider} authProvider={authProvider}
              // layout={MyLayout}
       >
+        <CustomRoutes>
+          <Route
+              key="my-profile"
+              path="/my-profile"
+              element={<ProfileEdit/>}
+          />
+        </CustomRoutes>
 
         <Resource name={'movies'}
                   list={MovieList}
-                  edit={MovieShow}
+                  edit={MovieEdit}
                   create={MovieCreate}
+                  show={MovieShow}
                   options={{label: 'Movies'}}/>
         <Resource name="theatres"
                   list={TheatreList}
                   edit={TheatreEdit}
+                  show={TheatreShow}
                   options={{label: 'Theatres'}}
                   create={TheatreCreate}
         />
         <Resource name="shows"
                   list={ShowTimeList}
                   edit={ShowTimeEdit}
+                  show={ShowTimeShow}
                   create={ShowTimeCreate}
                   options={{label: 'Show Time'}} />
         <Resource name="users"

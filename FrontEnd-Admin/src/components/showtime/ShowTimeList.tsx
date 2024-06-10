@@ -19,9 +19,9 @@ export const ShowTimeList = () => {
     <List
         sort={{field: 'movie.title', order: 'DESC'}}
         perPage={10}
-        filters={ [<SearchInput source = "q" alwaysOn /> ] }
+        filters={ [<FilterLiveSearch source = "q" alwaysOn /> ] }
     >
-        <DatagridConfigurable  rowClick="edit">
+        <DatagridConfigurable  rowClick="show">
           <TextField source="id" label="ID" />
           <TextField source="movie.title" label="Title" />
           <TextField source="theatre.name" label="Theatre" />

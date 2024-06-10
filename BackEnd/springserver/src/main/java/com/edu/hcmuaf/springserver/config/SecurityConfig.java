@@ -72,6 +72,7 @@ public class SecurityConfig {
 //                                .permitAll()
                                 .requestMatchers("/api/auth/login/**", "/api/auth/register/**", "/api/auth/login-google")
                                 .permitAll()
+
                                 .requestMatchers("/api/**").hasAnyAuthority("admin")
 
                                 .requestMatchers("/api/users/**").hasAnyAuthority("user")

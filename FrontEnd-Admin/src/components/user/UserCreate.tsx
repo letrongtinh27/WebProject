@@ -1,7 +1,8 @@
 import {
+    CheckboxGroupInput,
     Create,
     DateInput,
-    Edit, PasswordInput,
+    Edit, PasswordInput, SelectInput,
     TabbedForm, TextField,
     TextInput,
     useRecordContext,
@@ -13,6 +14,15 @@ import {Theatre, User} from "../../types";
 
 
 export const UserCreate = (props: any) => {
+    const gender = [
+        {id: 1, name: 'Nam'},
+        {id: 2, name: 'Nữ'}
+    ]
+    const role = [
+        {id: 1, name: 'admin'},
+        {id: 2, name: 'user'}
+    ]
+
     return(
         <Create>
             <TabbedForm>
@@ -36,13 +46,14 @@ export const UserCreate = (props: any) => {
                         <TextInput source="full_name" label={"Name"} fullWidth></TextInput>
                     </Grid>
                     <Grid container columnSpacing={2}>
-                        <TextInput source="gender" label={"Gender"} fullWidth></TextInput>
+                        <SelectInput source="gender" choices={gender} fullWidth/>
                     </Grid>
                     <Grid container columnSpacing={2}>
                         <DateInput source="birthday" label={"Birthday"} fullWidth></DateInput>
                     </Grid>
                     <Grid container columnSpacing={2}>
-                        <TextInput source="role" label={"Role"} fullWidth></TextInput>
+                        {/*<TextInput source="role" label={"Role"} fullWidth></TextInput>*/}
+                        <SelectInput source="role" choices={role} fullWidth/>
                     </Grid>
                 </TabbedForm.Tab>
 
