@@ -1,5 +1,6 @@
 package com.edu.hcmuaf.springserver.service;
 
+import com.edu.hcmuaf.springserver.dto.request.UpdateMovieRequest;
 import com.edu.hcmuaf.springserver.entity.Category;
 import com.edu.hcmuaf.springserver.entity.Movie;
 import com.edu.hcmuaf.springserver.entity.MovieCategory;
@@ -55,9 +56,10 @@ public class MovieService {
         }
         return movie;}
 
-    public Movie updateMovie(Movie movie, int id) {
+    public Movie updateMovie(UpdateMovieRequest movie, int id) {
         Optional<Movie> optionalExistMovie = movieRepository.findById((long) id);
             Movie existMovie = optionalExistMovie.get();
+        System.out.println("new movie: " + movie);
             existMovie.setBackground_img_url(movie.getBackground_img_url());
             existMovie.setTitle_img_url(movie.getTitle_img_url());
             existMovie.setTitle(movie.getTitle());

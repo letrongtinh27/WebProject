@@ -1,4 +1,5 @@
 import {
+    BooleanInput,
     CheckboxGroupInput,
     Create,
     DateTimeInput,
@@ -127,6 +128,9 @@ export const MovieCreate = (props: any) => {
                 row={false}
                 validate={req}
             />
+            <Grid container columnSpacing={2}>
+              <BooleanInput source="is_active" fullWidth label="Is hidden"/>
+            </Grid>
     </TabbedForm.Tab>
 
     </TabbedForm>

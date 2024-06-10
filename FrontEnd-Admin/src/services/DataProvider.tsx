@@ -1,45 +1,12 @@
 import {DataProvider, fetchUtils} from 'react-admin'
 import {log} from "util";
 import {imgProvider} from "./ImgProvider";
+import axios from "axios";
 // const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
 const apiUrl = 'http://localhost:8080/api'
 const httpClient = fetchUtils.fetchJson
 
 let token = localStorage.getItem("admin")
-
-
-// httpClient.interceptors.response.use(
-//     response => response,
-//     async error => {
-//         if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-//             await httpClient.post(`${process.env.REACT_APP_API_URL}/auth/refresh-token`, {
-//                 headers: {
-//                     Accept: 'application/json',
-//                     'Content-Type': 'application/json'
-//                 },
-//                 withCredentials: true
-//             }).then((response: any) => {
-//                 console.log(response)
-//                 Promise.resolve();
-//             }).catch((error) => {
-//                 if (error.response.status === 400) {
-//                     // @ts-ignore
-//                     authProvider.logout();
-//                     window.location.href = '/#/login';
-//                     return Promise.reject({message: "Your session is expired. Please login again."});
-//                 }
-//             });
-//         } else {
-//             if (error.response.status === 400) {
-//                 // @ts-ignore
-//                 authProvider.logout();
-//                 window.location.href = '/#/login';
-//                 return Promise.reject({message: "Your session is expired. Please login again."});
-//             }
-//             return Promise.reject({message: "There was an error. Please try again."});
-//         }
-//     }
-// )
 
 async function getBase64(file: any) {
     return new Promise((resolve, reject) => {
@@ -66,7 +33,7 @@ export const dataProvider: DataProvider = {
                 page: page - 1,
                 perPage: perPage,
             };
-            if (resource === 'category') {
+            if (resource === 'category' || resource === 'locations') {
                 const {json} = await httpClient(`${apiUrl}/${resource}`, {
                     method: 'GET',
                     headers: new Headers({
@@ -109,6 +76,7 @@ export const dataProvider: DataProvider = {
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
             }),
         });
         return { data: json };
@@ -140,6 +108,11 @@ export const dataProvider: DataProvider = {
 
             const {json} = await httpClient(`${apiUrl}/${resource}/admin_create`, {
                 method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
+                }),
                 body: JSON.stringify(data),
                 credentials: 'include'
             });
@@ -168,9 +141,15 @@ export const dataProvider: DataProvider = {
 
             const {json} = await httpClient(`${apiUrl}/${resource}/`, {
                 method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
+                }),
                 body: JSON.stringify(data),
                 credentials: 'include'
             });
+;
             window.location.href = `/#/${resource}`;
             return Promise.resolve({data: json});
         }
@@ -233,39 +212,65 @@ export const dataProvider: DataProvider = {
             console.log(data)
             const {json} = await httpClient(`${apiUrl}/${resource}/`, {
                 method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
+                }),
                 body: JSON.stringify(data),
-                credentials: 'include'
+                credentials: 'include',
+
             });
             window.location.href = `/#/${resource}`;
             return Promise.resolve({data: json});
         }
+
         if (resource === 'shows') {
+            const {data: movie} = await dataProvider.getOne('movies', {id: params.data.movieId})
+            const {data: theatre} = await dataProvider.getOne('theatres', {id: params.data.theatreId})
+            const data = {
+                start_time: params.data.start_time,
+                end_time: params.data.end_time,
+                room: params.data.room,
+                // status: params.data.status,
+                movie: movie,
+                theatre: theatre
+            }
+            console.log(data)
+            const json = await axios.create({
+                baseURL: "http://localhost:8080/api/",
+            }).post(`shows/`, JSON.stringify(data), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    }
+                }
+            )
+            window.location.href = `/#/${resource}`;
+            return Promise.resolve({ data: json.data });
 
         }
-
 
             const {json} = await httpClient(`${apiUrl}/${resource}/`, {
             method: 'POST',
             body: JSON.stringify(params.data),
-
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
             }),
-            // credentials: 'include'
+            credentials: 'include'
         })
         window.location.href = `/#/${resource}`
+        console.log(json)
         return Promise.resolve({data: json});
-        // }
     }
     ,
     update: async (resource: any, params: any) => {
         let background = null;
         let titleimg = null;
         let poster = null;
-        console.log(resource)
-        console.log(params)
-        let category;
 
         if (resource === 'movies') {
             if (params.data.background_img_url_new != undefined && params.data.background_img_url_new != null ) {
@@ -326,10 +331,11 @@ export const dataProvider: DataProvider = {
             console.log(data)
             const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
                 method: 'PUT',
-                body: JSON.stringify(params.data),
+                body: JSON.stringify(data),
                 headers: new Headers({
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
                 }),
                 credentials: 'include'
             });
@@ -351,16 +357,44 @@ export const dataProvider: DataProvider = {
             console.log(params)
             const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
                 method: 'PUT',
-                body: JSON.stringify(params.data),
+                body: JSON.stringify(data),
                 headers: new Headers({
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
                 }),
                 credentials: 'include'
             });
             return Promise.resolve({ data: json });
         }
+        if (resource === 'shows') {
+            console.log(params)
+            const {data: movie} = await dataProvider.getOne('movies', {id: params.data.movieId})
+            const {data: theatre} = await dataProvider.getOne('theatres', {id: params.data.theatreId})
 
+            const data = {
+                start_time: params.data.start_time,
+                end_time: params.data.end_time,
+                room: params.data.room,
+                status: params.data.status ? 1 : 0,
+                movie: movie,
+                theatre: theatre
+            }
+            console.log(data)
+            console.log("params: " + params)
+            const json = await axios.create({
+                baseURL: "http://localhost:8080/api/",
+            }).put(`shows/${params.id}`, JSON.stringify(data), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    }
+            }
+                )
+            console.log(json.data)
+                return Promise.resolve({ data: json.data });
+        }
 
         const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
@@ -368,6 +402,7 @@ export const dataProvider: DataProvider = {
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
             }),
             credentials: 'include'
         });
@@ -383,6 +418,7 @@ export const dataProvider: DataProvider = {
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
             }),
             // credentials: 'include'
         })
