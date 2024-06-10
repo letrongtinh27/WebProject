@@ -4,10 +4,7 @@ package com.edu.hcmuaf.springserver.controller;
 import com.edu.hcmuaf.springserver.config.VNPayConfig;
 import com.edu.hcmuaf.springserver.dto.request.PaymentRequest;
 import com.edu.hcmuaf.springserver.dto.response.PaymentResponse;
-import com.edu.hcmuaf.springserver.entity.Reservation;
-import com.edu.hcmuaf.springserver.entity.Seat;
-import com.edu.hcmuaf.springserver.entity.Ticket;
-import com.edu.hcmuaf.springserver.entity.User;
+import com.edu.hcmuaf.springserver.entity.*;
 import com.edu.hcmuaf.springserver.service.*;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,11 +60,22 @@ public class PaymentController {
             vnp_TxnRef = VNPayConfig.getRandomNumber(8);
         } else {
             Calendar calendar = Calendar.getInstance();
+            boolean checkBooking = false;
+//          Kiem tra ghe da duoc dat hay chua
             for (int i = 0; i < paymentRequest.getAmount(); i++) {
-                if (ticketService.checkExistTicket(paymentRequest.getShowTimeId(), paymentRequest.getListSeatId().get(i))) {
-                    emailService.sendTextEmail(user.getEmail(),"Kết quả đặt vé","Chỗ ngồi đã được đặt, chúng tôi xin lỗi vì điều đó. Xin hãy đặt ghế ngồi khác, xin cảm ơn!");
-                    return ResponseEntity.badRequest().body(new PaymentResponse(HttpServletResponse.SC_BAD_REQUEST, "Chỗ ngồi đã được đặt",null));
+                ShowTime showTimeCheck = showTimeService.getShowTimeById(paymentRequest.getShowTimeId());
+                Seat seatCheck = seatService.getSeatById(paymentRequest.getListSeatId().get(i));
+                boolean check = reservationService.checkBookingTicket(showTimeCheck, seatCheck);
+                if (reservationService.checkBookingTicket(showTimeCheck, seatCheck)) {
+//                    emailService.sendTextEmail(user.getEmail(),"Kết quả đặt vé","Chỗ ngồi đã được đặt, chúng tôi xin lỗi vì điều đó. Xin hãy đặt ghế ngồi khác, xin cảm ơn!");
+                    return ResponseEntity.ok().body(new PaymentResponse(HttpServletResponse.SC_BAD_REQUEST, "Ghế số " + seatCheck.getRow_char()+seatCheck.getSeat_number() + " đã được đặt. Vui lòng chọn ghế khác!",null));
                 } else {
+                    checkBooking = true;
+                }
+            }
+//          Xu ly khi khong co ghe nao duoc dat truoc
+            if(checkBooking) {
+                for (int i = 0; i < paymentRequest.getAmount(); i++) {
                     Reservation reservation = new Reservation();
                     reservation.setUser(user);
                     reservation.setShowTime(showTimeService.getShowTimeById(paymentRequest.getShowTimeId()));
@@ -83,12 +91,10 @@ public class PaymentController {
                     calendar.add(Calendar.MINUTE, 15);
                     Date expired = calendar.getTime();
                     reservation.setExpired_time(expired);
-
                     reservation.setPayment("Đang thanh toán");
 
                     reservationService.createReservation(reservation);
                 }
-
             }
         }
 

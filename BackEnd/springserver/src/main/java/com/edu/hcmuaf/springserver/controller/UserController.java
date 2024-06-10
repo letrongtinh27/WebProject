@@ -45,8 +45,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected principal type");
         }
 
-        System.out.println("Username: " + username);
-
         User user = userService.getUserProfileByUsername(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
