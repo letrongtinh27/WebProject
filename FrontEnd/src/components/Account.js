@@ -137,6 +137,9 @@ const Account = ({ updateHeader }) => {
       userProfile.birthday !== birthday ||
       (userProfile.changePassword && userProfile.password !== "")
     ) {
+      if (userProfile.email === email) {
+        userProfile.email = "";
+      }
       return true;
     }
 
@@ -152,21 +155,24 @@ const Account = ({ updateHeader }) => {
   };
 
   const handelEditProfile = () => {
-    setLoading(true);
     if (checkEditProfile()) {
+      setLoading(true);
       editUserProfile(userProfile, token)
         .then((data) => {
           setLoading(false);
-
-          setUser(data);
-          console.log(data);
-          updateHeader();
-          setUserProfile((prev) => ({
-            ...prev,
-            changePassword: false,
-          }));
-          setPassword("");
-          toast.success("Thay đổi thông tin thành công !");
+          if (data.code === 400) {
+            toast.error(data.message);
+          } else {
+            setUser(data);
+            console.log(data);
+            updateHeader();
+            setUserProfile((prev) => ({
+              ...prev,
+              changePassword: false,
+            }));
+            setPassword("");
+            toast.success("Thay đổi thông tin thành công !");
+          }
         })
         .catch((error) => {
           setLoading(false);
@@ -396,7 +402,6 @@ const Account = ({ updateHeader }) => {
                       type="checkbox"
                       onChange={handleChange}
                     />
-
                     <label
                       className="label_changepassword"
                       htmlFor="req_showpassword"
@@ -658,6 +663,10 @@ const AccountColInner = styled.div`
       background: #454d6a;
       &:hover {
         background: #616161;
+      }
+
+      div {
+        margin: 0 auto;
       }
     }
   }

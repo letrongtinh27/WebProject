@@ -12,6 +12,7 @@ const Booking = (props) => {
   const [seatsData, setSeatsData] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [movie, setMovie] = useState([]);
+  const [reload, setReload] = useState(false);
 
   const token = Cookies.get("token");
 
@@ -120,14 +121,25 @@ const Booking = (props) => {
     if (validatePayment()) {
       payment(booking, token)
         .then((data) => {
+          console.log(data.code);
+          if (data.code === 200) {
+            window.location = data.urlPayment;
+          }
+          if (data.code === 400) {
+            toast.error(data.message);
+          }
+
           // navigate(data.urlPayment);
-          window.location = data.urlPayment;
         })
         .catch((error) => {
+          toast.error("Đặt ghế không thành công!");
           console.error(error);
+          setReload((prev) => !prev);
         });
     }
   }
+
+  // useEffect(() => {}, [reload]);
 
   return (
     <Container>
@@ -372,7 +384,8 @@ const Seat = styled.span`
     transform: scale(1.2);
   }
 
-  &.selected::after {
+  &.selected::after,
+  &.damaged::after {
     content: "";
     position: absolute;
     top: 0;

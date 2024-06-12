@@ -45,8 +45,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected principal type");
         }
 
-        System.out.println("Username: " + username);
-
         User user = userService.getUserProfileByUsername(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -84,9 +82,12 @@ public class UserController {
 
     @PostMapping("/edit")
     public ResponseEntity<?> updateUser(@RequestBody UserRequest.EditUser userRequest, Authentication authentication) throws ParseException {
-        boolean update = userService.updateUser(userRequest);
-        if(update) {
-            return getProfile(authentication);
+        AuthenticationResponse update = userService.updateUser(userRequest);
+        if(update != null) {
+            if(update.getCode() == 200) {
+                return getProfile(authentication);
+            }
+            return ResponseEntity.ok(update);
         }
         return ResponseEntity.badRequest().build();
     }

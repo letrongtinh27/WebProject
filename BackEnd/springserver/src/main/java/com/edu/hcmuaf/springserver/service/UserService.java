@@ -92,7 +92,6 @@ public class UserService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
             User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            System.out.println("user1: " + user);
 
             if (isAdmin && !user.getRole().equals("admin")) {
                 return AuthenticationResponse.builder().code(401).message("Not an admin").build();
@@ -120,15 +119,21 @@ public class UserService {
         }
     }
 
-    public boolean updateUser(UserRequest.EditUser userRequest) throws ParseException {
+    public AuthenticationResponse updateUser(UserRequest.EditUser userRequest) throws ParseException {
 
         User user = userRepository.findByUsername(userRequest.getUsername()).orElse(null);
+
+        if (userRepository.existsUserByEmail(userRequest.getEmail())) {
+            return AuthenticationResponse.builder().code(400).message("Địa chỉ email đã tồn tài, thử lại email khác.").build();
+        }
 
         if(user!=null) {
             if(userRequest.isChangePassword()) {
                 user.setPassword(encoder.encode(userRequest.getPassword()));
             }
-            user.setEmail(userRequest.getEmail());
+            if(!userRequest.getEmail().isEmpty()){
+                user.setEmail(userRequest.getEmail());
+            }
             user.setPhone_number(userRequest.getPhone());
             user.setFull_name(userRequest.getFullName());
             user.setGender(userRequest.getGender());
@@ -140,9 +145,9 @@ public class UserService {
 
             userRepository.save(user);
 
-            return true;
+            return AuthenticationResponse.builder().code(200).message("Cập nhật thông tin thành công!").build();
         }
-        return false;
+        return AuthenticationResponse.builder().code(400).message("Cập nhật thông tin thất bại!").build();
     }
 
     public AuthenticationResponse createUser(RegisterAdminRequest adminRequest) {

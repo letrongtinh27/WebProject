@@ -22,13 +22,14 @@ public class SeatController {
     public ResponseEntity<List<SeatResponse>> getSeatsByShowTime(@PathVariable("showTimeId") int showTimeId, @PathVariable("theatreId") int theatreId, @PathVariable("room") int room) {
         List<SeatResponse> seats = seatService.getSeatsByShowTime(showTimeId, theatreId, room);
 
-        System.out.println(seatService.getSeatById(2));
-
         Map<Integer, SeatResponse> idMap = new HashMap<>();
 
         Date now = new Date();
 
         for (SeatResponse seat : seats) {
+            if(seat.getStatus()==1) {
+                seat.setBooked(true);
+            }
             if (idMap.containsKey(seat.getId()) && seat.getPayment() != null) {
                 idMap.put(seat.getId(), seat);
             }
