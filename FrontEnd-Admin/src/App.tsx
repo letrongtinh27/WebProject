@@ -1,5 +1,5 @@
 import {
-  Admin, CustomRoutes, Logout,
+  Admin, CustomRoutes, defaultTheme, Logout, radiantDarkTheme, radiantLightTheme,
   Resource, UserMenu,
 } from "react-admin";
 import MovieList from "./components/movie/MovieList";
@@ -17,7 +17,7 @@ import {ShowTimeCreate} from "./components/showtime/ShowTimeCreate";
 import MovieCreate from "./components/movie/MovieCreate";
 import UserEdit from "./components/user/UserEdit";
 import UserCreate from "./components/user/UserCreate";
-
+import Login from "./Layout/Login"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -28,7 +28,8 @@ import MovieShow from "./components/movie/MovieShow";
 import {ShowTimeShow} from "./components/showtime/ShowTimeShow";
 import TheatreShow from "./components/theatre/ThetreShow";
 import {Route} from "react-router-dom";
-import {ProfileEdit} from "./Layout/ProfileEdit";
+import {ProfileEdit, ProfileProvider} from "./Layout/ProfileEdit";
+import {LayoutCustom} from "./Layout/LayoutCustom";
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -50,17 +51,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+
+
+
 const App = () => {
   return (
       <Admin title="Admin" dataProvider={dataProvider} authProvider={authProvider}
-             // layout={MyLayout}
+             theme={radiantDarkTheme}
+             darkTheme={radiantLightTheme}
+             layout={LayoutCustom}
       >
         <CustomRoutes>
-          <Route
-              key="my-profile"
-              path="/my-profile"
-              element={<ProfileEdit/>}
-          />
+          <Route path="/profile/*" element={<ProfileProvider>
+            <ProfileEdit/></ProfileProvider>}/>
         </CustomRoutes>
 
         <Resource name={'movies'}
@@ -93,7 +96,6 @@ const App = () => {
                   options={{label: 'Ticket'}} />
       </Admin>
   )
-
 }
 
 export default App;

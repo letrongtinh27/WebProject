@@ -12,6 +12,7 @@ export interface Movie extends RaRecord {
     sub_title:string
     age_type: string
     type: string
+    is_active: number
 }
 
 export interface Category extends RaRecord {

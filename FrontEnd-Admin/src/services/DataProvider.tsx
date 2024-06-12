@@ -154,6 +154,7 @@ export const dataProvider: DataProvider = {
             return Promise.resolve({data: json});
         }
         if (resource === 'movies') {
+            console.log(params)
             if (params.data.background_img_url_new != undefined && params.data.background_img_url_new != null ) {
                 let img = null;
                 await getBase64(params.data.background_img_url_new.rawFile)
@@ -192,9 +193,10 @@ export const dataProvider: DataProvider = {
                 sub_title: string;
                 age_type: string;
                 type: string;
+                is_active: number;
                 categories: { id: number; name: null }[];
             } = {
-                background_img_url: background =! null ? background : params.data.background_img_url || '',
+                background_img_url: background =! null ? background : params.data.background_img_url,
                 title_img_url: titleimg != null ? titleimg : params.data.title_img_url || '',
                 title: params.data.title,
                 released_date: new Date(params.data.released_date).toLocaleDateString('sv-SE'),
@@ -204,6 +206,7 @@ export const dataProvider: DataProvider = {
                 sub_title: params.data.sub_title,
                 age_type: params.data.age_type,
                 type: params.data.type,
+                is_active: params.data.is_active ? 1: 0 ,
                 categories: params.data.category.map((categoryId: number) => ({
                     id: categoryId,
                     name: ""
@@ -232,7 +235,7 @@ export const dataProvider: DataProvider = {
                 start_time: params.data.start_time,
                 end_time: params.data.end_time,
                 room: params.data.room,
-                // status: params.data.status,
+                status: params.data.status ? 1 : 0,
                 movie: movie,
                 theatre: theatre
             }
@@ -273,7 +276,8 @@ export const dataProvider: DataProvider = {
         let poster = null;
 
         if (resource === 'movies') {
-            if (params.data.background_img_url_new != undefined && params.data.background_img_url_new != null ) {
+            console.log(params)
+            if (params.data.background_img_url_new !== undefined && params.data.background_img_url_new !== null ) {
                 let img = null;
                 await getBase64(params.data.background_img_url_new.rawFile)
                     .then(res => {
@@ -311,18 +315,20 @@ export const dataProvider: DataProvider = {
                 sub_title: string;
                 age_type: string;
                 type: string;
+                is_active: number;
                 categories: { id: number; name: null }[];
             } = {
-                background_img_url: background =! null ? background : params.data.background_img_url || '',
+                background_img_url: background != null ? background : params.data.background_img_url || '',
                 title_img_url: titleimg != null ? titleimg : params.data.title_img_url || '',
                 title: params.data.title,
                 released_date: new Date(params.data.released_date).toLocaleDateString('sv-SE'),
                 trailer_video_url: params.data.trailer_video_url || '',
-                poster_url: poster != null ? poster : params.data.trailer_video_url || '',
+                poster_url: poster != null ? poster : params.data.poster_url || '',
                 description: params.data.description,
                 sub_title: params.data.sub_title,
                 age_type: params.data.age_type,
                 type: params.data.type,
+                is_active: params.data.is_active ? 1: 0 ,
                 categories: params.data.category.map((categoryId: number) => ({
                     id: categoryId,
                     name: ""

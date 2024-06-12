@@ -36,6 +36,7 @@ const MovieShow = (props: any) => {
                 <TextField source="type" label={<StyledLabel>Type</StyledLabel>} />
                 <DateField source="released_date" label={<StyledLabel>Released Date</StyledLabel>} />
                 <TextField source="type" label={<StyledLabel>Type</StyledLabel>} />
+                <TextField source="is_active" label={<StyledLabel>Status</StyledLabel>} />
                 <ArrayField source="categories" label={<StyledLabel>Categories</StyledLabel>}>
                     <Datagrid bulkActionButtons={false}>
                         <TextField source="name" textAlign="center"/>
