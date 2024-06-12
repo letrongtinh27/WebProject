@@ -137,6 +137,9 @@ const Account = ({ updateHeader }) => {
       userProfile.birthday !== birthday ||
       (userProfile.changePassword && userProfile.password !== "")
     ) {
+      if (userProfile.email === email) {
+        userProfile.email = "";
+      }
       return true;
     }
 
@@ -660,6 +663,10 @@ const AccountColInner = styled.div`
       background: #454d6a;
       &:hover {
         background: #616161;
+      }
+
+      div {
+        margin: 0 auto;
       }
     }
   }
