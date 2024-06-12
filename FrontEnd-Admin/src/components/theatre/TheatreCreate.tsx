@@ -35,29 +35,29 @@ export const TheatreCreate = (props: any) => {
                     label="Thông tin rạp"
                     sx={{maxWidth: '40em'}}
                 >
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="name" label={"Tên rạp"} fullWidth></TextInput>
                     </Grid>
 
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="address" label={"Địa chỉ"} fullWidth></TextInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="phone_number" label={"Số điện thoại"} fullWidth></TextInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="email" label={"Email"} fullWidth></TextInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="description" label={"Mô tả"} fullWidth></TextInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <NumberInput source="room_summary" label={"Phòng"} fullWidth></NumberInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <NumberInput source="rooms" label={"Tổng số phòng"} fullWidth></NumberInput>
                     </Grid>
-                    <Grid  container columnSpacing={2}>
+                    <Grid  container >
                         <SelectInput source="locations_id"
                                      label="Khu vực"
                                      choices={location} fullWidth
@@ -65,7 +65,7 @@ export const TheatreCreate = (props: any) => {
                                      optionValue="id"
                         />
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TimeInput source="Opening_hours" label={"Thời gian mở cửa"} fullWidth></TimeInput>
                     </Grid>
                 </TabbedForm.Tab>

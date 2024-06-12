@@ -27,4 +27,5 @@ public class UpdateMovieRequest {
     private String age_type;
     private String type;
     private List<Category> categories;
+    private int is_active;
 }
