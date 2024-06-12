@@ -50,6 +50,7 @@ const Modal = ({ $isOpen, toggleModal }) => {
         setShows(data);
       })
       .catch((error) => {
+        setLoading(false);
         setShows([]);
         // console.error(error);
       });

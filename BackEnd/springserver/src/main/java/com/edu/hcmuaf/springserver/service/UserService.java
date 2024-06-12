@@ -131,7 +131,9 @@ public class UserService {
             if(userRequest.isChangePassword()) {
                 user.setPassword(encoder.encode(userRequest.getPassword()));
             }
-            user.setEmail(userRequest.getEmail());
+            if(!userRequest.getEmail().isEmpty()){
+                user.setEmail(userRequest.getEmail());
+            }
             user.setPhone_number(userRequest.getPhone());
             user.setFull_name(userRequest.getFullName());
             user.setGender(userRequest.getGender());
