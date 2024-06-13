@@ -1,4 +1,5 @@
 import {
+    BooleanInput,
     DateTimeInput,
     Edit,
     ImageField, ImageInput, required, SelectInput,
@@ -165,7 +166,7 @@ export const MovieEdit = (props: any) => {
                     label="Ảnh"
                     sx={{maxWidth: '40em'}}
                 >
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <ImageUploader source="background_img_url" label="Background" />
                         <ImageUploader source="title_img_url" label="Title Image" />
                         <ImageUploader source="poster_url" label="Poster" />
@@ -175,20 +176,20 @@ export const MovieEdit = (props: any) => {
                     label="Chi tiết"
                     sx={{maxWidth: '40em'}}
                 >
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <TextInput source="title" fullWidth label="title"/>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <TextInput source="trailer_video_url" fullWidth label="link trailer"/>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <TextInput source="description" fullWidth multiline minRows={4} maxRows={4}
                                    style={{overflow: "auto"}} label="description"/>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <TextInput source="sub_title" fullWidth label="sub" />
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <SelectInput
                             source="age_type"
                             fullWidth
@@ -197,14 +198,17 @@ export const MovieEdit = (props: any) => {
                             {...props}
                         />
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <TextInput source="type" fullWidth label="type"/>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <DateTimeInput source="released_date" fullWidth label="released date"/>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container  >
                         <TextInput source="type" fullWidth label="type"/>
+                    </Grid>
+                    <Grid container>
+                        <BooleanInput source="is_active" fullWidth label={"Is hidden"}/>
                     </Grid>
                 </TabbedForm.Tab>
                 <TabbedForm.Tab

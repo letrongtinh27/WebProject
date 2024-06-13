@@ -5,19 +5,22 @@ import React, {
     useMemo,
     useContext,
     ReactNode,
+    useEffect,
 } from "react";
 import {
     TextInput,
-    ImageInput,
-    ImageField,
-    SimpleForm,
     required,
     useDataProvider,
     useNotify,
     SaveContextProvider,
     useGetIdentity,
-    UserIdentity,
+    DateInput,
+    Toolbar,
+    TabbedForm,
+    SaveButton,
+    SelectInput,
 } from "react-admin";
+import { authProvider } from "../services/authProvider";
 
 interface ProfileContextProps {
     profileVersion: number;
@@ -57,34 +60,52 @@ export const useProfile = (): ProfileContextProps => {
 };
 
 export const ProfileEdit = ({ staticContext, ...props }: Partial<{ staticContext: any }>) => {
-    console.log("ProfileEdit");
     const dataProvider = useDataProvider();
     const notify = useNotify();
     const [saving, setSaving] = useState<boolean>(false);
-    const { refreshProfile } = useProfile();
+    const { refreshProfile, profileVersion } = useProfile();
+    const { identity, isLoading, refetch } = useGetIdentity();
+    const gender = [
+        { id: '0', name: 'Nam' },
+        { id: '1', name: 'Nữ' }
+    ];
 
-    const { identity, isLoading } = useGetIdentity();
+    useEffect(() => {
+        if (refetch) {
+            refetch();
+        }
+    }, [profileVersion, refetch]);
+
+    const validatePasswords = (values: any) => {
+        const errors: any = {};
+        if (values.new_password && (values.new_password !== values.check)) {
+            errors.check = ['Passwords do not match'];
+        }
+        return errors;
+    };
 
     const handleSave = useCallback(
         (values: any) => {
             setSaving(true);
-            dataProvider.updateUserProfile(
-                { data: values },
-                {
-                    onSuccess: ({ data }: { data: any }) => {
-                        setSaving(false);
-                        notify("Your profile has been updated", { type: "info", messageArgs: { _: "Your profile has been updated" } });
-                        refreshProfile();
-                    },
-                    onFailure: () => {
-                        setSaving(false);
-                        notify(
-                            "A technical error occurred while updating your profile. Please try later.",
-                            { type: "warning", messageArgs: { _: "A technical error occurred while updating your profile. Please try later." } }
-                        );
-                    }
-                }
-            );
+            const data = {
+                id: values.id,
+                birthday: values.birthday,
+                email: values.email,
+                fullName: values.fullName,
+                gender: values.gender == 0 ? "Nam" : "Nữ",
+                phone: values.phone,
+                username: values.username,
+                changePassword: values.new_password ? true : false,
+                password: values.new_password || ''
+            };
+            authProvider.update("user", data).then(() => {
+                setSaving(false);
+                notify("Thay đổi thông tin cá nhân thành công");
+                refreshProfile();
+            }).catch((error: any) => {
+                setSaving(false);
+                notify("Thay đổi thông tin cá nhân thất bại");
+            });
         },
         [dataProvider, notify, refreshProfile]
     );
@@ -98,17 +119,39 @@ export const ProfileEdit = ({ staticContext, ...props }: Partial<{ staticContext
     );
 
     if (isLoading) {
-        return null;
+        return <div>Loading...</div>;
+    }
+
+    if (!identity) {
+        return <div>No identity found</div>;
     }
 
     return (
         <SaveContextProvider value={saveContext}>
-            <SimpleForm onSubmit={handleSave} record={identity ? identity : {}}>
-                <TextInput source="fullName" validate={required()} />
-                <ImageInput source="avatar" validate={required()}>
-                    <ImageField source="src" title="title" />
-                </ImageInput>
-            </SimpleForm>
+            <TabbedForm
+                record={identity}
+                onSubmit={handleSave}
+                validate={validatePasswords}
+                sx={{ maxWidth: '40em' }}
+                toolbar={<Toolbar>
+                    <SaveButton
+                        label="Save"
+                        alwaysEnable
+                    />
+                </Toolbar>}>
+                <TabbedForm.Tab label="Profile">
+                    <TextInput source="username" validate={required()} label="Username" fullWidth readOnly />
+                    <TextInput source="email" validate={required()} fullWidth readOnly />
+                    <TextInput source="fullName" validate={required()} fullWidth />
+                    <DateInput source="birthday" validate={required()} fullWidth />
+                    <SelectInput source="gender" choices={gender} validate={required()} fullWidth />
+                    <TextInput source="phone" fullWidth />
+                </TabbedForm.Tab>
+                <TabbedForm.Tab label={"Change Password"}>
+                    <TextInput source="new_password" type={"password"} fullWidth />
+                    <TextInput source="check" type={"password"} fullWidth label={"Enter a new password"} />
+                </TabbedForm.Tab>
+            </TabbedForm>
         </SaveContextProvider>
     );
 };

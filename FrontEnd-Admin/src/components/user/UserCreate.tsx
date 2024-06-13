@@ -30,29 +30,28 @@ export const UserCreate = (props: any) => {
                     label="Thông tin tài khoản"
                     sx={{maxWidth: '40em'}}
                 >
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="user" label={"User"} fullWidth></TextInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="email" label={"Email"} fullWidth></TextInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <PasswordInput source="password" label={"Password"} fullWidth></PasswordInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="phone_number" label={"Phone_number"} fullWidth></TextInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <TextInput source="full_name" label={"Name"} fullWidth></TextInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <SelectInput source="gender" choices={gender} fullWidth/>
                     </Grid>
-                    <Grid container columnSpacing={2}>
+                    <Grid container >
                         <DateInput source="birthday" label={"Birthday"} fullWidth></DateInput>
                     </Grid>
-                    <Grid container columnSpacing={2}>
-                        {/*<TextInput source="role" label={"Role"} fullWidth></TextInput>*/}
+                    <Grid container >
                         <SelectInput source="role" choices={role} fullWidth/>
                     </Grid>
                 </TabbedForm.Tab>

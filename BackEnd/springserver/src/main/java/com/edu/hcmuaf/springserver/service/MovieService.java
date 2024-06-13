@@ -45,6 +45,7 @@ public class MovieService {
         movie.setSub_title(movie.getSub_title());
         movie.setAge_type(movie.getAge_type());
         movie.setType(movie.getType());
+        movie.setIs_active(movie.getIs_active());
         movie = movieRepository.save(movie);
 
 
@@ -70,6 +71,7 @@ public class MovieService {
             existMovie.setSub_title(movie.getSub_title());
             existMovie.setAge_type(movie.getAge_type());
             existMovie.setType(movie.getType());
+            existMovie.setIs_active(movie.getIs_active());
             existMovie = movieRepository.save(existMovie);
 
         movieCategoryRepository.deleteAllByMovieId(id);
