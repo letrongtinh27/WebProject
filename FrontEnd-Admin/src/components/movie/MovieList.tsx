@@ -24,15 +24,22 @@ import {
     BulkDeleteButton,
     BulkUpdateButton,
 } from "react-admin";
-
-import { useMediaQuery, Theme } from "@mui/material";
-
+import ImportButton from "../../Layout/ImportButton";
+// import ExportButton from "../../Layout/ExportButton";
+const ListActions = () => (
+    <TopToolbar>
+        <CreateButton />
+        <ExportButton />
+        <ImportButton />
+    </TopToolbar>
+);
 
 export const MovieList = () => {
     return (
         <List
             sort={{field: 'title', order: 'DESC'}}
             perPage={10}
+            actions={<ListActions />}
             filters={ [<SearchInput source = "q" alwaysOn /> ] }
         >
             <DatagridConfigurable rowClick="show">

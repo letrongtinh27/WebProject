@@ -22,10 +22,12 @@ import {
 } from "react-admin";
 import { authProvider } from "../services/authProvider";
 
+
 interface ProfileContextProps {
     profileVersion: number;
     refreshProfile: () => void;
 }
+
 
 const ProfileContext = createContext<ProfileContextProps | undefined>(undefined);
 

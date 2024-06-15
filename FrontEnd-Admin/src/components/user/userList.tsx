@@ -12,7 +12,7 @@ import {
     useGetList,
     BooleanInput,
     BooleanField,
-    SimpleList, email,
+    SimpleList, email, DeleteButton,
 } from 'react-admin';
 
 import {
@@ -32,6 +32,7 @@ const VisitorListActions = () => (
         <CreateButton/>
         <SelectColumnsButton/>
         <ExportButton/>
+        <DeleteButton/>
     </TopToolbar>
 );
 

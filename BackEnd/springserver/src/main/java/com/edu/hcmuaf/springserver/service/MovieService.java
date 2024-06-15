@@ -15,6 +15,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import jakarta.persistence.criteria.Predicate;
@@ -112,13 +114,31 @@ public class MovieService {
             }
             return predicate;
         };
-        if (sortBy.equals("title")) {
-            return movieRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "title")));
-        }
-        if (sortBy.equals("type"))  {
-            return movieRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "type")));
-        }
         return movieRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
     }
 
+    public List<Movie> getAllMoviesByReleasedDate(String filter) {
+        JsonNode filterJson;
+        try {
+            filterJson = new ObjectMapper().readTree(java.net.URLDecoder.decode(filter, StandardCharsets.UTF_8));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        LocalDate currentDate = LocalDate.now();
+
+        Specification<Movie> specification = (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (filterJson.has("released_date")) {
+                String inputDateStr = filterJson.get("released_date").asText();
+                LocalDate inputDate = LocalDate.parse(inputDateStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.lessThan(root.get("released_date"), inputDate));
+            }
+            if (filterJson.has("is_active")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("is_active"), filterJson.get("is_active").asText()));
+            }
+            return predicate;
+        };
+        return movieRepository.findAll(specification);
+    }
 }

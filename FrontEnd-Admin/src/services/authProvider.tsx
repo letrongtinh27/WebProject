@@ -1,5 +1,6 @@
 import axios from "axios";
 import { AuthProvider, fetchUtils } from "react-admin";
+import Cookies from "js-cookie"
 const apiUrl = 'http://localhost:8080/api'
 
 
@@ -118,6 +119,7 @@ export const authProvider: AuthProvider = {
           });
 
           if (response.status === 200) {
+              Cookies.set("role",response.data.role);
               return Promise.resolve({
                   id: response.data.id,
                   birthday: response.data.birthday,

@@ -2,6 +2,7 @@ package com.edu.hcmuaf.springserver.controller;
 
 import com.edu.hcmuaf.springserver.dto.response.ShowsResponse;
 import com.edu.hcmuaf.springserver.entity.ShowTime;
+import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.service.ShowTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,12 +24,9 @@ public class ShowTimeController {
     private ShowTimeService showTimeService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getListShowTime() {
-        List<ShowTime> showTimeList = showTimeService.getAllShowTime();
-        if (showTimeList != null ) {
-            return ResponseEntity.ok(showTimeList);
-        }
-        return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<List<ShowTime>> getAllShowWithFilter(@RequestParam(defaultValue = "{}") String filter) {
+        List<ShowTime> showTimes = showTimeService.getAllwithSortTime(filter);
+        return ResponseEntity.ok(showTimes);
     }
 
     @GetMapping("/get")

@@ -21,14 +21,14 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getListTicket() {
-        List<Ticket> ticketList = ticketService.getAllTicket();
-        if (ticketList != null ) {
-            return ResponseEntity.ok(ticketList);
-        }
-        return ResponseEntity.badRequest().body(null);
-    }
+//    @GetMapping("/all")
+//    public ResponseEntity<?> getListTicket() {
+//        List<Ticket> ticketList = ticketService.getAllTicket();
+//        if (ticketList != null ) {
+//            return ResponseEntity.ok(ticketList);
+//        }
+//        return ResponseEntity.badRequest().body(null);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTicketById(@PathVariable int id) {
@@ -80,6 +80,12 @@ public class TicketController {
                                                          @RequestParam(defaultValue = "showTime.movie.title") String sort,
                                                          @RequestParam(defaultValue = "DESC") String order) {
         Page<Ticket> tickets = ticketService.getAllwithSort(filter, page, perPage, sort, order);
+        return ResponseEntity.ok(tickets);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Ticket>> getAllTicketsWithoutPagination(@RequestParam(defaultValue = "{}") String filter) {
+        List<Ticket> tickets = ticketService.getAllWithoutPagination(filter);
         return ResponseEntity.ok(tickets);
     }
 }

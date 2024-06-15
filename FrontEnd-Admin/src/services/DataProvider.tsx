@@ -33,7 +33,7 @@ export const dataProvider: DataProvider = {
                 page: page - 1,
                 perPage: perPage,
             };
-            if (resource === 'category' || resource === 'locations') {
+            if (resource === 'category' || resource === 'locations' || resource === 'theatres/all') {
                 const {json} = await httpClient(`${apiUrl}/${resource}`, {
                     method: 'GET',
                     headers: new Headers({
@@ -42,8 +42,21 @@ export const dataProvider: DataProvider = {
                         Authorization: `Bearer ${token}`,
                     }),
                 })
-                console.log("Json: ", json)
-                console.log("Content: ", json.content)
+                return {
+                    data: json,
+                    total: json.length,
+                }
+            }
+            if (resource === 'movies/all_filter' || resource === 'users/all' || resource === 'tickets/all' ||  resource === 'shows/all') {
+                const query1 = {filter: JSON.stringify(fetchUtils.flattenObject(params.filter))}
+                const {json} = await httpClient(`${apiUrl}/${resource}?${fetchUtils.queryParameters(query1)}`, {
+                    method: 'GET',
+                    headers: new Headers({
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    }),
+                })
                 return {
                     data: json,
                     total: json.length,
@@ -57,8 +70,6 @@ export const dataProvider: DataProvider = {
                     Authorization: `Bearer ${token}`,
                 }),
             })
-            console.log("Json: ", json)
-            console.log("Content: ", json.content)
 
             return {
                         data: json.content,
@@ -91,8 +102,6 @@ export const dataProvider: DataProvider = {
         let movie;
         let theatre;
         let categories
-        console.log(params)
-        console.log(resource)
         if (resource === 'users') {
             const data = {
                 username: params.data.user,
@@ -104,7 +113,6 @@ export const dataProvider: DataProvider = {
                 birthday: params.data.birthday,
                 role: params.data.role
             }
-            console.log(data)
 
             const {json} = await httpClient(`${apiUrl}/${resource}/admin_create`, {
                 method: 'POST',
@@ -126,6 +134,7 @@ export const dataProvider: DataProvider = {
         }
 
         if (resource === 'theatres') {
+            console.log(params)
             const data = {
                 location_id: params.data.locations_id,
                 name: params.data.name,
@@ -137,7 +146,7 @@ export const dataProvider: DataProvider = {
                 opening_hours:new Date(params.data.Opening_hours).toLocaleTimeString('en-GB', { hour12: false }),
                 rooms: params.data.rooms
             }
-            console.log(params)
+            console.log(data)
 
             const {json} = await httpClient(`${apiUrl}/${resource}/`, {
                 method: 'POST',
@@ -154,8 +163,7 @@ export const dataProvider: DataProvider = {
             return Promise.resolve({data: json});
         }
         if (resource === 'movies') {
-            console.log(params)
-            if (params.data.background_img_url_new != undefined && params.data.background_img_url_new != null ) {
+            if (params.data.background_img_url_new !== undefined && params.data.background_img_url_new !== null) {
                 let img = null;
                 await getBase64(params.data.background_img_url_new.rawFile)
                     .then(res => {
@@ -164,7 +172,7 @@ export const dataProvider: DataProvider = {
                     .catch(err => console.log(err))
                 background = await imgProvider(img);
             }
-            if (params.data.title_img_url_new != undefined && params.data.title_img_url_new != null ) {
+            if (params.data.title_img_url_new != undefined && params.data.title_img_url_new != null) {
                 let img = null;
                 await getBase64(params.data.title_img_url_new.rawFile)
                     .then(res => {
@@ -173,7 +181,7 @@ export const dataProvider: DataProvider = {
                     .catch(err => console.log(err))
                 titleimg = await imgProvider(img);
             }
-            if (params.data.poster_url_new != undefined && params.data.poster_url_new != null ) {
+            if (params.data.poster_url_new != undefined && params.data.poster_url_new != null) {
                 let img = null;
                 await getBase64(params.data.poster_url_new.rawFile)
                     .then(res => {
@@ -194,19 +202,22 @@ export const dataProvider: DataProvider = {
                 age_type: string;
                 type: string;
                 is_active: number;
-                categories: { id: number; name: null }[];
+                categories: {
+                    id: number;
+                    name: null
+                }[];
             } = {
-                background_img_url: background =! null ? background : params.data.background_img_url,
+                background_img_url: background != null ? background : params.data.background_img_url || '',
                 title_img_url: titleimg != null ? titleimg : params.data.title_img_url || '',
                 title: params.data.title,
                 released_date: new Date(params.data.released_date).toLocaleDateString('sv-SE'),
                 trailer_video_url: params.data.trailer_video_url || '',
-                poster_url: poster != null ? poster : params.data.trailer_video_url || '',
+                poster_url: poster != null ? poster : params.data.poster_url || '',
                 description: params.data.description,
                 sub_title: params.data.sub_title,
                 age_type: params.data.age_type,
                 type: params.data.type,
-                is_active: params.data.is_active ? 1: 0 ,
+                is_active: params.data.is_active ? 1 : 0,
                 categories: params.data.category.map((categoryId: number) => ({
                     id: categoryId,
                     name: ""
@@ -215,20 +226,18 @@ export const dataProvider: DataProvider = {
             console.log(data)
             const {json} = await httpClient(`${apiUrl}/${resource}/`, {
                 method: 'POST',
+                body: JSON.stringify(data),
                 headers: new Headers({
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
                     Authorization: `Bearer ${token}`,
                 }),
-                body: JSON.stringify(data),
-                credentials: 'include',
-
+                credentials: 'include'
             });
-            window.location.href = `/#/${resource}`;
             return Promise.resolve({data: json});
         }
 
-        if (resource === 'shows') {
+            if (resource === 'shows') {
             const {data: movie} = await dataProvider.getOne('movies', {id: params.data.movieId})
             const {data: theatre} = await dataProvider.getOne('theatres', {id: params.data.theatreId})
             const data = {
@@ -239,7 +248,6 @@ export const dataProvider: DataProvider = {
                 movie: movie,
                 theatre: theatre
             }
-            console.log(data)
             const json = await axios.create({
                 baseURL: "http://localhost:8080/api/",
             }).post(`shows/`, JSON.stringify(data), {
@@ -266,7 +274,6 @@ export const dataProvider: DataProvider = {
             credentials: 'include'
         })
         window.location.href = `/#/${resource}`
-        console.log(json)
         return Promise.resolve({data: json});
     }
     ,
@@ -276,7 +283,6 @@ export const dataProvider: DataProvider = {
         let poster = null;
 
         if (resource === 'movies') {
-            console.log(params)
             if (params.data.background_img_url_new !== undefined && params.data.background_img_url_new !== null ) {
                 let img = null;
                 await getBase64(params.data.background_img_url_new.rawFile)
@@ -360,7 +366,6 @@ export const dataProvider: DataProvider = {
                 opening_hours: new Date(params.data.Opening_hours).toLocaleTimeString('en-GB', {hour12: false}),
                 rooms: params.data.rooms
             }
-            console.log(params)
             const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
                 method: 'PUT',
                 body: JSON.stringify(data),
@@ -374,7 +379,6 @@ export const dataProvider: DataProvider = {
             return Promise.resolve({ data: json });
         }
         if (resource === 'shows') {
-            console.log(params)
             const {data: movie} = await dataProvider.getOne('movies', {id: params.data.movieId})
             const {data: theatre} = await dataProvider.getOne('theatres', {id: params.data.theatreId})
 
@@ -386,8 +390,6 @@ export const dataProvider: DataProvider = {
                 movie: movie,
                 theatre: theatre
             }
-            console.log(data)
-            console.log("params: " + params)
             const json = await axios.create({
                 baseURL: "http://localhost:8080/api/",
             }).put(`shows/${params.id}`, JSON.stringify(data), {
@@ -398,7 +400,6 @@ export const dataProvider: DataProvider = {
                     }
             }
                 )
-            console.log(json.data)
                 return Promise.resolve({ data: json.data });
         }
 
@@ -417,7 +418,6 @@ export const dataProvider: DataProvider = {
 
 
     delete: async (resource: any, params: any) => {
-        console.log(params)
         const {json} = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
             body: JSON.stringify(params.data),

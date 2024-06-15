@@ -24,8 +24,9 @@ public class TheatreService {
     @Autowired
     private LocationService locationService;
 
-    public List<Theatre> getAllTheatre() {
-        return theatreRepository.findAll();
+    public List<Theatre> getAllTheatre(String sortBy) {
+        Sort.Direction direction = Sort.Direction.ASC;
+        return theatreRepository.findAll(Sort.by(direction, sortBy));
     }
 
     public Theatre getTheatreById(int id) {
@@ -89,12 +90,6 @@ public class TheatreService {
             }
             return predicate;
         };
-        if (sortBy.equals("name")) {
-            return theatreRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "name")));
-        }
-        if (sortBy.equals("address"))  {
-            return theatreRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "address")));
-        }
         return theatreRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
     }
 }
