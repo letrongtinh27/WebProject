@@ -82,29 +82,33 @@ public class ShowTimeService {
                 Join<ShowTime, Movie> movieJoin = root.join("movie", JoinType.INNER);
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(criteriaBuilder.lower(movieJoin.get("title")), "%" + filterJson.get("q").asText().toLowerCase() + "%"));
             }
-            if (filterJson.has("movie.title")) {
-                Join<ShowTime, Movie> movieJoin = root.join("movie", JoinType.INNER);
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(movieJoin.get("title"), "%" + filterJson.get("movie.title").asText() + "%"));
-            }
-            if (filterJson.has("theatre.name")) {
-                Join<ShowTime, Theatre> theatreJoin = root.join("theatre", JoinType.INNER);
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(theatreJoin.get("name"), "%" + filterJson.get("theatre.name").asText() + "%"));
-            }
-            if (filterJson.has("room")) {
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("room"), "%" + filterJson.get("room").asText() + "%"));
+            return predicate;
+        };
+        return showTimeRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
+    }
+
+    public List<ShowTime> getAllwithSortTime(String filter) {
+        JsonNode filterJson;
+        try {
+            filterJson = new ObjectMapper().readTree(java.net.URLDecoder.decode(filter, StandardCharsets.UTF_8));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        Specification<ShowTime> specification = (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (filterJson.has("start_time")) {
+                String[] parts = filterJson.get("start_time").asText().split("/");
+                if (parts.length == 2) {
+                    int month = Integer.parseInt(parts[0]);
+                    int year = Integer.parseInt(parts[1]);
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(criteriaBuilder.function("MONTH", Integer.class, root.get("start_time")), month));
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(criteriaBuilder.function("YEAR", Integer.class, root.get("start_time")), year));
+                }
             }
             return predicate;
         };
-
-        if (sortBy.equals("movie.title")) {
-            return showTimeRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "movie.title")));
-        }
-        if (sortBy.equals("theatre.name")) {
-            return showTimeRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "theatre.name")));
-        }
-        if (sortBy.equals("room"))  {
-            return showTimeRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "room")));
-        }
-        return showTimeRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
+        return showTimeRepository.findAll(specification);
     }
+
 }

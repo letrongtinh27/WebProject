@@ -12,7 +12,7 @@ export const TheatreLocation = () => {
     const [location, setLocations] = useState<Location[]>([]);
     const {data}: any = useGetList<Location>('locations',{
         pagination: {page: 1, perPage: 100},
-        sort: {field: 'name', order: 'ASC'},
+        // sort: {field: 'name', order: 'ASC'},
     });
     console.log(data)
     useEffect(() => {
@@ -30,7 +30,7 @@ export const TheatreLocation = () => {
     }, [record]);
 
     return (
-        <Grid  container columnSpacing={2}>
+        <Grid  container>
             <SelectInput source="locations_id"
                          label="Khu vực"
                          choices={location} fullWidth

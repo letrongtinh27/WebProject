@@ -59,18 +59,18 @@ public class UserController {
         userResponse.setGender(user.getGender());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         userResponse.setBirthday(sdf.format(user.getBirthday()));
-
+        userResponse.setRole(user.getRole());
         return ResponseEntity.ok(userResponse);
     }
 
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getListUser() {
-        List<User> listUser = userService.getListUser();
-        if (listUser != null) {
-            return ResponseEntity.ok(listUser);
-        } else return ResponseEntity.badRequest().body(null);
-    }
+//    @GetMapping("/all")
+//    public ResponseEntity<?> getListUser() {
+//        List<User> listUser = userService.getListUser();
+//        if (listUser != null) {
+//            return ResponseEntity.ok(listUser);
+//        } else return ResponseEntity.badRequest().body(null);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
@@ -101,7 +101,7 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -114,6 +114,12 @@ public class UserController {
                                                      @RequestParam(defaultValue = "title") String sort,
                                                      @RequestParam(defaultValue = "DESC") String order) {
         Page<User> users = userService.getAllwithSort(filter, page, perPage, sort, order);
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsersByRole(@RequestParam(defaultValue = "{}") String filter) {
+        List<User> users = userService.getAllUsersByRole(filter);
         return ResponseEntity.ok(users);
     }
 }

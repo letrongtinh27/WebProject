@@ -93,7 +93,7 @@ public class UserService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
             User user = userRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-            if (isAdmin && !user.getRole().equals("admin")) {
+            if (isAdmin && (!user.getRole().equals("admin")) && (!user.getRole().equals("manager")) )  {
                 return AuthenticationResponse.builder().code(401).message("Not an admin").build();
             }
 
@@ -201,12 +201,6 @@ public class UserService {
             }
             return predicate;
         };
-        if (sortBy.equals("username")) {
-            return userRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "username")));
-        }
-        if (sortBy.equals("email"))  {
-            return userRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "email")));
-        }
         return userRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
     }
 
@@ -221,6 +215,24 @@ public class UserService {
         emailService.sendTextEmail(user.getEmail(),"Mật khẩu mới","Mật khẩu mới của tài khoản: " + user.getUsername() + " là: " + newPassword);
 
         return AuthenticationResponse.builder().code(200).message("Reset password success").build();
+    }
+
+    public List<User> getAllUsersByRole(String filter) {
+        JsonNode filterJson;
+        try {
+            filterJson = new ObjectMapper().readTree(java.net.URLDecoder.decode(filter, StandardCharsets.UTF_8));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        Specification<User> specification = (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (filterJson.has("role")) {
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("role"), filterJson.get("role").asText()));
+            }
+            return predicate;
+        };
+        return userRepository.findAll(specification);
     }
 }
 

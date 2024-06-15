@@ -20,8 +20,8 @@ public class TheatreController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getListTheatre() {
-        List<Theatre> theatreList = theatreService.getAllTheatre();
+    public ResponseEntity<?> getListTheatre(@RequestParam(defaultValue = "name") String sort) {
+        List<Theatre> theatreList = theatreService.getAllTheatre(sort);
         if (theatreList != null ) {
             return ResponseEntity.ok(theatreList);
         }

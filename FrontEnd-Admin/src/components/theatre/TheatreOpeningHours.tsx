@@ -22,7 +22,7 @@ export const TheatreOpeningHours = () => {
     }, [record]);
     console.log(openingHours)
     return (
-      <Grid container columnSpacing={2}>
+      <Grid container>
           <TimeInput source="Opening_hours" label={"Thời gian mở cửa"} defaultValue={openingHours} fullWidth></TimeInput>
       </Grid>
     );

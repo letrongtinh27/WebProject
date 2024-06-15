@@ -66,7 +66,7 @@ export const TheatreCreate = (props: any) => {
                         />
                     </Grid>
                     <Grid container >
-                        <TimeInput source="Opening_hours" label={"Thời gian mở cửa"} fullWidth></TimeInput>
+                        <TimeInput source="Opening_hours" label={"Thời gian mở cửa"} fullWidth/>
                     </Grid>
                 </TabbedForm.Tab>
 

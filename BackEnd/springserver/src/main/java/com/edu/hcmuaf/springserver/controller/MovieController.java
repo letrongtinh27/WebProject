@@ -90,4 +90,10 @@ public class MovieController {
         Page<Movie> movies = movieService.getAllwithSort(filter, page, perPage, sort, order);
         return ResponseEntity.ok(movies);
     }
+
+    @GetMapping("/all_filter")
+    public ResponseEntity<List<Movie>> getAllMoviesByReleasedDate(@RequestParam(defaultValue = "{}") String filter) {
+        List<Movie> movies = movieService.getAllMoviesByReleasedDate(filter);
+        return ResponseEntity.ok(movies);
+    }
 }
