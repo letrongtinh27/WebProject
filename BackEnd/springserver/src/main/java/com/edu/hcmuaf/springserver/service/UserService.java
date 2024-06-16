@@ -2,6 +2,7 @@ package com.edu.hcmuaf.springserver.service;
 
 import com.edu.hcmuaf.springserver.auth.*;
 import com.edu.hcmuaf.springserver.config.VNPayConfig;
+import com.edu.hcmuaf.springserver.controller.UserController;
 import com.edu.hcmuaf.springserver.dto.request.UserRequest;
 import com.edu.hcmuaf.springserver.entity.User;
 import com.edu.hcmuaf.springserver.repositories.UserRepository;
@@ -11,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +49,8 @@ public class UserService {
     private JwtService jwtService;
     @Autowired
     private EmailService emailService;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
 
     public List<User> getListUser() {
@@ -124,15 +129,18 @@ public class UserService {
         User user = userRepository.findByUsername(userRequest.getUsername()).orElse(null);
 
         if (userRepository.existsUserByEmail(userRequest.getEmail())) {
+            logger.warn("Email {} already exists. Update failed.", userRequest.getEmail());
             return AuthenticationResponse.builder().code(400).message("Địa chỉ email đã tồn tài, thử lại email khác.").build();
         }
 
         if(user!=null) {
             if(userRequest.isChangePassword()) {
+                logger.info("Changed password for user: {}", user.getUsername());
                 user.setPassword(encoder.encode(userRequest.getPassword()));
             }
             if(!userRequest.getEmail().isEmpty()){
                 user.setEmail(userRequest.getEmail());
+                logger.info("Updated email for user: {}", user.getUsername());
             }
             user.setPhone_number(userRequest.getPhone());
             user.setFull_name(userRequest.getFullName());

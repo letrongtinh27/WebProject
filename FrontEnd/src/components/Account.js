@@ -171,6 +171,7 @@ const Account = ({ updateHeader }) => {
               changePassword: false,
             }));
             setPassword("");
+            setIsChangePassword(false);
             toast.success("Thay đổi thông tin thành công !");
           }
         })
