@@ -801,3 +801,6 @@
 2024-06-16 13:10:56.006 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
 2024-06-16 13:10:56.007 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Theatre(id=7, location=Location(id=8, name=Hồ Chí Minh, address=Quận 10), image=https://i.ibb.co/H4 (truncated)...]
 2024-06-16 13:10:56.007 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-16 13:16:47.369 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-16 13:16:47.371 [SpringApplicationShutdownHook] INFO  c.z.h.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-06-16 13:16:47.376 [SpringApplicationShutdownHook] INFO  c.z.h.HikariDataSource - HikariPool-1 - Shutdown completed.
