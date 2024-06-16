@@ -1,10 +1,9 @@
 import axios from "axios";
 import { AuthProvider, fetchUtils } from "react-admin";
-import Cookies from "js-cookie"
-const apiUrl = 'http://localhost:8080/api'
+import Cookies from "js-cookie";
+const apiUrl = "http://localhost:8080/api";
 
-
-let token = localStorage.getItem("admin")
+let token = localStorage.getItem("admin");
 // const httpClient = axios.create({
 //     baseURL: apiUrl,
 // });
@@ -12,8 +11,6 @@ let token = localStorage.getItem("admin")
 const httpClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
-
-
 
 httpClient.interceptors.response.use(
   (response) => response,
@@ -51,16 +48,13 @@ export const authProvider: AuthProvider = {
       });
   },
   logout: async () => {
-    await httpClient.post(
-      `${process.env.REACT_APP_API_URL}/auth/sign-out`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
+    await httpClient.post(`${process.env.REACT_APP_API_URL}/auth/sign-out`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
 
     localStorage.removeItem("admin");
     return Promise.resolve();
@@ -104,59 +98,65 @@ export const authProvider: AuthProvider = {
   },
   //@ts-ignore
   getIdentity: async () => {
-      const token = localStorage.getItem("admin");
-      if (!token) {
-          return Promise.reject();
-      }
-      try {
-          const response = await httpClient.get(`${apiUrl}/users/profile`, {
-              headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-              },
-              withCredentials: true,
-          });
-
-          if (response.status === 200) {
-              Cookies.set("role",response.data.role);
-              return Promise.resolve({
-                  id: response.data.id,
-                  birthday: response.data.birthday,
-                  email: response.data.email,
-                  fullName: response.data.fullName,
-                  gender: response.data.gender === 'Nam' ? 0: 1,
-                  phone: response.data.phone,
-                  username: response.data.username
-              });
-          } else {
-              await authProvider.logout(token);
-          }
-      } catch (error) {
-          await authProvider.logout(token);
-          window.location.href = '/#/login';
-      }
-  },
-    //@ts-ignore
-    update: async (resource: any, params: any) => {
-        console.log(params);
-        const token = localStorage.getItem("admin");
-        if (!token) {
-            return Promise.reject();
-        }
-        try {
-            const response = await httpClient.post(`${apiUrl}/users/edit`,
-                JSON.stringify(params), {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
-        } catch (error) {
-            console.log(error);
-            return Promise.reject();
-        }
+    const token = localStorage.getItem("admin");
+    if (!token) {
+      return Promise.reject();
     }
+    try {
+      const response = await httpClient.get(`${apiUrl}/users/profile`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        Cookies.set("role", response.data.role);
+        const parts = response.data.birthday.split("-");
+        return Promise.resolve({
+          id: response.data.id,
+          birthday: new Date(parts[2], parts[1] - 1, parts[0]),
+          email: response.data.email,
+          fullName: response.data.fullName,
+          gender: response.data.gender === "Nam" ? 0 : 1,
+          phone: response.data.phone,
+          username: response.data.username,
+        });
+      } else {
+        await authProvider.logout(token);
+      }
+    } catch (error) {
+      await authProvider.logout(token);
+      window.location.href = "/#/login";
+    }
+  },
+  //@ts-ignore
+  update: async (resource: any, params: any) => {
+    console.log(params);
+    const token = localStorage.getItem("admin");
+
+    if (!token) {
+      return Promise.reject();
+    }
+    try {
+      const response = await httpClient.post(
+        `${apiUrl}/users/edit`,
+        JSON.stringify(params),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      return Promise.reject();
+    }
+  },
 };
