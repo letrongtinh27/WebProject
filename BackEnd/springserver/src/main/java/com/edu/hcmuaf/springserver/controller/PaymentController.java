@@ -10,6 +10,8 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +42,11 @@ public class PaymentController {
     @Autowired
     private EmailService emailService;
 
+    private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
+
     @PostMapping("/pay")
     public ResponseEntity<?> createPay(@RequestBody PaymentRequest paymentRequest, HttpServletRequest req, Authentication authentication) throws UnsupportedEncodingException, MessagingException {
+        logger.info("Received payment request from user: {}", authentication.getName());
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
@@ -173,6 +178,7 @@ public class PaymentController {
     @GetMapping("/payment-callback")
     public ResponseEntity<?> transaction(@Param("vnp_TxnRef") String vnp_TxnRef,
                                          @Param("vnp_TransactionStatus") String vnp_ResponseCode) throws MessagingException {
+        logger.info("Received payment callback for transaction: {}", vnp_TxnRef);
         if(vnp_ResponseCode.equals("00")) {
             List<Reservation> reservationList = reservationService.findReservationsByOrder(vnp_TxnRef);
             for (Reservation reservation : reservationList) {

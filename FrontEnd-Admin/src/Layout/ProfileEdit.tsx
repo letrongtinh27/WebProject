@@ -97,7 +97,6 @@ export const ProfileEdit = ({
       return `${day}-${month}-${year}`; // Định dạng chuỗi "nn/mm/yyyy"
     } else {
       const parst = date.split("-");
-      console.log(date);
       return `${parst[2]}-${parst[1]}-${parst[0]}`; // Định dạng chuỗi "nn/mm/yyyy"
     }
   };
