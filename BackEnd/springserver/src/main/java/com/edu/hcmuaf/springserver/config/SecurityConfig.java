@@ -59,15 +59,15 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/api/theatres/{id}").hasAnyAuthority("admin")
 
 //                      Ticket
-                        .requestMatchers(HttpMethod.GET, "/api/tickets/**").hasAnyAuthority("admin")
-                                .requestMatchers(HttpMethod.GET, "/api/tickets/get/{userId}").hasAnyAuthority("admin", "user")
+                        .requestMatchers(HttpMethod.GET, "/api/tickets/**").hasAnyAuthority("admin","manager")
+                                .requestMatchers(HttpMethod.GET, "/api/tickets/get/{userId}").hasAnyAuthority("admin", "user", "manager")
                                 .requestMatchers(HttpMethod.POST, "/api/tickets/").hasAnyAuthority("admin")
                                 .requestMatchers(HttpMethod.PUT, "/api/tickets/{id}").hasAnyAuthority("admin")
                                 .requestMatchers(HttpMethod.DELETE, "/api/tickets/{id}").hasAnyAuthority("admin")
 //                      User
                         .requestMatchers(HttpMethod.GET, "/api/users/profile").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/users/all").hasAnyAuthority("admin")
-                                .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyAuthority("admin")
+                                .requestMatchers(HttpMethod.GET, "/api/users/all").hasAnyAuthority("admin","manager")
+                                .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyAuthority("admin","manager")
                                 .requestMatchers(HttpMethod.POST, "/api/users/edit").hasAnyAuthority("admin")
                                 .requestMatchers(HttpMethod.POST, "/api/users/admin_create").hasAnyAuthority("admin")
                                 .requestMatchers(HttpMethod.DELETE, "/api/users/").hasAnyAuthority("admin")

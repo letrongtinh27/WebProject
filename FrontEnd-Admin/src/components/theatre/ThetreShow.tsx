@@ -12,9 +12,14 @@ import {TheatreLocation} from "./TheatreLocation";
 
 import TheatreList from "./TheatreList";
 import TheatreOpeningHours from "./TheatreOpeningHours";
+import {styled} from "@mui/material/styles";
 
 
 export const TheatreShow = (props: any) => {
+    const StyledLabel = styled('span')({
+        fontSize: '20px',
+        fontWeight: 'bold',
+    });
     const NameTheatre = () => {
         const record = useRecordContext<Theatre>();
         return record ? record.name : null;
@@ -23,15 +28,15 @@ export const TheatreShow = (props: any) => {
     return(
         <Show title={<NameTheatre/>}>
            <SimpleShowLayout>
-               <TextField source="name" label={"Tên rạp"} ></TextField>
-               <TextField source="address" label={"Địa chỉ"} ></TextField>
-               <TextField source="phone_number" label={"Số điện thoại"} ></TextField>
-               <TextField source="email" label={"Email"} ></TextField>
-               <TextField source="description" label={"Mô tả"} ></TextField>
-               <TextField source="room_summary" label={"Phòng"} ></TextField>
-               <TextField source="rooms" label={"Tổng số phòng"} ></TextField>
-               <TextField source="location.name" label={"Địa chỉ"} ></TextField>
-               <TextField source="opening_hours" label={"Mở cửa"} ></TextField>
+               <TextField source="name" label={<StyledLabel>Tên rạp</StyledLabel>} ></TextField>
+               <TextField source="address" label={<StyledLabel>Địa chỉ</StyledLabel>} ></TextField>
+               <TextField source="phone_number" label={<StyledLabel>Số điện thoại</StyledLabel>} ></TextField>
+               <TextField source="email" label={<StyledLabel>Email</StyledLabel>} ></TextField>
+               <TextField source="description" label={<StyledLabel>Mô tả</StyledLabel>} ></TextField>
+               <TextField source="room_summary" label={<StyledLabel>Phòng</StyledLabel>} ></TextField>
+               <TextField source="rooms" label={<StyledLabel>Tổng số phòng</StyledLabel>} ></TextField>
+               <TextField source="location.name" label={<StyledLabel>Địa chỉ</StyledLabel>} ></TextField>
+               <TextField source="opening_hours" label={<StyledLabel>Mở cửa</StyledLabel>} ></TextField>
            </SimpleShowLayout>
         </Show>
     );

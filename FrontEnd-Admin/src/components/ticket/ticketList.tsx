@@ -54,8 +54,9 @@ export const TicketList = () => {
                     <TextField source="id" label="ID"/>
                     <TextField source="showTime.movie.title" label="Movie"/>
                     <TextField source="showTime.theatre.name" label="Theatre"/>
-                    <TextField source="seat.row_char" label="Row"/>
-                    <TextField source="seat.seat_number" label="Number"/>
+                    <TextField source="price" label="Price"/>
+                    <TextField source="seat.room" label="Room"/>
+                    <TextField source="ticketCode" label="Code"/>
                     <EditButton/>
                 </Datagrid>
             )}

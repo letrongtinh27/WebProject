@@ -50,6 +50,7 @@ public class TicketService {
         ticketRepository.deleteById(id);
     }
 
+
     public Page<Ticket> getAllwithSort(String filter, int page, int perPage, String sortBy, String order) {
         Sort.Direction direction = Sort.Direction.ASC;
         if (order.equalsIgnoreCase("DESC"))
@@ -65,9 +66,7 @@ public class TicketService {
         Specification<Ticket> specification = (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (filterJson.has("q")) {
-                Join<Ticket, ShowTime> showTimeJoin = root.join("showTime", JoinType.INNER);
-                Join<ShowTime, Movie> movieJoin = showTimeJoin.join("movie", JoinType.INNER);
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(criteriaBuilder.lower(movieJoin.get("title")), "%" + filterJson.get("q").asText().toLowerCase() + "%"));
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("ticketCode"), "%" + filterJson.get("q").asText().toLowerCase() + "%"));
             }
             if (filterJson.has("movie")) {
                 Join<Ticket, ShowTime> showTimeJoin = root.join("showTime", JoinType.INNER);
@@ -79,29 +78,53 @@ public class TicketService {
                 Join<ShowTime, Theatre> theatreJoin = showTimeJoin.join("theatre", JoinType.INNER);
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(theatreJoin.get("name"), "%" + filterJson.get("theatre").asText() + "%"));
             }
-            if (filterJson.has("seat")) {
-                Join<Ticket, Seat> seatJoin = root.join("seat", JoinType.INNER);
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(seatJoin.get("rowChar"), "%" + filterJson.get("seat").asText() + "%"));
+            if (filterJson.has("reservation_time")) {
+                String[] parts = filterJson.get("reservation_time").asText().split("/");
+                if (parts.length == 2) {
+                    int month = Integer.parseInt(parts[0]);
+                    int year = Integer.parseInt(parts[1]);
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(criteriaBuilder.function("MONTH", Integer.class, root.get("reservation").get("reservation_time")), month));
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(criteriaBuilder.function("YEAR", Integer.class, root.get("reservation").get("reservation_time")), year));
+                }
             }
-            if (filterJson.has("seat_number")) {
-                Join<Ticket, Seat> seatJoin = root.join("seat", JoinType.INNER);
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(seatJoin.get("seatNumber"), "%" + filterJson.get("seat_number").asText() + "%"));
+            return predicate;
+        };
+        return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
+    }
+
+    public List<Ticket> getAllWithoutPagination(String filter) {
+        JsonNode filterJson;
+        try {
+            filterJson = new ObjectMapper().readTree(java.net.URLDecoder.decode(filter, StandardCharsets.UTF_8));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        Specification<Ticket> specification = (root, query, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.conjunction();
+            if (filterJson.has("movie")) {
+                Join<Ticket, ShowTime> showTimeJoin = root.join("showTime", JoinType.INNER);
+                Join<ShowTime, Movie> movieJoin = showTimeJoin.join("movie", JoinType.INNER);
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(criteriaBuilder.lower(movieJoin.get("title")), "%" + filterJson.get("movie").asText().toLowerCase() + "%"));
+            }
+
+            if (filterJson.has("theatre")) {
+                Join<Ticket, ShowTime> showTimeJoin = root.join("showTime", JoinType.INNER);
+                Join<ShowTime, Theatre> theatreJoin = showTimeJoin.join("theatre", JoinType.INNER);
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(theatreJoin.get("name"), "%" + filterJson.get("theatre").asText() + "%"));
+            }
+
+            if (filterJson.has("reservation_time")) {
+                String[] parts = filterJson.get("reservation_time").asText().split("-");
+                if (parts.length == 2) {
+                    int month = Integer.parseInt(parts[0]);
+                    int year = Integer.parseInt(parts[1]);
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(criteriaBuilder.function("MONTH", Integer.class, root.get("reservation").get("reservation_time")), month));
+                    predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(criteriaBuilder.function("YEAR", Integer.class, root.get("reservation").get("reservation_time")), year));
+                }
             }
             return predicate;
         };
 
-        if (sortBy.equals("movie.title")) {
-            return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "showTime.movie.title")));
-        }
-        if (sortBy.equals("theatre.name")) {
-            return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "showTime.theatre.name")));
-        }
-        if (sortBy.equals("seat.rowChar")) {
-            return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "seat.rowChar")));
-        }
-        if (sortBy.equals("seat.seatNumber")) {
-            return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, "seat.seatNumber")));
-        }
-        return ticketRepository.findAll(specification, PageRequest.of(page, perPage, Sort.by(direction, sortBy)));
+        return ticketRepository.findAll(specification);
     }
 }
