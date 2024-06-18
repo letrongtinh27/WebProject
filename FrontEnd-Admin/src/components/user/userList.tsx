@@ -27,12 +27,10 @@ import {
 
 import { useMediaQuery, Theme } from "@mui/material";
 
-const VisitorListActions = () => (
+const ListActions = () => (
     <TopToolbar>
-        <CreateButton/>
-        <SelectColumnsButton/>
-        <ExportButton/>
-        <DeleteButton/>
+        <CreateButton />
+        <ExportButton />
     </TopToolbar>
 );
 
@@ -43,14 +41,19 @@ export const UserList = () => {
         <List
             sort={{field: 'username', order: 'DESC'}}
             perPage={10}
+            actions={<ListActions />}
             filters={ [<SearchInput source = "q" alwaysOn /> ] }
-
         >
+            {isSmall ? (
                 <Datagrid rowClick="show">
-                    <TextField source="id" label="ID"/>
                     <TextField source="username" label="UserName"/>
-                    <TextField source="email" label="Email"/>
                 </Datagrid>
+            ) : (  <Datagrid rowClick="show">
+                <TextField source="id" label="ID"/>
+                <TextField source="username" label="UserName"/>
+                <TextField source="email" label="Email"/>
+            </Datagrid>)}
+
         </List>
     );
 };

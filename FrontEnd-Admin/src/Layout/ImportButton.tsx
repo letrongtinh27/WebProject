@@ -2,9 +2,14 @@ import React from 'react';
 import { useNotify, useRefresh, useDataProvider } from 'react-admin';
 import { Button } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
+import PublishRoundedIcon from '@mui/icons-material/PublishRounded';
 import Papa from 'papaparse';
 
-const ImportButton = () => {
+interface ImportButtonProps {
+    isSmall: boolean;
+}
+
+const ImportButton: React.FC<ImportButtonProps> = ({ isSmall }) => {
     const notify = useNotify();
     const refresh = useRefresh();
     const dataProvider = useDataProvider();
@@ -75,11 +80,15 @@ const ImportButton = () => {
     return (
         <Button
             component="label"
-            startIcon={<PublishIcon />}
-            size="small"
-            sx={{ paddingY: '0.21rem' }}
+            startIcon={<PublishRoundedIcon />}
+            size={isSmall ? "large" : "small"}
+
+            sx={{
+                paddingY: '0.21rem',
+                ...(isSmall && { border: 'none', minWidth: 'auto', paddingY : '0.9rem' }),
+            }}
         >
-            Import
+            {!isSmall && 'Import'}
             <input
                 type="file"
                 accept=".csv"

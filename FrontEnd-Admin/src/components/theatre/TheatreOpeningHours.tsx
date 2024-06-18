@@ -8,7 +8,6 @@ import { parse, format } from 'date-fns';
 import {Grid} from "@mui/material";
 export const TheatreOpeningHours = () => {
     const record = useRecordContext<Theatre>();
-    console.log(record)
     const [openingHours, setOpeningHours] = useState<Date>();
 
     useEffect(() => {
@@ -20,7 +19,6 @@ export const TheatreOpeningHours = () => {
             setOpeningHours(time);
         }
     }, [record]);
-    console.log(openingHours)
     return (
       <Grid container>
           <TimeInput source="Opening_hours" label={"Thời gian mở cửa"} defaultValue={openingHours} fullWidth></TimeInput>
