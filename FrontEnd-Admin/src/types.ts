@@ -30,7 +30,8 @@ export interface Theatre extends RaRecord {
     description: string
     room_summary: string
     opening_hours: string
-    rooms: string
+    rooms: string,
+    image: string
 }
 
 export interface Location extends RaRecord {

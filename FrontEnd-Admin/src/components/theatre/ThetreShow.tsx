@@ -1,12 +1,12 @@
 import {
-    Edit, NumberInput, Show, SimpleShowLayout,
+    Edit, ImageField, NumberInput, Show, SimpleShowLayout,
     TabbedForm, TextField,
     TextInput,
     useRecordContext,
 } from 'react-admin';
 
 import React, {useEffect, useMemo, useState} from "react";
-import {Grid } from "@mui/material";
+import {Grid, Theme, useMediaQuery} from "@mui/material";
 import {Theatre} from "../../types";
 import {TheatreLocation} from "./TheatreLocation";
 
@@ -20,6 +20,7 @@ export const TheatreShow = (props: any) => {
         fontSize: '20px',
         fontWeight: 'bold',
     });
+
     const NameTheatre = () => {
         const record = useRecordContext<Theatre>();
         return record ? record.name : null;
@@ -29,6 +30,7 @@ export const TheatreShow = (props: any) => {
         <Show title={<NameTheatre/>}>
            <SimpleShowLayout>
                <TextField source="name" label={<StyledLabel>Tên rạp</StyledLabel>} ></TextField>
+               <ImageField source="image" label={<StyledLabel>Image</StyledLabel>}></ImageField>
                <TextField source="address" label={<StyledLabel>Địa chỉ</StyledLabel>} ></TextField>
                <TextField source="phone_number" label={<StyledLabel>Số điện thoại</StyledLabel>} ></TextField>
                <TextField source="email" label={<StyledLabel>Email</StyledLabel>} ></TextField>

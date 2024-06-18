@@ -5,24 +5,40 @@
     grid-auto-rows: minmax(50px, auto);
     grid-auto-flow: dense;
     margin: 30px;
+}
 
-    .box {
-        padding: 20px;
-        border-radius: 10px;
-        border: 2px solid;
+.home-small {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.box {
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
+.box1 {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.box2 {
+    grid-column: span 4;
+    grid-row: span 10;
+}
+
+.box3 {
+    grid-column: span 3;
+    grid-row: span 1;
+}
+
+@media (max-width: 600px) {
+    .home {
+        grid-template-columns: repeat(1, 1fr);
     }
 
-    .box1 {
+    .box1, .box2, .box3 {
         grid-column: span 1;
-        grid-row: span 2;
-    }
-
-    .box2 {
-        grid-column: span 3;
-        grid-row: span 10;
-    }
-    .box3 {
-        grid-column: span 4;
-        grid-row: span 4;
+        grid-row: span 1;
     }
 }

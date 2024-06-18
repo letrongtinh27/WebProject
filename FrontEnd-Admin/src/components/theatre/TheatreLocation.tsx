@@ -14,7 +14,6 @@ export const TheatreLocation = () => {
         pagination: {page: 1, perPage: 100},
         // sort: {field: 'name', order: 'ASC'},
     });
-    console.log(data)
     useEffect(() => {
         if (data) {
             setLocations(data);

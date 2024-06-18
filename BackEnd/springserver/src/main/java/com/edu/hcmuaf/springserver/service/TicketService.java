@@ -114,7 +114,7 @@ public class TicketService {
             }
 
             if (filterJson.has("reservation_time")) {
-                String[] parts = filterJson.get("reservation_time").asText().split("-");
+                String[] parts = filterJson.get("reservation_time").asText().split("/");
                 if (parts.length == 2) {
                     int month = Integer.parseInt(parts[0]);
                     int year = Integer.parseInt(parts[1]);

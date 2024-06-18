@@ -99,6 +99,7 @@ export const dataProvider: DataProvider = {
         let background = null;
         let poster = null;
         let titleimg = null;
+        let imageTheatre = null;
         let movie;
         let theatre;
         let categories
@@ -135,6 +136,15 @@ export const dataProvider: DataProvider = {
 
         if (resource === 'theatres') {
             console.log(params)
+            if (params.data.image !== undefined && params.data.image !== null) {
+                let img = null;
+                await getBase64(params.data.image.rawFile)
+                    .then(res => {
+                        img = res;
+                    })
+                    .catch(err => console.log(err))
+                imageTheatre = await imgProvider(img);
+            }
             const data = {
                 location_id: params.data.locations_id,
                 name: params.data.name,
@@ -144,7 +154,8 @@ export const dataProvider: DataProvider = {
                 description: params.data.description,
                 room_summary: params.data.room_summary,
                 opening_hours:new Date(params.data.Opening_hours).toLocaleTimeString('en-GB', { hour12: false }),
-                rooms: params.data.rooms
+                rooms: params.data.rooms,
+                image: imageTheatre !== null ? imageTheatre : ''
             }
             console.log(data)
 
@@ -281,6 +292,7 @@ export const dataProvider: DataProvider = {
         let background = null;
         let titleimg = null;
         let poster = null;
+        let imageTheatre = null;
 
         if (resource === 'movies') {
             if (params.data.background_img_url_new !== undefined && params.data.background_img_url_new !== null ) {
@@ -355,6 +367,16 @@ export const dataProvider: DataProvider = {
 
         }
         if (resource === 'theatres') {
+            console.log(params)
+            if (params.data.image_new !== undefined && params.data.image_new !== null) {
+                let img = null;
+                await getBase64(params.data.image_new.rawFile)
+                    .then(res => {
+                        img = res;
+                    })
+                    .catch(err => console.log(err))
+                imageTheatre = await imgProvider(img);
+            }
             const data = {
                 location_id: params.data.locations_id,
                 name: params.data.name,
@@ -364,7 +386,8 @@ export const dataProvider: DataProvider = {
                 description: params.data.description,
                 room_summary: params.data.room_summary,
                 opening_hours: new Date(params.data.Opening_hours).toLocaleTimeString('en-GB', {hour12: false}),
-                rooms: params.data.rooms
+                rooms: params.data.rooms,
+                image: imageTheatre !== null ? imageTheatre : params.data.image || ''
             }
             const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
                 method: 'PUT',

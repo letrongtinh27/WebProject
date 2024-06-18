@@ -4,51 +4,48 @@ import {
     ExportButton,
     TopToolbar,
     EditButton,
-    ChipField,
     SearchInput,
-    DateInput,
-    SelectColumnsButton,
     DatagridConfigurable,
-    useGetList,
-    BooleanInput,
-    BooleanField,
-    SimpleList, FilterLiveSearch,
-} from 'react-admin';
-
-import {
-    Datagrid,
     List,
-    NumberField,
-    ImageField,
     TextField,
-    BulkDeleteButton,
-    BulkUpdateButton,
-} from "react-admin";
+} from 'react-admin';
 import ImportButton from "../../Layout/ImportButton";
-// import ExportButton from "../../Layout/ExportButton";
-const ListActions = () => (
-    <TopToolbar>
-        <CreateButton />
-        <ExportButton />
-        <ImportButton />
-    </TopToolbar>
-);
+import { Box, Theme, useMediaQuery } from "@mui/material";
+
+
 
 export const MovieList = () => {
+    const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+    const ListActions = () => (
+        <TopToolbar>
+            <CreateButton />
+            <ExportButton />
+            <ImportButton isSmall={isSmall} />
+        </TopToolbar>
+    );
+
     return (
         <List
-            sort={{field: 'title', order: 'DESC'}}
+            sort={{ field: 'title', order: 'DESC' }}
             perPage={10}
             actions={<ListActions />}
-            filters={ [<SearchInput source = "q" alwaysOn /> ] }
+            filters={[<SearchInput source="q" alwaysOn />]}
         >
-            <DatagridConfigurable rowClick="show">
-                <TextField source="id" label="ID"/>
-                <TextField source="title" label="Title"/>
-                <TextField source="type" label="Type"/>
-                <EditButton/>
-            </DatagridConfigurable>
+            {isSmall ? (
+                <DatagridConfigurable rowClick="show">
+                    <TextField source="title" label="Title" />
+                    <EditButton />
+                </DatagridConfigurable>
+            ) : (
+                <DatagridConfigurable rowClick="show">
+                    <TextField source="id" label="ID" />
+                    <TextField source="title" label="Title" />
+                    <TextField source="type" label="Type" />
+                    <EditButton />
+                </DatagridConfigurable>
+            )}
         </List>
     );
 };
+
 export default MovieList;

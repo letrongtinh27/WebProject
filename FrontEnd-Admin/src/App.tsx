@@ -80,7 +80,8 @@ const App = () => {
                   edit={MovieEdit}
                   create={MovieCreate}
                   show={MovieShow}
-                  options={{label: 'Movies'}}/>
+                  options={{label: 'Movies'}}
+        />
         <Resource name="theatres"
                   icon={StadiumOutlinedIcon}
                   list={TheatreList}
@@ -101,12 +102,12 @@ const App = () => {
                   list={UserList}
                   show={UserShow}
                   create={UserCreate}
-                  options={{label: 'User'}} />
+                  options={{label: 'Users'}} />
         <Resource name="tickets"
                   icon={ConfirmationNumberOutlinedIcon}
                   list={TicketList}
                   show={TicketShow}
-                  options={{label: 'Ticket'}} />
+                  options={{label: 'Tickets'}} />
       </Admin>
           : <>
             <Admin
@@ -115,7 +116,6 @@ const App = () => {
                 theme={radiantDarkTheme}
                 darkTheme={radiantLightTheme}
                 layout={LayoutCustom}
-
             >
               <CustomRoutes>
                 <Route path="/profile/*" element={<ProfileProvider>
@@ -126,7 +126,8 @@ const App = () => {
                         icon={SlideshowOutlinedIcon}
                         list={MovieList}
                         show={MovieShow}
-                        options={{label: 'Movies'}}/>
+                        options={{label: 'Movies'}}
+              />
               <Resource name="theatres"
                         icon={StadiumOutlinedIcon}
                         list={TheatreList}
@@ -142,12 +143,12 @@ const App = () => {
                         icon={PersonOutlineOutlinedIcon}
                         list={UserList}
                         show={UserShow}
-                        options={{label: 'User'}} />
+                        options={{label: 'Users'}} />
               <Resource name="tickets"
                         icon={ConfirmationNumberOutlinedIcon}
                         list={TicketList}
                         show={TicketShow}
-                        options={{label: 'Ticket'}} />
+                        options={{label: 'Tickets'}} />
             </Admin>
           </>
   )

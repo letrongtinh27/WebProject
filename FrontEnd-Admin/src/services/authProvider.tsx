@@ -2,6 +2,8 @@ import axios from "axios";
 import { AuthProvider, fetchUtils } from "react-admin";
 import Cookies from "js-cookie"
 const apiUrl = 'http://localhost:8080/api'
+// const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
+
 
 
 let token = localStorage.getItem("admin")
@@ -154,6 +156,9 @@ export const authProvider: AuthProvider = {
                 },
                 withCredentials: true,
             });
+            return Promise.resolve({data: response});
+
+            window.location.href = "#/profile";
         } catch (error) {
             console.log(error);
             return Promise.reject();
