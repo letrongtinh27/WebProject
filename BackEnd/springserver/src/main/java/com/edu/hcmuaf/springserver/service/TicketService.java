@@ -30,8 +30,19 @@ public class TicketService {
         return ticketRepository.findOneById(id);
     }
 
-    public boolean checkExistTicket(int showTimeId, int seatId) {
-        return ticketRepository.existsByShowTimeIdAndSeatId((long) showTimeId, seatId);
+    public Ticket createTicket(Ticket ticket){
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket updateTicket(Ticket ticket, int id) {
+        Ticket ticketSave = ticketRepository.findOneById(id);
+        ticketSave.setShowTime(ticket.getShowTime());
+        ticketSave.setSeat(ticket.getSeat());
+        ticketSave.setReservation(ticket.getReservation());
+        ticketSave.setTicketCode(ticket.getTicketCode());
+        ticketSave.setPrice(ticket.getPrice());
+        ticketRepository.save(ticketSave);
+        return ticketSave;
     }
 
     public void saveTicket(Ticket ticket) {

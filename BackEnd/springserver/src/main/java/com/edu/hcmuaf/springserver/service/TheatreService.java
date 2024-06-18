@@ -36,7 +36,6 @@ public class TheatreService {
     public void deleteTheatreById(long id) {theatreRepository.deleteById(id);}
 
     public Theatre createTheatre(TheatreRequest theatreRequest) {
-        System.out.println(theatreRequest);
         Theatre theatre = new Theatre();
         theatre.setImage(theatreRequest.getImage());
         theatre.setAddress(theatreRequest.getAddress());
