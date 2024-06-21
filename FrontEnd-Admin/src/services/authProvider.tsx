@@ -1,10 +1,9 @@
 import axios from "axios";
 import { AuthProvider, fetchUtils } from "react-admin";
 
-import Cookies from "js-cookie"
-const apiUrl = 'http://localhost:8080/api'
-// const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
-
+import Cookies from "js-cookie";
+// const apiUrl = 'http://localhost:8080/api'
+const apiUrl = "https://cinema-server-production-0b4b.up.railway.app/api";
 
 let token = localStorage.getItem("admin");
 // const httpClient = axios.create({
@@ -135,29 +134,32 @@ export const authProvider: AuthProvider = {
       window.location.href = "/#/login";
     }
   },
-    //@ts-ignore
-    update: async (resource: any, params: any) => {
-        console.log(params);
-        const token = localStorage.getItem("admin");
-        if (!token) {
-            return Promise.reject();
+  //@ts-ignore
+  update: async (resource: any, params: any) => {
+    console.log(params);
+    const token = localStorage.getItem("admin");
+    if (!token) {
+      return Promise.reject();
+    }
+    try {
+      const response = await httpClient.post(
+        `${apiUrl}/users/edit`,
+        JSON.stringify(params),
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
         }
-        try {
-            const response = await httpClient.post(`${apiUrl}/users/edit`,
-                JSON.stringify(params), {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
-            return Promise.resolve({data: response});
+      );
+      return Promise.resolve({ data: response });
 
-            window.location.href = "#/profile";
-        } catch (error) {
-            console.log(error);
-            return Promise.reject();
+      window.location.href = "#/profile";
+    } catch (error) {
+      console.log(error);
+      return Promise.reject();
     }
   },
 };

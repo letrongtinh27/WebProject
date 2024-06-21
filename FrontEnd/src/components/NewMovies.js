@@ -87,11 +87,11 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-prev {
-    left: -75px;
+    left: 0;
   }
 
   .slick-next {
-    right: -75px;
+    right: 0;
   }
 `;
 

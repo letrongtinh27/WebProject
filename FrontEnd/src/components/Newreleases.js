@@ -32,6 +32,7 @@ const Newreleases = (props) => {
           slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 2,
+          dots: true,
         },
       },
       {
@@ -39,6 +40,7 @@ const Newreleases = (props) => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          dots: true,
         },
       },
     ],
@@ -89,11 +91,11 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-prev {
-    left: -75px;
+    left: 0;
   }
 
   .slick-next {
-    right: -75px;
+    right: 0;
   }
 `;
 
