@@ -26,13 +26,12 @@ import {
     BulkUpdateButton,
 } from "react-admin";
 
-import { useMediaQuery, Theme } from "@mui/material";
+import {useMediaQuery, Theme, Box} from "@mui/material";
 
-const VisitorListActions = () => (
+const ListActions = () => (
     <TopToolbar>
-        <CreateButton/>
-        <SelectColumnsButton/>
-        <ExportButton/>
+        <CreateButton />
+        <ExportButton />
     </TopToolbar>
 );
 
@@ -42,24 +41,22 @@ export const TicketList = () => {
     return (
         <List
             perPage={10}
+            actions={<ListActions />}
             filters={ [<SearchInput source = "q" alwaysOn /> ] }
         >
-            {isSmall ? (
-                <SimpleList
-                    primaryText={(record) => record.id}
-                    secondaryText={(record) => record.title}
-                />
-            ) : (
                 <Datagrid rowClick="show">
-                    <TextField source="id" label="ID"/>
-                    <TextField source="showTime.movie.title" label="Movie"/>
-                    <TextField source="showTime.theatre.name" label="Theatre"/>
-                    <TextField source="price" label="Price"/>
-                    <TextField source="seat.room" label="Room"/>
+                    <Box display={isSmall ? 'none' : 'block'}>
+                        <TextField source="id" label="ID"/>
+                    </Box>
+                    <Box display={isSmall ? 'none' : 'block'}>
+                        <TextField source="showTime.movie.title" label="Movie"/>
+                        <TextField source="showTime.theatre.name" label="Theatre"/>
+                        <TextField source="price" label="Price"/>
+                        <TextField source="seat.room" label="Room"/>
+                    </Box>
                     <TextField source="ticketCode" label="Code"/>
                     <EditButton/>
                 </Datagrid>
-            )}
         </List>
     );
 };

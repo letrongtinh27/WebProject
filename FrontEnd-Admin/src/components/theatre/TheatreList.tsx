@@ -17,47 +17,44 @@ import {
 } from "react-admin";
 
 import {
-  Datagrid,
-  List,
-  NumberField,
-  ImageField,
-  TextField,
-  BulkDeleteButton,
-  BulkUpdateButton,
+
+    Datagrid,
+    List,
+    NumberField,
+    ImageField,
+    TextField,
+
 } from "react-admin";
 
-import { useMediaQuery, Theme } from "@mui/material";
-
-const VisitorListActions = () => (
-  <TopToolbar>
-    <CreateButton />
-    <SelectColumnsButton />
-    <ExportButton />
-  </TopToolbar>
+import { Box,useMediaQuery, Theme } from "@mui/material";
+                                            
+const ListActions = () => (
+    <TopToolbar>
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
 );
-
 export const TheatreList = () => {
-  const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  return (
-    <List
-      sort={{ field: "name", order: "DESC" }}
-      perPage={10}
-      filters={[<SearchInput source="q" alwaysOn />]}
-    >
-      {isSmall ? (
-        <SimpleList
-          primaryText={(record) => record.id}
-          secondaryText={(record) => record.title}
-        />
-      ) : (
-        <Datagrid rowClick="show">
-          <TextField source="id" label="ID" />
-          <TextField source="name" label="Name" />
-          <TextField source="address" label="Address" />
-          <EditButton />
-        </Datagrid>
-      )}
-    </List>
-  );
+    const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
+    return (
+        <List
+            sort={{field: 'name', order: 'DESC'}}
+            perPage={10}
+            actions={<ListActions />}
+            filters={ [<SearchInput source = "q" alwaysOn /> ] }
+        >
+            {isSmall ? (
+                <Datagrid rowClick="show">
+                    <TextField source="name" label="Name"/>
+                    <EditButton/>
+                </Datagrid>
+            ) : ( <Datagrid rowClick="show">
+                <TextField source="id" label="ID"/>
+                <TextField source="name" label="Name"/>
+                <TextField source="address" label="Address"/>
+                <EditButton/>
+            </Datagrid>)}
+        </List>
+    );
 };
 export default TheatreList;

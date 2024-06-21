@@ -1,6 +1,6 @@
 import {
     Create,
-    Edit, NumberInput, SelectInput,
+    Edit, ImageField, ImageInput, NumberInput, SelectInput,
     TabbedForm,
     TextInput, TimeInput, useGetList,
     useRecordContext,
@@ -13,6 +13,7 @@ import {TheatreLocation} from "./TheatreLocation";
 
 import TheatreList from "./TheatreList";
 import TheatreOpeningHours from "./TheatreOpeningHours";
+import Typography from "@mui/material/Typography";
 
 
 export const TheatreCreate = (props: any) => {
@@ -67,6 +68,32 @@ export const TheatreCreate = (props: any) => {
                     </Grid>
                     <Grid container >
                         <TimeInput source="Opening_hours" label={"Thời gian mở cửa"} fullWidth/>
+                    </Grid>
+                </TabbedForm.Tab>
+                <TabbedForm.Tab
+                    label="Thông tin rạp"
+                    sx={{maxWidth: '40em'}}>
+                    <Grid  container >
+                        <Typography variant="h6" gutterBottom>
+                            Image:
+                        </Typography>
+                        <ImageInput
+                            source="image"
+                            accept="image/*"
+                            placeholder={<p>Add new Avt Img</p>}
+                            label={`Thêm ảnh mới`}
+                        >
+                            <ImageField
+                                source="src"
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    marginTop: '5px',
+                                    marginBottom: '5px',
+                                    maxHeight: '100px',
+                                }}
+                            />
+                        </ImageInput>
                     </Grid>
                 </TabbedForm.Tab>
 

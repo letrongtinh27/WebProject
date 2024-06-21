@@ -1,5 +1,5 @@
 import {
-    Edit, NumberInput,
+    Edit, ImageField, ImageInput, NumberInput,
     TabbedForm,
     TextInput,
     useRecordContext,
@@ -12,7 +12,52 @@ import {TheatreLocation} from "./TheatreLocation";
 
 import TheatreList from "./TheatreList";
 import TheatreOpeningHours from "./TheatreOpeningHours";
+import {useWatch} from "react-hook-form";
+import Typography from "@mui/material/Typography";
 
+const ImageUploader: React.FC<ImageUploaderProps> = ({ source, label }) => {
+    const isReturned = useWatch({ name: source });
+    const newSource = `${source}_new`;
+
+    return isReturned ? (
+        <>
+            <Typography variant="h6" gutterBottom>
+                {label}:
+            </Typography>
+            <ImageField
+                source={source}
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '5px',
+                    marginBottom: '5px',
+                    maxHeight: '100px',
+                }}
+            />
+            <ImageInput
+                source={newSource}
+                accept="image/*"
+                placeholder={<p>Add new Avt Img</p>}
+                label={`Thêm ảnh ${label} mới`}
+            >
+                <ImageField
+                    source="src"
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '5px',
+                        marginBottom: '5px',
+                        maxHeight: '100px',
+                    }}
+                />
+            </ImageInput>
+        </>
+    ) : (
+        <ImageInput name={source} source={source}>
+            <ImageField source="src" label={label} />
+        </ImageInput>
+    );
+};
 
 export const TheatreEdit = (props: any) => {
     const NameTheatre = () => {
@@ -52,9 +97,22 @@ export const TheatreEdit = (props: any) => {
                     <TheatreLocation/>
                     <TheatreOpeningHours/>
                 </TabbedForm.Tab>
-
+                <TabbedForm.Tab
+                    label="Thông tin rạp"
+                    sx={{maxWidth: '40em'}}
+                >
+                    <Grid container >
+                        <ImageUploader source="image" label="Image" />
+                    </Grid>
+                </TabbedForm.Tab>
             </TabbedForm>
         </Edit>
     );
 }
+
+interface ImageUploaderProps {
+    source: string;
+    label: string;
+}
+
 export default TheatreEdit;

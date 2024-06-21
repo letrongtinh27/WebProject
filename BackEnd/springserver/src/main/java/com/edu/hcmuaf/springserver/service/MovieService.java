@@ -125,14 +125,12 @@ public class MovieService {
             throw new RuntimeException(e);
         }
 
-        LocalDate currentDate = LocalDate.now();
-
         Specification<Movie> specification = (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             if (filterJson.has("released_date")) {
                 String inputDateStr = filterJson.get("released_date").asText();
                 LocalDate inputDate = LocalDate.parse(inputDateStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.lessThan(root.get("released_date"), inputDate));
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.lessThanOrEqualTo(root.get("released_date"), inputDate));
             }
             if (filterJson.has("is_active")) {
                 predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("is_active"), filterJson.get("is_active").asText()));
