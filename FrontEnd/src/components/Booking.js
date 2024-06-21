@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMovieById, getSeatsByShowTime, payment } from "../data/data";
+import ReactLoading from "react-loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,7 +13,7 @@ const Booking = (props) => {
   const [seatsData, setSeatsData] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [movie, setMovie] = useState([]);
-  const [reload, setReload] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const token = Cookies.get("token");
 
@@ -119,27 +120,25 @@ const Booking = (props) => {
 
   function paymentHandle() {
     if (validatePayment()) {
+      setLoading(true);
       payment(booking, token)
         .then((data) => {
           console.log(data.code);
           if (data.code === 200) {
+            setLoading(false);
             window.location = data.urlPayment;
           }
           if (data.code === 400) {
+            setLoading(false);
             toast.error(data.message);
           }
-
-          // navigate(data.urlPayment);
         })
         .catch((error) => {
           toast.error("Đặt ghế không thành công!");
           console.error(error);
-          setReload((prev) => !prev);
         });
     }
   }
-
-  // useEffect(() => {}, [reload]);
 
   return (
     <Container>
@@ -217,7 +216,18 @@ const Booking = (props) => {
                 })}
               </p>
             </Infor2>
-            <SubmitButton onClick={paymentHandle}>Xác nhận</SubmitButton>
+            <SubmitButton onClick={paymentHandle} disabled={loading}>
+              {loading ? (
+                <ReactLoading
+                  type="spin"
+                  color={"#000"}
+                  width={"25px"}
+                  // height={"50px"}
+                />
+              ) : (
+                "Xác nhận"
+              )}
+            </SubmitButton>
           </Cinema>
         </Right>
       </Book>
@@ -431,6 +441,7 @@ const SeatsContainer = styled.div`
 
 const SubmitButton = styled.button`
   background-color: #f9f9f9;
+  height: 45px;
   margin-top: 15px;
   padding: 8px 16px;
   text-transform: uppercase;

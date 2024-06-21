@@ -363,7 +363,6 @@ const RowInput = styled.div`
     }
   }
 
-  // Styled button với hiệu ứng loading
 
   button {
     border-radius: 25px;
