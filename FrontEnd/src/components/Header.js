@@ -19,6 +19,7 @@ const Header = ({ updateHeader }) => {
   const [searching, setSearching] = useState(false);
   const [searchName, setSearchName] = useState();
   const [searchMovies, setSearchMovies] = useState([]);
+  const [updateHeaders, setUpdateHeaders] = useState(false);
 
   const [userDetail, setUserDetail] = useState({
     username: "",
@@ -61,9 +62,11 @@ const Header = ({ updateHeader }) => {
         })
         .catch((error) => {
           Cookies.remove("token");
+          setUpdateHeaders(true);
           console.log(error);
         });
     }
+    setUpdateHeaders(false);
   }, [isLoggedIn, updateHeader]);
 
   const signOut = () => {
@@ -83,6 +86,7 @@ const Header = ({ updateHeader }) => {
     // Render lại khi fullName thay đổi
   }, [updateHeader]);
 
+  useEffect(() => {}, [updateHeaders]);
   useEffect(() => {
     searchMovieByName(searchName)
       .then((data) => {
