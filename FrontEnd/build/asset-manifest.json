@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.c3dda445.css",
-    "main.js": "/static/js/main.de1abfce.js",
+    "main.js": "/static/js/main.abe26832.js",
     "static/media/national-geographic.mp4": "/static/media/national-geographic.bf1b675d8d0beb6c25bc.mp4",
     "static/media/star-wars.mp4": "/static/media/star-wars.90fa9f5ae993d23505b5.mp4",
     "static/media/pixar.mp4": "/static/media/pixar.971baf2b0d1f60c27f42.mp4",
@@ -35,10 +35,10 @@
     "static/media/clock.svg": "/static/media/clock.af6abce8825a6c50f40be8b6d4c2320a.svg",
     "static/media/home-icon.svg": "/static/media/home-icon.b6a11f9b406f2f13cd82608a276428e5.svg",
     "main.c3dda445.css.map": "/static/css/main.c3dda445.css.map",
-    "main.de1abfce.js.map": "/static/js/main.de1abfce.js.map"
+    "main.abe26832.js.map": "/static/js/main.abe26832.js.map"
   },
   "entrypoints": [
     "static/css/main.c3dda445.css",
-    "static/js/main.de1abfce.js"
+    "static/js/main.abe26832.js"
   ]
 }

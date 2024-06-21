@@ -85,7 +85,17 @@ const StyledSlider = styled(Slider)`
   .slick-list {
     overflow: visible;
   }
+  & > button {
+    opacity: 0;
+    height: 100%;
+    width: 5vw;
+    z-index: 1;
 
+    &:hover {
+      opacity: 1;
+      transition: opacity 0.2s ease 0s;
+    }
+  }
   ul li button {
     &:before {
       font-size: 10px;
