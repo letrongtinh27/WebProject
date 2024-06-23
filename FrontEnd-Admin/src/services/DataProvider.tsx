@@ -2,8 +2,8 @@ import {DataProvider, fetchUtils} from 'react-admin'
 import {log} from "util";
 import {imgProvider} from "./ImgProvider";
 import axios from "axios";
-// const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
-const apiUrl = 'http://localhost:8080/api'
+const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
+// const apiUrl = 'http://localhost:8080/api'
 const httpClient = fetchUtils.fetchJson
 
 let token = localStorage.getItem("admin")

@@ -11,16 +11,17 @@ import {
 } from 'react-admin';
 import ImportButton from "../../Layout/ImportButton";
 import { Box, Theme, useMediaQuery } from "@mui/material";
-
-
+import Cookies from "js-cookie";
 
 export const MovieList = () => {
     const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+    const role = Cookies.get("role");
+
     const ListActions = () => (
         <TopToolbar>
-            <CreateButton />
+            {role !== 'manager' && <CreateButton />}
             <ExportButton />
-            <ImportButton isSmall={isSmall} />
+            {role !== 'manager' && <ImportButton isSmall={isSmall} />}
         </TopToolbar>
     );
 
@@ -34,14 +35,14 @@ export const MovieList = () => {
             {isSmall ? (
                 <DatagridConfigurable rowClick="show">
                     <TextField source="title" label="Title" />
-                    <EditButton />
+                    {role !== 'manager' && <EditButton />}
                 </DatagridConfigurable>
             ) : (
                 <DatagridConfigurable rowClick="show">
                     <TextField source="id" label="ID" />
                     <TextField source="title" label="Title" />
                     <TextField source="type" label="Type" />
-                    <EditButton />
+                    {role !== 'manager' && <EditButton />}
                 </DatagridConfigurable>
             )}
         </List>
