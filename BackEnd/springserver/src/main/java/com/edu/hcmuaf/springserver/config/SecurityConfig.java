@@ -75,10 +75,10 @@ public class SecurityConfig {
 
 
 //                      Payment
-                        .requestMatchers(HttpMethod.POST, "/api/payment/pay").hasAnyAuthority("admin","user")
-                                .requestMatchers(HttpMethod.GET, "/api/payment-callback").hasAnyAuthority("admin", "user")
+                        .requestMatchers(HttpMethod.POST, "/api/payment/pay").hasAnyAuthority("admin","user", "manager")
+                                .requestMatchers(HttpMethod.GET, "/api/payment-callback").hasAnyAuthority("admin", "user", "manager")
 //                      Seat
-                        .requestMatchers(HttpMethod.GET, "/api/seats/get/**").hasAnyAuthority("admin","user")
+                        .requestMatchers(HttpMethod.GET, "/api/seats/get/**").hasAnyAuthority("admin","user", "manager")
 
                         .requestMatchers("/api/**").permitAll()
 

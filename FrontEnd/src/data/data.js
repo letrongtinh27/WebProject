@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  // baseURL: "https://cinema-server-production-0b4b.up.railway.app/api/",
-  baseURL: "http://localhost:8080/api/",
+  baseURL: "https://cinema-server-production-0b4b.up.railway.app/api/",
 });
 
 // movie

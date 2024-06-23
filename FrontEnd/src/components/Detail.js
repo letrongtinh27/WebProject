@@ -28,6 +28,19 @@ const Detail = (props) => {
         console.error(error);
       });
   };
+  const formatSubTitle = (subTitle) => {
+    // Kiểm tra nếu subTitle không phải là undefined hoặc null
+    if (subTitle) {
+      // Thêm <br> trước mỗi dấu ":" và sau các mục cần xuống dòng
+      return subTitle
+        .replace(
+          /(Đạo diễn:|Diễn viên:|Thể loại:|Khởi chiếu:|Thời lượng:|Ngôn ngữ:)/g,
+          "<br>$1"
+        )
+        .replace(/^(<br>)+/, ""); // Loại bỏ thẻ <br> ở đầu chuỗi
+    }
+    return "";
+  };
 
   useEffect(() => {
     getMovie();
@@ -78,7 +91,9 @@ const Detail = (props) => {
             <span></span>
           </AddList>
         </Controls>
-        <SubTitle>{movie.sub_title}</SubTitle>
+        <SubTitle
+          dangerouslySetInnerHTML={{ __html: formatSubTitle(movie.sub_title) }}
+        />
         <Description>{movie.description}</Description>
       </ContenMeta>
     </Container>
@@ -217,9 +232,10 @@ const SubTitle = styled.div`
   color: rgb(249, 249, 249);
   text-align: left;
   font-size: 15px;
+  white-space: pre-line;
   min-height: 20px;
 
-  @media (min-width: 768px) {
+  @media (max-width: 768px) {
     font-size: 12px;
   }
 `;

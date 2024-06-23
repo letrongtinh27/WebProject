@@ -32,6 +32,7 @@ const Newreleases = (props) => {
           slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 2,
+          dots: true,
         },
       },
       {
@@ -39,6 +40,7 @@ const Newreleases = (props) => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          dots: true,
         },
       },
     ],
@@ -74,6 +76,17 @@ const StyledSlider = styled(Slider)`
   .slick-list {
     overflow: visible;
   }
+  & > button {
+    opacity: 0;
+    height: 100%;
+    width: 5vw;
+    z-index: 1;
+
+    &:hover {
+      opacity: 1;
+      transition: opacity 0.2s ease 0s;
+    }
+  }
 
   ul li button {
     &:before {
@@ -89,11 +102,11 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-prev {
-    left: -75px;
+    left: 0;
   }
 
   .slick-next {
-    right: -75px;
+    right: 0;
   }
 `;
 
