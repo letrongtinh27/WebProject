@@ -20,7 +20,8 @@ export const UserCreate = (props: any) => {
     ]
     const role = [
         {id: 1, name: 'admin'},
-        {id: 2, name: 'user'}
+        {id: 2, name: 'user'},
+        {id: 2, name: 'manager'},
     ]
 
     return(

@@ -66,6 +66,11 @@ export const MovieEdit = (props: any) => {
         { id: 'G', name: 'G' },
         { id: 'R', name: 'R' },
     ];
+    const Type = [
+        {id: 'new', name: 'new'},
+        {id: 'newreleases', name: 'new releases'},
+        {id: 'commingsoon', name: 'comming soon'},
+    ]
     const MovieTitle = () => {
         const record = useRecordContext<Movie>();
         return record ? <span>{record.title}</span> : null;
@@ -123,13 +128,10 @@ export const MovieEdit = (props: any) => {
                         />
                     </Grid>
                     <Grid container  >
-                        <TextInput source="type" fullWidth label="type"/>
+                        <SelectInput source="type" fullWidth label="Type" choices={Type} {...props}/>
                     </Grid>
                     <Grid container  >
                         <DateTimeInput source="released_date" fullWidth label="released date"/>
-                    </Grid>
-                    <Grid container  >
-                        <TextInput source="type" fullWidth label="type"/>
                     </Grid>
                     <Grid container>
                         <BooleanInput source="is_active" fullWidth label={"Is hidden"}/>

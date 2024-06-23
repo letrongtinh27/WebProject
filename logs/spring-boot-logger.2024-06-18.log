@@ -1,0 +1,225 @@
+2024-06-18 15:54:11.836 [main] INFO  c.e.h.s.SpringserverApplication - Starting SpringserverApplication using Java 20.0.2 with PID 13160 (D:\semester8\Web\project\BackEnd\springserver\target\classes started by hoang in D:\semester8\Web\project)
+2024-06-18 15:54:11.839 [main] INFO  c.e.h.s.SpringserverApplication - No active profile set, falling back to 1 default profile: "default"
+2024-06-18 15:54:12.512 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-18 15:54:12.583 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 65 ms. Found 10 JPA repository interfaces.
+2024-06-18 15:54:13.048 [main] INFO  o.s.b.w.e.t.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-06-18 15:54:13.068 [main] INFO  o.a.c.h.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-06-18 15:54:13.069 [main] INFO  o.a.c.c.StandardService - Starting service [Tomcat]
+2024-06-18 15:54:13.069 [main] INFO  o.a.c.c.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-06-18 15:54:13.117 [main] INFO  o.a.c.c.C.[.[.[/] - Initializing Spring embedded WebApplicationContext
+2024-06-18 15:54:13.117 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1245 ms
+2024-06-18 15:54:13.212 [main] INFO  c.z.h.HikariDataSource - HikariPool-1 - Starting...
+2024-06-18 15:54:13.491 [main] INFO  c.z.h.p.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@270d5060
+2024-06-18 15:54:13.492 [main] INFO  c.z.h.HikariDataSource - HikariPool-1 - Start completed.
+2024-06-18 15:54:13.526 [main] INFO  o.h.j.i.u.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-18 15:54:13.567 [main] INFO  o.h.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-06-18 15:54:13.593 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-06-18 15:54:13.793 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-18 15:54:14.751 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-18 15:54:14.753 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-18 15:54:15.046 [main] DEBUG o.s.w.f.CorsFilter - Filter 'corsFilter' configured for use
+2024-06-18 15:54:15.293 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-06-18 15:54:15.967 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-18 15:54:16.078 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 48 mappings in 'requestMappingHandlerMapping'
+2024-06-18 15:54:16.146 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-06-18 15:54:16.181 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@59f1a96c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4002f09c, org.springframework.security.web.context.SecurityContextHolderFilter@67fe131c, org.springframework.security.web.header.HeaderWriterFilter@42e11e00, org.springframework.web.filter.CorsFilter@58df2864, org.springframework.security.web.authentication.logout.LogoutFilter@7bb93e18, com.edu.hcmuaf.springserver.config.JwtAuthenticationFilter@7455dacb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6bc67b0b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3c7b9ee3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@57bbdcf1, org.springframework.security.web.session.SessionManagementFilter@11326597, org.springframework.security.web.access.ExceptionTranslationFilter@4798ff99, org.springframework.security.web.access.intercept.AuthorizationFilter@71ad18e6]
+2024-06-18 15:54:16.245 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-06-18 15:54:16.269 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-06-18 15:54:16.359 [main] INFO  o.a.c.h.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-06-18 15:54:16.374 [main] INFO  o.s.b.w.e.t.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-06-18 15:54:16.382 [main] INFO  c.e.h.s.SpringserverApplication - Started SpringserverApplication in 4.864 seconds (process running for 5.706)
+2024-06-18 15:54:36.609 [http-nio-8080-exec-3] INFO  o.a.c.c.C.[.[.[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-06-18 15:54:36.609 [http-nio-8080-exec-3] INFO  o.s.w.s.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-06-18 15:54:36.610 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - Detected StandardServletMultipartResolver
+2024-06-18 15:54:36.610 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2024-06-18 15:54:36.610 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - Detected FixedThemeResolver
+2024-06-18 15:54:36.611 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@5910ca72
+2024-06-18 15:54:36.611 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@7370f35b
+2024-06-18 15:54:36.611 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-06-18 15:54:36.612 [http-nio-8080-exec-3] INFO  o.s.w.s.DispatcherServlet - Completed initialization in 2 ms
+2024-06-18 15:54:37.878 [http-nio-8080-exec-7] INFO  o.a.t.u.h.p.Cookie - A cookie header was received [g_state={"i_p":1704188993046,"i_l":3};] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2024-06-18 15:54:37.884 [http-nio-8080-exec-7] DEBUG o.s.w.s.DispatcherServlet - POST "/api/auth/login_admin", parameters={}
+2024-06-18 15:54:37.885 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.AuthenticationController#login_admin(AuthenticationRequest)
+2024-06-18 15:54:37.938 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Read "application/json;charset=UTF-8" to [AuthenticationRequest(username=76, password=123123123)]
+2024-06-18 15:54:37.946 [http-nio-8080-exec-7] INFO  c.e.h.s.c.AuthenticationController - Admin login request received for username: 76
+2024-06-18 15:54:42.709 [http-nio-8080-exec-7] INFO  c.e.h.s.c.AuthenticationController - Admin 76 logged in successfully
+2024-06-18 15:54:42.721 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:42.724 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [AuthenticationResponse(code=200, message=Succeed, token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWI (truncated)...]
+2024-06-18 15:54:42.725 [http-nio-8080-exec-7] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:54:43.420 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - GET "/api/users/profile", parameters={}
+2024-06-18 15:54:43.420 [http-nio-8080-exec-9] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2205%2F2024%22%7D", parameters={masked}
+2024-06-18 15:54:43.420 [http-nio-8080-exec-1] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2204%2F2024%22%7D", parameters={masked}
+2024-06-18 15:54:43.420 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2206%2F2024%22%7D", parameters={masked}
+2024-06-18 15:54:43.420 [http-nio-8080-exec-7] DEBUG o.s.w.s.DispatcherServlet - GET "/api/users/all?filter=%7B%22role%22%3A%22user%22%7D", parameters={masked}
+2024-06-18 15:54:43.420 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.UserController#getProfile(Authentication)
+2024-06-18 15:54:43.420 [http-nio-8080-exec-8] DEBUG o.s.w.s.DispatcherServlet - GET "/api/shows/all?filter=%7B%22start_time%22%3A%2206%2F2024%22%7D", parameters={masked}
+2024-06-18 15:54:43.420 [http-nio-8080-exec-10] DEBUG o.s.w.s.DispatcherServlet - GET "/api/movies/all_filter?filter=%7B%22released_date%22%3A%2218%2F06%2F2024%22%2C%22is_active%22%3A0%2C%22sort.field%22%3A%22title%22%2C%22sort.order%22%3A%22ASC%22%7D", parameters={masked}
+2024-06-18 15:54:43.421 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:54:43.421 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.UserController#getAllUsersByRole(String)
+2024-06-18 15:54:43.421 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.ShowTimeController#getAllShowWithFilter(String)
+2024-06-18 15:54:43.421 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:54:43.421 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:54:43.421 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.MovieController#getAllMoviesByReleasedDate(String)
+2024-06-18 15:54:43.423 [http-nio-8080-exec-2] INFO  c.e.h.s.c.UserController - Fetching profile for user...
+2024-06-18 15:54:43.429 [http-nio-8080-exec-2] INFO  c.e.h.s.c.UserController - User profile retrieved successfully for username: 76
+2024-06-18 15:54:43.431 [http-nio-8080-exec-7] INFO  c.e.h.s.c.UserController - Fetching all users by role with filter: {"role":"user"}
+2024-06-18 15:54:43.434 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:43.443 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [UserResponse(id=20, username=76, email=chechkcheck@gmail.com, phone=000, fullName=123123, gender=Nữ, (truncated)...]
+2024-06-18 15:54:43.446 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:54:43.502 [http-nio-8080-exec-7] INFO  c.e.h.s.c.UserController - Found 15 users matching the filter
+2024-06-18 15:54:43.502 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:43.502 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:43.502 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[]]
+2024-06-18 15:54:43.511 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[User(id=3, username=trongtin1h, password=$2a$16$.4QY9u1FFMjiRyrAbKREF.HKzUgs.Wb7AaSQP/CMld29S1mallU (truncated)...]
+2024-06-18 15:54:43.511 [http-nio-8080-exec-9] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:54:43.518 [http-nio-8080-exec-7] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:54:43.527 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:43.527 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:43.550 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:43.562 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[ShowTime(id=27, movie=Movie(id=19, background_img_url=https://i.ytimg.com/vi/syusOjpEl0w/maxresdefa (truncated)...]
+2024-06-18 15:54:43.575 [http-nio-8080-exec-5] DEBUG o.s.w.s.DispatcherServlet - GET "/api/theatres/all", parameters={}
+2024-06-18 15:54:43.577 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TheatreController#getListTheatre(String)
+2024-06-18 15:54:43.581 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Movie(id=1, background_img_url=https://i.ytimg.com/vi/syusOjpEl0w/maxresdefault.jpg, title_img_url= (truncated)...]
+2024-06-18 15:54:43.584 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Ticket(id=26, showTime=ShowTime(id=4, movie=Movie(id=9, background_img_url=https://i.ytimg.com/vi/s (truncated)...]
+2024-06-18 15:54:43.586 [http-nio-8080-exec-10] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:54:43.587 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:43.589 [http-nio-8080-exec-8] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:54:43.595 [http-nio-8080-exec-1] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:54:43.597 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Ticket(id=1, showTime=ShowTime(id=3, movie=Movie(id=1, background_img_url=https://i.ytimg.com/vi/sy (truncated)...]
+2024-06-18 15:54:43.604 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:54:43.622 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:54:43.623 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Theatre(id=14, location=Location(id=12, name=Hồ Chí Minh, address=Quận Bình Tân), image=null, name= (truncated)...]
+2024-06-18 15:54:43.624 [http-nio-8080-exec-5] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:17.127 [http-nio-8080-exec-1] DEBUG o.s.w.s.DispatcherServlet - GET "/api/users/all?filter=%7B%22role%22%3A%22user%22%7D", parameters={masked}
+2024-06-18 15:55:17.127 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.UserController#getAllUsersByRole(String)
+2024-06-18 15:55:17.128 [http-nio-8080-exec-1] INFO  c.e.h.s.c.UserController - Fetching all users by role with filter: {"role":"user"}
+2024-06-18 15:55:17.128 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2206%2F2024%22%7D", parameters={masked}
+2024-06-18 15:55:17.128 [http-nio-8080-exec-5] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2204%2F2024%22%7D", parameters={masked}
+2024-06-18 15:55:17.130 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:55:17.130 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2205%2F2024%22%7D", parameters={masked}
+2024-06-18 15:55:17.130 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:55:17.130 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:55:17.131 [http-nio-8080-exec-6] DEBUG o.s.w.s.DispatcherServlet - GET "/api/movies/all_filter?filter=%7B%22released_date%22%3A%2218%2F06%2F2024%22%2C%22is_active%22%3A0%2C%22sort.field%22%3A%22title%22%2C%22sort.order%22%3A%22ASC%22%7D", parameters={masked}
+2024-06-18 15:55:17.131 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.MovieController#getAllMoviesByReleasedDate(String)
+2024-06-18 15:55:17.132 [http-nio-8080-exec-9] DEBUG o.s.w.s.DispatcherServlet - GET "/api/shows/all?filter=%7B%22start_time%22%3A%2206%2F2024%22%7D", parameters={masked}
+2024-06-18 15:55:17.133 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.ShowTimeController#getAllShowWithFilter(String)
+2024-06-18 15:55:17.140 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:17.140 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[]]
+2024-06-18 15:55:17.141 [http-nio-8080-exec-1] INFO  c.e.h.s.c.UserController - Found 15 users matching the filter
+2024-06-18 15:55:17.141 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:17.142 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:17.143 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[User(id=3, username=trongtin1h, password=$2a$16$.4QY9u1FFMjiRyrAbKREF.HKzUgs.Wb7AaSQP/CMld29S1mallU (truncated)...]
+2024-06-18 15:55:17.145 [http-nio-8080-exec-1] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:17.146 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:17.147 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - GET "/api/theatres/all", parameters={}
+2024-06-18 15:55:17.148 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TheatreController#getListTheatre(String)
+2024-06-18 15:55:17.158 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:17.163 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:17.165 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[ShowTime(id=27, movie=Movie(id=19, background_img_url=https://i.ytimg.com/vi/syusOjpEl0w/maxresdefa (truncated)...]
+2024-06-18 15:55:17.169 [http-nio-8080-exec-9] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:17.172 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Ticket(id=26, showTime=ShowTime(id=4, movie=Movie(id=9, background_img_url=https://i.ytimg.com/vi/s (truncated)...]
+2024-06-18 15:55:17.174 [http-nio-8080-exec-5] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:17.187 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Movie(id=1, background_img_url=https://i.ytimg.com/vi/syusOjpEl0w/maxresdefault.jpg, title_img_url= (truncated)...]
+2024-06-18 15:55:17.187 [http-nio-8080-exec-6] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:17.196 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:17.196 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Theatre(id=14, location=Location(id=12, name=Hồ Chí Minh, address=Quận Bình Tân), image=null, name= (truncated)...]
+2024-06-18 15:55:17.199 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:17.206 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:17.211 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Ticket(id=1, showTime=ShowTime(id=3, movie=Movie(id=1, background_img_url=https://i.ytimg.com/vi/sy (truncated)...]
+2024-06-18 15:55:17.211 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:39.489 [http-nio-8080-exec-6] DEBUG o.s.w.s.DispatcherServlet - GET "/api/users/all?filter=%7B%22role%22%3A%22user%22%7D", parameters={masked}
+2024-06-18 15:55:39.490 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.UserController#getAllUsersByRole(String)
+2024-06-18 15:55:39.490 [http-nio-8080-exec-6] INFO  c.e.h.s.c.UserController - Fetching all users by role with filter: {"role":"user"}
+2024-06-18 15:55:39.493 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2206%2F2024%22%7D", parameters={masked}
+2024-06-18 15:55:39.493 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:55:39.495 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2204%2F2024%22%7D", parameters={masked}
+2024-06-18 15:55:39.495 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:55:39.496 [http-nio-8080-exec-10] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets/all?filter=%7B%22reservation_time%22%3A%2205%2F2024%22%7D", parameters={masked}
+2024-06-18 15:55:39.497 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAllTicketsWithoutPagination(String)
+2024-06-18 15:55:39.499 [http-nio-8080-exec-7] DEBUG o.s.w.s.DispatcherServlet - GET "/api/shows/all?filter=%7B%22start_time%22%3A%2206%2F2024%22%7D", parameters={masked}
+2024-06-18 15:55:39.499 [http-nio-8080-exec-6] INFO  c.e.h.s.c.UserController - Found 15 users matching the filter
+2024-06-18 15:55:39.500 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.ShowTimeController#getAllShowWithFilter(String)
+2024-06-18 15:55:39.500 [http-nio-8080-exec-8] DEBUG o.s.w.s.DispatcherServlet - GET "/api/movies/all_filter?filter=%7B%22released_date%22%3A%2218%2F06%2F2024%22%2C%22is_active%22%3A0%2C%22sort.field%22%3A%22title%22%2C%22sort.order%22%3A%22ASC%22%7D", parameters={masked}
+2024-06-18 15:55:39.500 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.MovieController#getAllMoviesByReleasedDate(String)
+2024-06-18 15:55:39.500 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:39.500 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[User(id=3, username=trongtin1h, password=$2a$16$.4QY9u1FFMjiRyrAbKREF.HKzUgs.Wb7AaSQP/CMld29S1mallU (truncated)...]
+2024-06-18 15:55:39.501 [http-nio-8080-exec-6] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:39.511 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:39.512 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[]]
+2024-06-18 15:55:39.514 [http-nio-8080-exec-10] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:39.517 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - GET "/api/theatres/all", parameters={}
+2024-06-18 15:55:39.517 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TheatreController#getListTheatre(String)
+2024-06-18 15:55:39.519 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:39.523 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:39.528 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[ShowTime(id=27, movie=Movie(id=19, background_img_url=https://i.ytimg.com/vi/syusOjpEl0w/maxresdefa (truncated)...]
+2024-06-18 15:55:39.529 [http-nio-8080-exec-7] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:39.530 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:39.544 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Ticket(id=26, showTime=ShowTime(id=4, movie=Movie(id=9, background_img_url=https://i.ytimg.com/vi/s (truncated)...]
+2024-06-18 15:55:39.548 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:39.550 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Movie(id=1, background_img_url=https://i.ytimg.com/vi/syusOjpEl0w/maxresdefault.jpg, title_img_url= (truncated)...]
+2024-06-18 15:55:39.550 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:39.551 [http-nio-8080-exec-3] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Theatre(id=14, location=Location(id=12, name=Hồ Chí Minh, address=Quận Bình Tân), image=null, name= (truncated)...]
+2024-06-18 15:55:39.551 [http-nio-8080-exec-8] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:39.553 [http-nio-8080-exec-3] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:39.560 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:39.566 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Ticket(id=1, showTime=ShowTime(id=3, movie=Movie(id=1, background_img_url=https://i.ytimg.com/vi/sy (truncated)...]
+2024-06-18 15:55:39.569 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:40.317 [http-nio-8080-exec-9] DEBUG o.s.w.s.DispatcherServlet - GET "/api/movies?filter=%7B%7D&order=DESC&page=0&perPage=10&sort=title", parameters={masked}
+2024-06-18 15:55:40.317 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.MovieController#getAll(int, String, int, String, String)
+2024-06-18 15:55:40.344 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:40.344 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 2 containing com.edu.hcmuaf.springserver.entity.Movie instances]
+2024-06-18 15:55:40.382 [http-nio-8080-exec-9] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:44.642 [http-nio-8080-exec-10] DEBUG o.s.w.s.DispatcherServlet - GET "/api/theatres?filter=%7B%7D&order=DESC&page=0&perPage=10&sort=name", parameters={masked}
+2024-06-18 15:55:44.643 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TheatreController#getAll(int, String, int, String, String)
+2024-06-18 15:55:44.662 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:44.662 [http-nio-8080-exec-10] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 2 containing com.edu.hcmuaf.springserver.entity.Theatre instances]
+2024-06-18 15:55:44.662 [http-nio-8080-exec-10] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:47.960 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - GET "/api/shows?filter=%7B%7D&order=DESC&page=0&perPage=10&sort=movie.title", parameters={masked}
+2024-06-18 15:55:47.960 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.ShowTimeController#getAllShowTime(int, String, int, String, String)
+2024-06-18 15:55:47.992 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:47.992 [http-nio-8080-exec-4] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 3 containing com.edu.hcmuaf.springserver.entity.ShowTime instances]
+2024-06-18 15:55:48.007 [http-nio-8080-exec-4] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:49.620 [http-nio-8080-exec-8] DEBUG o.s.w.s.DispatcherServlet - GET "/api/theatres?filter=%7B%7D&order=DESC&page=0&perPage=10&sort=name", parameters={masked}
+2024-06-18 15:55:49.621 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TheatreController#getAll(int, String, int, String, String)
+2024-06-18 15:55:49.642 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:49.642 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 2 containing com.edu.hcmuaf.springserver.entity.Theatre instances]
+2024-06-18 15:55:49.643 [http-nio-8080-exec-8] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:50.771 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - GET "/api/theatres/2", parameters={}
+2024-06-18 15:55:50.772 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TheatreController#getTheatreById(int)
+2024-06-18 15:55:50.779 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:50.780 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Theatre(id=2, location=Location(id=30, name=Hà Nội, address=Quận Nam Từ Liêm), image=https://i.ibb.c (truncated)...]
+2024-06-18 15:55:50.781 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:52.605 [http-nio-8080-exec-9] DEBUG o.s.w.s.DispatcherServlet - GET "/api/theatres?filter=%7B%7D&order=DESC&page=0&perPage=10&sort=name", parameters={masked}
+2024-06-18 15:55:52.606 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TheatreController#getAll(int, String, int, String, String)
+2024-06-18 15:55:52.624 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:52.625 [http-nio-8080-exec-9] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 2 containing com.edu.hcmuaf.springserver.entity.Theatre instances]
+2024-06-18 15:55:52.626 [http-nio-8080-exec-9] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:54.961 [http-nio-8080-exec-6] DEBUG o.s.w.s.DispatcherServlet - GET "/api/locations", parameters={}
+2024-06-18 15:55:54.961 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.LocationController#getListLocation()
+2024-06-18 15:55:54.968 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:54.969 [http-nio-8080-exec-6] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [[Location(id=1, name=Hồ Chí Minh, address=Quận 1), Location(id=2, name=Hồ Chí Minh, address=Quận 3), (truncated)...]
+2024-06-18 15:55:54.970 [http-nio-8080-exec-6] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:55:58.613 [http-nio-8080-exec-7] DEBUG o.s.w.s.DispatcherServlet - GET "/api/theatres?filter=%7B%7D&order=DESC&page=0&perPage=10&sort=name", parameters={masked}
+2024-06-18 15:55:58.613 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TheatreController#getAll(int, String, int, String, String)
+2024-06-18 15:55:58.633 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:55:58.634 [http-nio-8080-exec-7] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 2 containing com.edu.hcmuaf.springserver.entity.Theatre instances]
+2024-06-18 15:55:58.635 [http-nio-8080-exec-7] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:56:00.169 [http-nio-8080-exec-8] DEBUG o.s.w.s.DispatcherServlet - GET "/api/users?filter=%7B%7D&order=DESC&page=0&perPage=10&sort=username", parameters={masked}
+2024-06-18 15:56:00.169 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.UserController#getAllShowTime(int, String, int, String, String)
+2024-06-18 15:56:00.180 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:56:00.181 [http-nio-8080-exec-8] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 2 containing com.edu.hcmuaf.springserver.entity.User instances]
+2024-06-18 15:56:00.183 [http-nio-8080-exec-8] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:56:02.122 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets?filter=%7B%7D&order=ASC&page=0&perPage=10&sort=id", parameters={masked}
+2024-06-18 15:56:02.122 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAll(int, String, int, String, String)
+2024-06-18 15:56:02.167 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:56:02.167 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 2 containing com.edu.hcmuaf.springserver.entity.Ticket instances]
+2024-06-18 15:56:02.175 [http-nio-8080-exec-2] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:56:02.947 [http-nio-8080-exec-1] DEBUG o.s.w.s.DispatcherServlet - GET "/api/tickets?filter=%7B%7D&order=ASC&page=0&perPage=10&sort=id", parameters={masked}
+2024-06-18 15:56:02.948 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.edu.hcmuaf.springserver.controller.TicketController#getAll(int, String, int, String, String)
+2024-06-18 15:56:02.992 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Using 'application/json', given [application/json] and supported [application/json, application/*+json]
+2024-06-18 15:56:02.992 [http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.HttpEntityMethodProcessor - Writing [Page 1 of 2 containing com.edu.hcmuaf.springserver.entity.Ticket instances]
+2024-06-18 15:56:03.000 [http-nio-8080-exec-1] DEBUG o.s.w.s.DispatcherServlet - Completed 200 OK
+2024-06-18 15:56:04.654 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-18 15:56:04.654 [SpringApplicationShutdownHook] INFO  c.z.h.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-06-18 15:56:04.666 [SpringApplicationShutdownHook] INFO  c.z.h.HikariDataSource - HikariPool-1 - Shutdown completed.

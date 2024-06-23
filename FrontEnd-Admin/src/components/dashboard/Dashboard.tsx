@@ -9,7 +9,6 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import MonitorOutlinedIcon from '@mui/icons-material/MonitorOutlined';
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
 import BarChar from "./BarChar/BarChar";
-import BarChartQuater from "./BarChar/BarChartQuater";
 import CustomPieChart from "./PieChart/PieChart";
 
 const Spacer = () => <span style={{width: '1em'}}/>;
@@ -55,6 +54,7 @@ const Dashboard = () => {
     const {data: getShows} = useGetList<Ticket>('shows/all', {
         filter: {start_time: currentMonthYear}
     });
+
     const {data: getMovies} = useGetList<Movie>('movies/all_filter', {
         filter: {
             released_date: currentDateFormatted, is_active: 0,
@@ -176,15 +176,15 @@ const Dashboard = () => {
     }
     const Barchar = {
         title: "Revenue Theatres - This Month:",
-        theatreName: theatreName,
+        name: theatreName,
         totalPrice: totalPrice,
-        size: isSmall ? 300: 650
+        height: isSmall ? 300: 650
     }
     const RevenueQuater = {
         title: "Revenue Quarter:",
-        time: [firstMonthQuarter, secondMonthQuarter, thirdMonthQuarter],
-        revenue: revenueQuater,
-        size: isSmall ? 300 : 450
+        name: [firstMonthQuarter, secondMonthQuarter, thirdMonthQuarter],
+        totalPrice: revenueQuater,
+        height: isSmall ? 300: 450
     }
     const RevenueMovie = {
         title: "Revenue Movies:",
@@ -192,7 +192,6 @@ const Dashboard = () => {
     }
 
     return (
-
         <div>
             <div className={`home ${isSmall ? 'home-small' : ''}`}>
                 <div className="box box1">
@@ -211,7 +210,7 @@ const Dashboard = () => {
                     <BarChar {...Barchar}/>
                 </div>
                 <div className="box box3">
-                    <BarChartQuater {...RevenueQuater}/>
+                    <BarChar {...RevenueQuater}/>
                 </div>
                 <div className="box box7"><CustomPieChart {...RevenueMovie}/></div>
             </div>

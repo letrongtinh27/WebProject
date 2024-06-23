@@ -30,7 +30,6 @@ import {useMediaQuery, Theme, Box} from "@mui/material";
 
 const ListActions = () => (
     <TopToolbar>
-        <CreateButton />
         <ExportButton />
     </TopToolbar>
 );
@@ -44,19 +43,21 @@ export const TicketList = () => {
             actions={<ListActions />}
             filters={ [<SearchInput source = "q" alwaysOn /> ] }
         >
+            {isSmall ? (
                 <Datagrid rowClick="show">
-                    <Box display={isSmall ? 'none' : 'block'}>
-                        <TextField source="id" label="ID"/>
-                    </Box>
-                    <Box display={isSmall ? 'none' : 'block'}>
-                        <TextField source="showTime.movie.title" label="Movie"/>
-                        <TextField source="showTime.theatre.name" label="Theatre"/>
-                        <TextField source="price" label="Price"/>
-                        <TextField source="seat.room" label="Room"/>
-                    </Box>
+                    <TextField source="id" label="ID"/>
                     <TextField source="ticketCode" label="Code"/>
-                    <EditButton/>
                 </Datagrid>
+                ) : (
+                <Datagrid rowClick="show">
+                    <TextField source="id" label="ID"/>
+                    <TextField source="showTime.movie.title" label="Movie"/>
+                    <TextField source="showTime.theatre.name" label="Theatre"/>
+                    <TextField source="price" label="Price"/>
+                    <TextField source="seat.room" label="Room"/>
+                    <TextField source="ticketCode" label="Code"/>
+                </Datagrid>
+            )}
         </List>
     );
 };

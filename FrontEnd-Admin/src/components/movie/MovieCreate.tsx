@@ -54,6 +54,11 @@ export const MovieCreate = (props: any) => {
         { id: 'G', name: 'G' },
         { id: 'R', name: 'R' },
     ];
+    const Type = [
+        {id: 'new', name: 'new'},
+        {id: 'newreleases', name: 'new releases'},
+        {id: 'commingsoon', name: 'comming soon'},
+        ]
     const [category, setCategories] = useState<Category[]>([]);
     const {data}: any = useGetList<Category>('category',{
         pagination: {page: 1, perPage: 100},
@@ -108,9 +113,11 @@ export const MovieCreate = (props: any) => {
             />
         </Grid>
         <Grid container>
+            <SelectInput source="type" fullWidth label="Type" choices={Type}/>
     <TextInput source="type" fullWidth label="type"/>
         </Grid>
         <Grid container >
+
     <DateTimeInput source="released_date" fullWidth label="released date"/>
         </Grid>
             <Grid container >
