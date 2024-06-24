@@ -1,9 +1,11 @@
 import axios from "axios";
 import { AuthProvider, fetchUtils } from "react-admin";
 
-import Cookies from "js-cookie";
+
+import Cookies from "js-cookie"
 // const apiUrl = 'http://localhost:8080/api'
-const apiUrl = "https://cinema-server-production-0b4b.up.railway.app/api";
+const apiUrl = 'https://cinema-server-production-0b4b.up.railway.app/api'
+
 
 let token = localStorage.getItem("admin");
 // const httpClient = axios.create({

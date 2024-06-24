@@ -57,10 +57,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const role = Cookies.get("role");
-
+console.log(role)
 
 const App = () => {
-  return ( role == 'admin' ?
+  return ( role === "admin" ?
+          <>
       <Admin
           dashboard={Dashboard}
           title="Admin" dataProvider={dataProvider} authProvider={authProvider}
@@ -108,7 +109,7 @@ const App = () => {
                   list={TicketList}
                   show={TicketShow}
                   options={{label: 'Tickets'}} />
-      </Admin>
+      </Admin> </>
           : <>
             <Admin
                 dashboard={Dashboard}
